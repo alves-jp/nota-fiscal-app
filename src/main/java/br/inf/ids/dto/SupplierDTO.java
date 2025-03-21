@@ -23,6 +23,9 @@ public class SupplierDTO {
         this.companyDeactivationDate = companyDeactivationDate;
     }
 
+    public SupplierDTO() {
+    }
+
     public Long getId() {
         return id;
     }

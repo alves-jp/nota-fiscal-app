@@ -14,6 +14,9 @@ public class ProductDTO {
         this.productStatus = productStatus;
     }
 
+    public ProductDTO() {
+    }
+
     public Long getId() {
         return id;
     }

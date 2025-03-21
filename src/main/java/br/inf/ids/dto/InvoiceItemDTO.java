@@ -18,6 +18,9 @@ public class InvoiceItemDTO {
         this.totalItemValue = totalItemValue;
     }
 
+    public InvoiceItemDTO() {
+    }
+
     public Long getId() {
         return id;
     }

@@ -20,6 +20,9 @@ public class InvoiceDTO {
         this.totalValue = totalValue;
     }
 
+    public InvoiceDTO() {
+    }
+
     public Long getId() {
         return id;
     }

@@ -56,7 +56,7 @@ public class SupplierServiceImpl implements SupplierService {
 
             }
             existingSupplier.setCompanyName(supplier.getCompanyName());
-            existingSupplier.setsuppliersupplierEmail(supplier.getsuppliersupplierEmail());
+            existingSupplier.setsupplierEmail(supplier.getsupplierEmail());
             existingSupplier.setsupplierPhone(supplier.getsupplierPhone());
             existingSupplier.setCnpj(supplier.getCnpj());
             existingSupplier.setCompanyStatus(supplier.getCompanyStatus());
