@@ -15,7 +15,7 @@ public class Supplier {
     @Column(nullable = false, unique = true)
     private String supplierCode;
 
-    @Column(nullable = false, name = "razao_social")
+    @Column(name = "razao_social", nullable = false)
     private String companyName;
 
     @Column(nullable = false)
@@ -27,16 +27,15 @@ public class Supplier {
     @Column(nullable = false, unique = true)
     private String cnpj;
 
-    @Column(nullable = false, name = "situacao_fornecedor")
+    @Column(name = "situacao_fornecedor", nullable = false)
     private CompanyStatus companyStatus;
 
     @Column(name = "data_da_baixa")
     private LocalDate companyDeactivationDate;
 
 
-    public Supplier(Long id, String supplierCode, String companyName, String supplierEmail, String supplierPhone,
+    public Supplier(String supplierCode, String companyName, String supplierEmail, String supplierPhone,
                     String cnpj, CompanyStatus companyStatus, LocalDate companyDeactivationDate) {
-        this.id = id;
         this.supplierCode = supplierCode;
         this.companyName = companyName;
         this.supplierEmail = supplierEmail;
@@ -51,10 +50,6 @@ public class Supplier {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getsupplierCode() {

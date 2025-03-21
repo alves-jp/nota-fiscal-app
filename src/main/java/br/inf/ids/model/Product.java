@@ -20,8 +20,7 @@ public class Product {
     private ProductStatus productStatus;
 
 
-    public Product(Long id, String productId, String description, ProductStatus productStatus) {
-        this.id = id;
+    public Product(String productId, String description, ProductStatus productStatus) {
         this.productId = productId;
         this.description = description;
         this.productStatus = productStatus;
@@ -32,10 +31,6 @@ public class Product {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getProductId() {
