@@ -37,7 +37,6 @@ public class InvoiceItem {
     }
 
     public InvoiceItem() {
-
     }
 
     public Long getId() {

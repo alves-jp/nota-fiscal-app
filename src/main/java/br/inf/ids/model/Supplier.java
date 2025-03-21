@@ -10,10 +10,8 @@ public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "codigo_fornecedor")
     private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String supplierCode;
 
     @Column(name = "razao_social", nullable = false)
     private String companyName;
@@ -28,15 +26,15 @@ public class Supplier {
     private String cnpj;
 
     @Column(name = "situacao_fornecedor", nullable = false)
+    @Enumerated(EnumType.STRING)
     private CompanyStatus companyStatus;
 
     @Column(name = "data_da_baixa")
     private LocalDate companyDeactivationDate;
 
 
-    public Supplier(String supplierCode, String companyName, String supplierEmail, String supplierPhone,
+    public Supplier(String companyName, String supplierEmail, String supplierPhone,
                     String cnpj, CompanyStatus companyStatus, LocalDate companyDeactivationDate) {
-        this.supplierCode = supplierCode;
         this.companyName = companyName;
         this.supplierEmail = supplierEmail;
         this.supplierPhone = supplierPhone;
@@ -50,14 +48,6 @@ public class Supplier {
 
     public Long getId() {
         return id;
-    }
-
-    public String getsupplierCode() {
-        return supplierCode;
-    }
-
-    public void setsupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
     }
 
     public String getCompanyName() {

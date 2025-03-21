@@ -9,19 +9,17 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "codigo_produto")
     private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String productId;
 
     private String description;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
 
 
-    public Product(String productId, String description, ProductStatus productStatus) {
-        this.productId = productId;
+    public Product(String description, ProductStatus productStatus) {
         this.description = description;
         this.productStatus = productStatus;
     }
@@ -31,14 +29,6 @@ public class Product {
 
     public Long getId() {
         return id;
-    }
-
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
     }
 
     public String getDescription() {
