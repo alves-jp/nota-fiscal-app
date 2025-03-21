@@ -11,11 +11,11 @@ public class InvoiceItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "invoice_id", nullable = false)
+    @JoinColumn(name = "codigo_nota_fiscal", nullable = false)
     private Invoice invoice;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "codigo_produto", nullable = false)
     private Product product;
 
     @Column(name = "valor_unitario", nullable = false)

@@ -19,7 +19,7 @@ public class Invoice {
     private LocalDateTime issueDate;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = false)
+    @JoinColumn(name = "codigo_fornecedor", nullable = false)
     private Supplier supplier;
 
     @Column(nullable = false)
