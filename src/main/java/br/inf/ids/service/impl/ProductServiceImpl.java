@@ -47,8 +47,8 @@ public class ProductServiceImpl implements ProductService {
         if (existingProduct != null) {
             existingProduct.setDescription(product.getDescription());
             existingProduct.setProductStatus(product.getProductStatus());
-        }
 
+        }
         return existingProduct;
     }
 
@@ -58,7 +58,16 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id);
 
         if (product != null) {
+            if (productRepository.hasInvoiceItems(id)) {
+                throw new IllegalStateException("Erro: Não é possível excluir um produto com movimentação.");
+
+            }
             productRepository.delete(product);
         }
+    }
+
+    @Override
+    public List<Product> searchProducts(String searchTerm) {
+        return productRepository.findByDescription(searchTerm);
     }
 }

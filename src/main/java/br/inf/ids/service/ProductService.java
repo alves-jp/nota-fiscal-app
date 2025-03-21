@@ -11,6 +11,8 @@ public interface ProductService {
 
     Optional<Product> findProductById(Long id);
 
+    List<Product> searchProducts(String searchTerm);
+
     List<Product> findAllProducts();
 
     List<Product> findProductsByStatus(ProductStatus status);
