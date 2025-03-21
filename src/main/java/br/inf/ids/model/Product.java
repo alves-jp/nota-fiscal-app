@@ -4,7 +4,7 @@ import br.inf.ids.model.enums.ProductStatus;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "products")
+@Table(name = "produtos")
 public class Product {
 
     @Id
@@ -19,6 +19,16 @@ public class Product {
     @Column(nullable = false)
     private ProductStatus productStatus;
 
+
+    public Product(Long id, String productId, String description, ProductStatus productStatus) {
+        this.id = id;
+        this.productId = productId;
+        this.description = description;
+        this.productStatus = productStatus;
+    }
+
+    public Product() {
+    }
 
     public Long getId() {
         return id;
