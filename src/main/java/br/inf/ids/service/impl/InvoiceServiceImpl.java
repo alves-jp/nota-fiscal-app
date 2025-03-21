@@ -60,7 +60,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Optional<Invoice> findInvoiceByNumber(String invoiceNumber) {
-        return Optional.ofNullable((Invoice) invoiceRepository.findByInvoiceNumber(invoiceNumber));
+    public List<Invoice> searchInvoices(String invoiceNumber) {
+        return invoiceRepository.findByInvoiceNumber(invoiceNumber);
     }
 }

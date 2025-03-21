@@ -17,5 +17,5 @@ public interface InvoiceService {
 
     void deleteInvoice(Long id);
 
-    Optional<Invoice> findInvoiceByNumber(String invoiceNumber);
+    List<Invoice> searchInvoices(String invoiceNumber);
 }
