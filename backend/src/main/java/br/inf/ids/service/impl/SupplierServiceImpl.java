@@ -2,6 +2,7 @@ package br.inf.ids.service.impl;
 
 import br.inf.ids.model.Supplier;
 import br.inf.ids.model.enums.CompanyStatus;
+import br.inf.ids.repository.InvoiceRepository;
 import br.inf.ids.repository.SupplierRepository;
 import br.inf.ids.service.SupplierService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,6 +16,9 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Inject
     SupplierRepository supplierRepository;
+
+    @Inject
+    InvoiceRepository invoiceRepository;
 
     @Override
     @Transactional
@@ -81,11 +85,17 @@ public class SupplierServiceImpl implements SupplierService {
         Supplier supplier = supplierRepository.findById(id);
 
         if (supplier != null) {
-            if (supplierRepository.hasInvoices(id)) {
+            boolean hasMovements = invoiceRepository.count("supplier.id", id) > 0;
+
+            if (hasMovements) {
                 throw new IllegalStateException("Erro: Não é possível excluir um fornecedor com movimentação.");
 
             }
             supplierRepository.delete(supplier);
+
+        } else {
+            throw new IllegalArgumentException("Erro: Fornecedor não encontrado.");
         }
     }
+
 }
