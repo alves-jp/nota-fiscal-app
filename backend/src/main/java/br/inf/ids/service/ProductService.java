@@ -13,8 +13,6 @@ public interface ProductService {
 
     List<Product> findAllProducts();
 
-    List<Product> findProductByStatus(ProductStatus status);
-
     List<Product> findProductByDescription(String description);
 
     Product updateProduct(Long id, Product product);

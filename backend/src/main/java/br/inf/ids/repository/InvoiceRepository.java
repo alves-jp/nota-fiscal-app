@@ -12,12 +12,4 @@ public class InvoiceRepository implements PanacheRepository<Invoice> {
     public List<Invoice> findByInvoiceNumber(String invoiceNumber) {
         return list("invoiceNumber", invoiceNumber);
     }
-
-    public List<Invoice> findBySupplierId(Long supplierId) {
-        return list("supplier.id", supplierId);
-    }
-
-    public List<Invoice> findByIssueDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
-        return list("issueDate between ?1 and ?2", startDate, endDate);
-    }
 }

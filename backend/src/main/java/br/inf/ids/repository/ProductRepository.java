@@ -23,5 +23,4 @@ public class ProductRepository implements PanacheRepository<Product> {
     public boolean hasInvoiceItems(Long productId) {
         return count("SELECT COUNT(i) FROM InvoiceItem i WHERE i.product.id = ?1", productId) > 0;
     }
-
 }

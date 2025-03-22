@@ -13,10 +13,6 @@ public interface SupplierService {
 
     List<Supplier> findAllSuppliers();
 
-    List<Supplier> findSupplierByStatus(CompanyStatus status);
-
-    Optional<Supplier> findSupplierByCnpj(String cnpj);
-
     List<Supplier> findSuppliersByName(String companyName);
 
     Supplier updateSupplier(Long id, Supplier supplier);
