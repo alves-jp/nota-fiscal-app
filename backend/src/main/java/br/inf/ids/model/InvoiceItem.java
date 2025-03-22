@@ -1,6 +1,7 @@
 package br.inf.ids.model;
 
 import jakarta.persistence.*;
+import jakarta.json.bind.annotation.JsonbTransient;
 
 @Entity
 @Table(name = "nota_fiscal_itens")
@@ -12,6 +13,7 @@ public class InvoiceItem {
 
     @ManyToOne
     @JoinColumn(name = "nota_fiscal_id", nullable = false)
+    @JsonbTransient
     private Invoice invoice;
 
     @ManyToOne

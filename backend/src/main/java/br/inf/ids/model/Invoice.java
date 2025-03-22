@@ -2,6 +2,7 @@ package br.inf.ids.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.util.List;
 
 @Entity
@@ -29,6 +30,7 @@ public class Invoice {
     private Double totalValue;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonbTransient
     private List<InvoiceItem> items;
 
 
