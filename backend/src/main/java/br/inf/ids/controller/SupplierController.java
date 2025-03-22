@@ -19,17 +19,39 @@ public class SupplierController {
 
     @POST
     public Response createSupplier(SupplierDTO supplierDTO) {
-        Supplier supplier = new Supplier();
+        if (supplierDTO.getCompanyName() == null || supplierDTO.getCompanyName().isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O nome da empresa é obrigatório.")
+                    .build();
 
-        supplier.setCompanyName(supplierDTO.getCompanyName());
-        supplier.setsupplierEmail(supplierDTO.getsupplierEmail());
-        supplier.setsupplierPhone(supplierDTO.getsupplierPhone());
-        supplier.setCnpj(supplierDTO.getCnpj());
-        supplier.setCompanyStatus(supplierDTO.getCompanyStatus());
+        } if (supplierDTO.getCnpj() == null || supplierDTO.getCnpj().isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O CNPJ é obrigatório.")
+                    .build();
 
-        supplierService.createSupplier(supplier);
+        } if (supplierDTO.getCompanyStatus() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O status da empresa é obrigatório.")
+                    .build();
 
-        return Response.status(Response.Status.CREATED).entity(supplier).build();
+        } try {
+            Supplier supplier = new Supplier();
+
+            supplier.setCompanyName(supplierDTO.getCompanyName());
+            supplier.setsupplierEmail(supplierDTO.getsupplierEmail());
+            supplier.setsupplierPhone(supplierDTO.getsupplierPhone());
+            supplier.setCnpj(supplierDTO.getCnpj());
+            supplier.setCompanyStatus(supplierDTO.getCompanyStatus());
+
+            supplierService.createSupplier(supplier);
+
+            return Response.status(Response.Status.CREATED).entity(supplier).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao criar o fornecedor.")
+                    .build();
+        }
     }
 
     @GET
@@ -37,7 +59,9 @@ public class SupplierController {
     public Response getSupplierById(@PathParam("id") Long id) {
         return supplierService.findSupplierById(id)
                 .map(supplier -> Response.ok(supplier).build())
-                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+                .orElse(Response.status(Response.Status.NOT_FOUND)
+                        .entity("Fornecedor não encontrado.")
+                        .build());
     }
 
     @GET
@@ -50,6 +74,12 @@ public class SupplierController {
     @GET
     @Path("/buscar")
     public Response getSupplierByName(@QueryParam("companyName") String companyName) {
+        if (companyName == null || companyName.isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O nome da empresa é obrigatório para a busca.")
+                    .build();
+
+        }
         List<Supplier> suppliers = supplierService.findSuppliersByName(companyName);
 
         return Response.ok(suppliers).build();
@@ -58,25 +88,65 @@ public class SupplierController {
     @PUT
     @Path("/{id}")
     public Response updateSupplier(@PathParam("id") Long id, SupplierDTO supplierDTO) {
-        Supplier supplier = new Supplier();
+        if (supplierDTO.getCompanyName() == null || supplierDTO.getCompanyName().isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O nome da empresa é obrigatório.")
+                    .build();
 
-        supplier.setCompanyName(supplierDTO.getCompanyName());
-        supplier.setsupplierEmail(supplierDTO.getsupplierEmail());
-        supplier.setsupplierPhone(supplierDTO.getsupplierPhone());
-        supplier.setCnpj(supplierDTO.getCnpj());
-        supplier.setCompanyStatus(supplierDTO.getCompanyStatus());
+        } if (supplierDTO.getCnpj() == null || supplierDTO.getCnpj().isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O CNPJ é obrigatório.")
+                    .build();
 
-        Supplier updatedSupplier = supplierService.updateSupplier(id, supplier);
+        } if (supplierDTO.getCompanyStatus() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O status da empresa é obrigatório.")
+                    .build();
 
-        return Response.ok(updatedSupplier).build();
+        } try {
+            Supplier supplier = new Supplier();
+
+            supplier.setCompanyName(supplierDTO.getCompanyName());
+            supplier.setsupplierEmail(supplierDTO.getsupplierEmail());
+            supplier.setsupplierPhone(supplierDTO.getsupplierPhone());
+            supplier.setCnpj(supplierDTO.getCnpj());
+            supplier.setCompanyStatus(supplierDTO.getCompanyStatus());
+
+            Supplier updatedSupplier = supplierService.updateSupplier(id, supplier);
+
+            if (updatedSupplier == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("Fornecedor não encontrado.")
+                        .build();
+
+            }
+            return Response.ok(updatedSupplier).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar o fornecedor.")
+                    .build();
+        }
     }
-
 
     @DELETE
     @Path("/{id}")
     public Response deleteSupplier(@PathParam("id") Long id) {
-        supplierService.deleteSupplier(id);
+        try {
+            if (supplierService.findSupplierById(id).isEmpty()) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("Fornecedor não encontrado.")
+                        .build();
 
-        return Response.noContent().build();
+            }
+            supplierService.deleteSupplier(id);
+
+            return Response.noContent().build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao excluir o fornecedor.")
+                    .build();
+        }
     }
 }
