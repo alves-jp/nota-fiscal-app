@@ -45,16 +45,6 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public List<Supplier> findSupplierByStatus(CompanyStatus status) {
-        return supplierRepository.findByCompanyStatus(status);
-    }
-
-    @Override
-    public Optional<Supplier> findSupplierByCnpj(String cnpj) {
-        return Optional.ofNullable(supplierRepository.findByCnpj(cnpj));
-    }
-
-    @Override
     public List<Supplier> findSuppliersByName(String companyName) {
         return supplierRepository.findByCompanyName(companyName);
     }
