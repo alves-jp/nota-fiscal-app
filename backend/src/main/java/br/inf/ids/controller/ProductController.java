@@ -32,7 +32,6 @@ public class ProductController {
     @GET
     @Path("/{id}")
     public Response getProductById(@PathParam("id") Long id) {
-
         return productService.findProductById(id)
                 .map(product -> Response.ok(product).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -41,6 +40,14 @@ public class ProductController {
     @GET
     public Response getAllProducts() {
         List<Product> products = productService.findAllProducts();
+
+        return Response.ok(products).build();
+    }
+
+    @GET
+    @Path("/buscar")
+    public Response searchProducts(@QueryParam("description") String description) {
+        List<Product> products = productService.findProductByDescription(description);
 
         return Response.ok(products).build();
     }
@@ -64,13 +71,5 @@ public class ProductController {
         productService.deleteProduct(id);
 
         return Response.noContent().build();
-    }
-
-    @GET
-    @Path("/search")
-    public Response searchProducts(@QueryParam("description") String description) {
-        List<Product> products = productService.searchProducts(description);
-
-        return Response.ok(products).build();
     }
 }

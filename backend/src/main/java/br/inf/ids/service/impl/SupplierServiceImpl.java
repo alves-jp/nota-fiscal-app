@@ -44,6 +44,16 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    public Optional<Supplier> findSupplierByCnpj(String cnpj) {
+        return Optional.ofNullable(supplierRepository.findByCnpj(cnpj));
+    }
+
+    @Override
+    public List<Supplier> findSuppliersByName(String companyName) {
+        return supplierRepository.findByCompanyName(companyName);
+    }
+
+    @Override
     @Transactional
     public Supplier updateSupplier(Long id, Supplier supplier) {
         Supplier existingSupplier = supplierRepository.findById(id);
@@ -77,16 +87,5 @@ public class SupplierServiceImpl implements SupplierService {
             }
             supplierRepository.delete(supplier);
         }
-    }
-
-    @Override
-    public Optional<Supplier> findSupplierByCnpj(String cnpj) {
-        return Optional.ofNullable(supplierRepository.findByCnpj(cnpj));
-    }
-
-
-    @Override
-    public List<Supplier> searchSuppliers(String searchTerm) {
-        return supplierRepository.findByCompanyName(searchTerm);
     }
 }

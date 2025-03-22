@@ -9,7 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/itens-notas-fiscais")
+@Path("/itens")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class InvoiceItemController {
@@ -19,11 +19,10 @@ public class InvoiceItemController {
 
     @POST
     public Response createInvoiceItem(InvoiceItemDTO invoiceItemDTO) {
-
         InvoiceItem invoiceItem = new InvoiceItem();
+
         invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
         invoiceItem.setQuantity(invoiceItemDTO.getQuantity());
-        invoiceItem.setTotalItemValue(invoiceItemDTO.getTotalItemValue());
 
         invoiceItemService.createInvoiceItem(invoiceItem);
 
@@ -33,7 +32,6 @@ public class InvoiceItemController {
     @GET
     @Path("/{id}")
     public Response getInvoiceItemById(@PathParam("id") Long id) {
-
         return invoiceItemService.findInvoiceItemById(id)
                 .map(invoiceItem -> Response.ok(invoiceItem).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -46,6 +44,14 @@ public class InvoiceItemController {
         return Response.ok(invoiceItems).build();
     }
 
+    @GET
+    @Path("/buscar-nf/{invoiceId}")
+    public Response getInvoiceItemsByInvoiceId(@PathParam("invoiceId") Long invoiceId) {
+        List<InvoiceItem> invoiceItems = invoiceItemService.findInvoiceItemsByInvoiceId(invoiceId);
+
+        return Response.ok(invoiceItems).build();
+    }
+
     @PUT
     @Path("/{id}")
     public Response updateInvoiceItem(@PathParam("id") Long id, InvoiceItemDTO invoiceItemDTO) {
@@ -53,7 +59,6 @@ public class InvoiceItemController {
 
         invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
         invoiceItem.setQuantity(invoiceItemDTO.getQuantity());
-        invoiceItem.setTotalItemValue(invoiceItemDTO.getTotalItemValue());
 
         InvoiceItem updatedInvoiceItem = invoiceItemService.updateInvoiceItem(id, invoiceItem);
 
@@ -66,13 +71,5 @@ public class InvoiceItemController {
         invoiceItemService.deleteInvoiceItem(id);
 
         return Response.noContent().build();
-    }
-
-    @GET
-    @Path("/por-nf/{invoiceId}")
-    public Response getInvoiceItemsByInvoiceId(@PathParam("invoiceId") Long invoiceId) {
-        List<InvoiceItem> invoiceItems = invoiceItemService.findInvoiceItemsByInvoiceId(invoiceId);
-
-        return Response.ok(invoiceItems).build();
     }
 }

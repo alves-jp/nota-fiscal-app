@@ -15,11 +15,11 @@ public interface SupplierService {
 
     List<Supplier> findSuppliersByStatus(CompanyStatus status);
 
+    Optional<Supplier> findSupplierByCnpj(String cnpj);
+
+    List<Supplier> findSuppliersByName(String companyName);
+
     Supplier updateSupplier(Long id, Supplier supplier);
 
     void deleteSupplier(Long id);
-
-    Optional<Supplier> findSupplierByCnpj(String cnpj);
-
-    List<Supplier> searchSuppliers(String searchTerm);
 }

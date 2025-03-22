@@ -24,16 +24,12 @@ public class InvoiceItem {
     @Column(nullable = false)
     private Integer quantity;
 
-    @Column(nullable = false)
-    private Double totalItemValue;
 
-
-    public InvoiceItem(Invoice invoice, Product product, Double unitValue, Integer quantity, Double totalItemValue) {
+    public InvoiceItem(Invoice invoice, Product product, Double unitValue, Integer quantity) {
         this.invoice = invoice;
         this.product = product;
         this.unitValue = unitValue;
         this.quantity = quantity;
-        this.totalItemValue = totalItemValue;
     }
 
     public InvoiceItem() {
@@ -73,13 +69,5 @@ public class InvoiceItem {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public Double getTotalItemValue() {
-        return totalItemValue;
-    }
-
-    public void setTotalItemValue(Double totalItemValue) {
-        this.totalItemValue = totalItemValue;
     }
 }

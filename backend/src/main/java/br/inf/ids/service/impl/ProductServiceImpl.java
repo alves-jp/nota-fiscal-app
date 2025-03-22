@@ -40,6 +40,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findProductByDescription(String description) {
+        return productRepository.findByDescription(description);
+    }
+
+    @Override
     @Transactional
     public Product updateProduct(Long id, Product product) {
         Product existingProduct = productRepository.findById(id);
@@ -64,10 +69,5 @@ public class ProductServiceImpl implements ProductService {
             }
             productRepository.delete(product);
         }
-    }
-
-    @Override
-    public List<Product> searchProducts(String searchTerm) {
-        return productRepository.findByDescription(searchTerm);
     }
 }

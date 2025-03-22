@@ -7,15 +7,13 @@ public class InvoiceItemDTO {
     private Long productId;
     private Double unitValue;
     private Integer quantity;
-    private Double totalItemValue;
 
-    public InvoiceItemDTO(Long id, Long invoiceId, Long productId, Double unitValue, Integer quantity, Double totalItemValue) {
+    public InvoiceItemDTO(Long id, Long invoiceId, Long productId, Double unitValue, Integer quantity) {
         this.id = id;
         this.invoiceId = invoiceId;
         this.productId = productId;
         this.unitValue = unitValue;
         this.quantity = quantity;
-        this.totalItemValue = totalItemValue;
     }
 
     public InvoiceItemDTO() {
@@ -55,13 +53,5 @@ public class InvoiceItemDTO {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public Double getTotalItemValue() {
-        return totalItemValue;
-    }
-
-    public void setTotalItemValue(Double totalItemValue) {
-        this.totalItemValue = totalItemValue;
     }
 }

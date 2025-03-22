@@ -35,7 +35,6 @@ public class SupplierController {
     @GET
     @Path("/{id}")
     public Response getSupplierById(@PathParam("id") Long id) {
-
         return supplierService.findSupplierById(id)
                 .map(supplier -> Response.ok(supplier).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -44,6 +43,14 @@ public class SupplierController {
     @GET
     public Response getAllSuppliers() {
         List<Supplier> suppliers = supplierService.findAllSuppliers();
+
+        return Response.ok(suppliers).build();
+    }
+
+    @GET
+    @Path("/buscar")
+    public Response searchSuppliers(@QueryParam("companyName") String companyName) {
+        List<Supplier> suppliers = supplierService.findSuppliersByName(companyName);
 
         return Response.ok(suppliers).build();
     }
@@ -71,13 +78,5 @@ public class SupplierController {
         supplierService.deleteSupplier(id);
 
         return Response.noContent().build();
-    }
-
-    @GET
-    @Path("/search")
-    public Response searchSuppliers(@QueryParam("companyName") String companyName) {
-        List<Supplier> suppliers = supplierService.searchSuppliers(companyName);
-
-        return Response.ok(suppliers).build();
     }
 }

@@ -15,14 +15,14 @@ public class Invoice {
     @Column(nullable = false, unique = true)
     private String invoiceNumber;
 
-    @Column(nullable = false)
+    @Column(name = "data_emissao", nullable = false)
     private LocalDateTime issueDate;
 
     @ManyToOne
     @JoinColumn(name = "codigo_fornecedor", nullable = false)
     private Supplier supplier;
 
-    @Column(nullable = false)
+    @Column(name = "endereco", nullable = false)
     private String address;
 
     @Column(nullable = false)

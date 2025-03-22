@@ -11,11 +11,11 @@ public interface ProductService {
 
     Optional<Product> findProductById(Long id);
 
-    List<Product> searchProducts(String searchTerm);
-
     List<Product> findAllProducts();
 
     List<Product> findProductsByStatus(ProductStatus status);
+
+    List<Product> findProductByDescription(String description);
 
     Product updateProduct(Long id, Product product);
 

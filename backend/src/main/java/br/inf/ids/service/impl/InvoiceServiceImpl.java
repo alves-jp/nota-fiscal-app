@@ -34,6 +34,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public List<Invoice> findInvoiceByNumber(String invoiceNumber) {
+        return invoiceRepository.findByInvoiceNumber(invoiceNumber);
+    }
+
+    @Override
     @Transactional
     public Invoice updateInvoice(Long id, Invoice invoice) {
         Invoice existingInvoice = invoiceRepository.findById(id);
@@ -57,10 +62,5 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (invoice != null) {
             invoiceRepository.delete(invoice);
         }
-    }
-
-    @Override
-    public List<Invoice> searchInvoices(String invoiceNumber) {
-        return invoiceRepository.findByInvoiceNumber(invoiceNumber);
     }
 }

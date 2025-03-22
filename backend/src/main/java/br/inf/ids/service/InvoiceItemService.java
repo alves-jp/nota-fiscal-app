@@ -13,11 +13,11 @@ public interface InvoiceItemService {
 
     List<InvoiceItem> findAllInvoiceItems();
 
-    InvoiceItem updateInvoiceItem(Long id, InvoiceItem invoiceItem);
-
-    void deleteInvoiceItem(Long id);
-
     List<InvoiceItem> findInvoiceItemsByInvoiceId(Long invoiceId);
 
     List<InvoiceItem> findInvoiceItemsByProductId(Long productId);
+
+    InvoiceItem updateInvoiceItem(Long id, InvoiceItem invoiceItem);
+
+    void deleteInvoiceItem(Long id);
 }

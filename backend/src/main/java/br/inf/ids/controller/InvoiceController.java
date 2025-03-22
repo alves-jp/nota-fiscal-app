@@ -35,7 +35,6 @@ public class InvoiceController {
     @GET
     @Path("/{id}")
     public Response getInvoiceById(@PathParam("id") Long id) {
-
         return invoiceService.findInvoiceById(id)
                 .map(invoice -> Response.ok(invoice).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
@@ -48,6 +47,13 @@ public class InvoiceController {
         return Response.ok(invoices).build();
     }
 
+    @GET
+    @Path("/buscar")
+    public Response searchInvoices(@QueryParam("invoiceNumber") String invoiceNumber) {
+        List<Invoice> invoices = invoiceService.findInvoiceByNumber(invoiceNumber);
+
+        return Response.ok(invoices).build();
+    }
 
     @PUT
     @Path("/{id}")
@@ -70,13 +76,5 @@ public class InvoiceController {
         invoiceService.deleteInvoice(id);
 
         return Response.noContent().build();
-    }
-
-    @GET
-    @Path("/search")
-    public Response searchInvoices(@QueryParam("invoiceNumber") String invoiceNumber) {
-        List<Invoice> invoices = invoiceService.searchInvoices(invoiceNumber);
-
-        return Response.ok(invoices).build();
     }
 }

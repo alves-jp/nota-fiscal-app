@@ -19,6 +19,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     @Transactional
     public InvoiceItem createInvoiceItem(InvoiceItem invoiceItem) {
         invoiceItemRepository.persist(invoiceItem);
+
         return invoiceItem;
     }
 
@@ -33,6 +34,16 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
+    public List<InvoiceItem> findInvoiceItemsByInvoiceId(Long invoiceId) {
+        return invoiceItemRepository.findByInvoiceId(invoiceId);
+    }
+
+    @Override
+    public List<InvoiceItem> findInvoiceItemsByProductId(Long productId) {
+        return invoiceItemRepository.findByProductId(productId);
+    }
+
+    @Override
     @Transactional
     public InvoiceItem updateInvoiceItem(Long id, InvoiceItem invoiceItem) {
         InvoiceItem existingInvoiceItem = invoiceItemRepository.findById(id);
@@ -42,7 +53,6 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
             existingInvoiceItem.setProduct(invoiceItem.getProduct());
             existingInvoiceItem.setUnitValue(invoiceItem.getUnitValue());
             existingInvoiceItem.setQuantity(invoiceItem.getQuantity());
-            existingInvoiceItem.setTotalItemValue(invoiceItem.getTotalItemValue());
 
         }
         return existingInvoiceItem;
@@ -56,15 +66,5 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         if (invoiceItem != null) {
             invoiceItemRepository.delete(invoiceItem);
         }
-    }
-
-    @Override
-    public List<InvoiceItem> findInvoiceItemsByInvoiceId(Long invoiceId) {
-        return invoiceItemRepository.findByInvoiceId(invoiceId);
-    }
-
-    @Override
-    public List<InvoiceItem> findInvoiceItemsByProductId(Long productId) {
-        return invoiceItemRepository.findByProductId(productId);
     }
 }
