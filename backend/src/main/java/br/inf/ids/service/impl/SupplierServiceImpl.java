@@ -1,5 +1,7 @@
 package br.inf.ids.service.impl;
 
+import br.inf.ids.exception.BusinessException;
+import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Supplier;
 import br.inf.ids.model.enums.CompanyStatus;
 import br.inf.ids.repository.InvoiceRepository;
@@ -88,13 +90,13 @@ public class SupplierServiceImpl implements SupplierService {
             boolean hasMovements = invoiceRepository.count("supplier.id", id) > 0;
 
             if (hasMovements) {
-                throw new IllegalStateException("Erro: Não é possível excluir um fornecedor com movimentação.");
+                throw new BusinessException("Erro: Não é possível excluir um fornecedor com movimentação.");
 
             }
             supplierRepository.delete(supplier);
 
         } else {
-            throw new IllegalArgumentException("Erro: Fornecedor não encontrado.");
+            throw new EntityNotFoundException("Erro: Fornecedor não encontrado.");
         }
     }
 

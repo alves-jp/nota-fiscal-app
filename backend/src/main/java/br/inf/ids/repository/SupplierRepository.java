@@ -24,5 +24,4 @@ public class SupplierRepository implements PanacheRepository<Supplier> {
     public boolean hasInvoices(Long supplierId) {
         return count("supplier.id", supplierId) > 0;
     }
-    
 }

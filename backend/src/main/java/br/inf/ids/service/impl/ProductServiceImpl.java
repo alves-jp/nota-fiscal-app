@@ -1,5 +1,7 @@
 package br.inf.ids.service.impl;
 
+import br.inf.ids.exception.BusinessException;
+import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Product;
 import br.inf.ids.model.enums.ProductStatus;
 import br.inf.ids.repository.ProductRepository;
@@ -62,12 +64,14 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id);
 
-        if (product != null) {
-            if (productRepository.hasInvoiceItems(id)) {
-                throw new IllegalStateException("Erro: Não é possível excluir um produto com movimentação.");
+        if (product == null) {
+            throw new EntityNotFoundException("Produto não encontrado.");
 
-            }
-            productRepository.delete(product);
         }
+        if (productRepository.hasInvoiceItems(id)) {
+            throw new BusinessException("Não é possível excluir um produto com movimentação.");
+
+        }
+        productRepository.delete(product);
     }
 }
