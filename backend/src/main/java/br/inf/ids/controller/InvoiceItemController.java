@@ -25,14 +25,12 @@ public class InvoiceItemController {
                     .entity("O valor unitário deve ser positivo.")
                     .build();
 
-        }
-        if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
+        } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("A quantidade deve ser maior que zero.")
                     .build();
 
-        }
-        try {
+        } try {
             InvoiceItem invoiceItem = new InvoiceItem();
 
             invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
@@ -120,14 +118,12 @@ public class InvoiceItemController {
                     .entity("O valor unitário deve ser positivo.")
                     .build();
 
-        }
-        if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
+        } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("A quantidade deve ser maior que zero.")
                     .build();
 
-        }
-        try {
+        } try {
             InvoiceItem invoiceItem = new InvoiceItem();
 
             invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());

@@ -24,21 +24,17 @@ public class InvoiceController {
                     .entity("O número da nota fiscal é obrigatório.")
                     .build();
 
-        }
-        if (invoiceDTO.getIssueDate() == null) {
+        } if (invoiceDTO.getIssueDate() == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("A data de emissão é obrigatória.")
                     .build();
 
-        }
-        if (invoiceDTO.getTotalValue() == null || invoiceDTO.getTotalValue() <= 0) {
+        } if (invoiceDTO.getTotalValue() == null || invoiceDTO.getTotalValue() <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("O valor total deve ser positivo.")
                     .build();
 
-        }
-
-        try {
+        } try {
             Invoice invoice = new Invoice();
 
             invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
@@ -96,21 +92,17 @@ public class InvoiceController {
                     .entity("O número da nota fiscal é obrigatório.")
                     .build();
 
-        }
-        if (invoiceDTO.getIssueDate() == null) {
+        } if (invoiceDTO.getIssueDate() == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("A data de emissão é obrigatória.")
                     .build();
 
-        }
-        if (invoiceDTO.getTotalValue() == null || invoiceDTO.getTotalValue() <= 0) {
+        } if (invoiceDTO.getTotalValue() == null || invoiceDTO.getTotalValue() <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("O valor total deve ser positivo.")
                     .build();
 
-        }
-
-        try {
+        } try {
             Invoice invoice = new Invoice();
 
             invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());

@@ -19,14 +19,31 @@ public class ProductController {
 
     @POST
     public Response createProduct(ProductDTO productDTO) {
-        Product product = new Product();
+        if (productDTO.getDescription() == null || productDTO.getDescription().isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("A descrição do produto é obrigatória.")
+                    .build();
 
-        product.setDescription(productDTO.getDescription());
-        product.setProductStatus(productDTO.getProductStatus());
+        } if (productDTO.getProductStatus() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O status do produto é obrigatório.")
+                    .build();
 
-        productService.createProduct(product);
+        } try {
+            Product product = new Product();
 
-        return Response.status(Response.Status.CREATED).entity(product).build();
+            product.setDescription(productDTO.getDescription());
+            product.setProductStatus(productDTO.getProductStatus());
+
+            productService.createProduct(product);
+
+            return Response.status(Response.Status.CREATED).entity(product).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao criar o produto.")
+                    .build();
+        }
     }
 
     @GET
@@ -34,7 +51,9 @@ public class ProductController {
     public Response getProductById(@PathParam("id") Long id) {
         return productService.findProductById(id)
                 .map(product -> Response.ok(product).build())
-                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+                .orElse(Response.status(Response.Status.NOT_FOUND)
+                        .entity("Produto não encontrado.")
+                        .build());
     }
 
     @GET
@@ -47,6 +66,12 @@ public class ProductController {
     @GET
     @Path("/buscar")
     public Response getProductByDescription(@QueryParam("description") String description) {
+        if (description == null || description.isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("A descrição do produto é obrigatória para a busca.")
+                    .build();
+
+        }
         List<Product> products = productService.findProductByDescription(description);
 
         return Response.ok(products).build();
@@ -55,21 +80,57 @@ public class ProductController {
     @PUT
     @Path("/{id}")
     public Response updateProduct(@PathParam("id") Long id, ProductDTO productDTO) {
-        Product product = new Product();
+        if (productDTO.getDescription() == null || productDTO.getDescription().isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("A descrição do produto é obrigatória.")
+                    .build();
 
-        product.setDescription(productDTO.getDescription());
-        product.setProductStatus(productDTO.getProductStatus());
+        } if (productDTO.getProductStatus() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O status do produto é obrigatório.")
+                    .build();
 
-        Product updatedProduct = productService.updateProduct(id, product);
+        } try {
+            Product product = new Product();
 
-        return Response.ok(updatedProduct).build();
+            product.setDescription(productDTO.getDescription());
+            product.setProductStatus(productDTO.getProductStatus());
+
+            Product updatedProduct = productService.updateProduct(id, product);
+
+            if (updatedProduct == null) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("Produto não encontrado.")
+                        .build();
+
+            }
+            return Response.ok(updatedProduct).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar o produto.")
+                    .build();
+        }
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteProduct(@PathParam("id") Long id) {
-        productService.deleteProduct(id);
+        try {
+            if (productService.findProductById(id).isEmpty()) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .entity("Produto não encontrado.")
+                        .build();
 
-        return Response.noContent().build();
+            }
+            productService.deleteProduct(id);
+
+            return Response.noContent().build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao excluir o produto.")
+                    .build();
+        }
     }
 }
