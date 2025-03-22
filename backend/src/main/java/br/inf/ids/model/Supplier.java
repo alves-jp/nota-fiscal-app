@@ -16,10 +16,10 @@ public class Supplier {
     @Column(name = "razao_social", nullable = false)
     private String companyName;
 
-    @Column(nullable = false)
+    @Column(name = "email", nullable = false)
     private String supplierEmail;
 
-    @Column(nullable = false)
+    @Column(name = "telefone", nullable = false)
     private String supplierPhone;
 
     @Column(nullable = false, unique = true)

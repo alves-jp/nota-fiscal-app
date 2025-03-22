@@ -49,7 +49,7 @@ public class InvoiceController {
 
     @GET
     @Path("/buscar")
-    public Response searchInvoices(@QueryParam("invoiceNumber") String invoiceNumber) {
+    public Response getInvoiceByNumber(@QueryParam("invoiceNumber") String invoiceNumber) {
         List<Invoice> invoices = invoiceService.findInvoiceByNumber(invoiceNumber);
 
         return Response.ok(invoices).build();

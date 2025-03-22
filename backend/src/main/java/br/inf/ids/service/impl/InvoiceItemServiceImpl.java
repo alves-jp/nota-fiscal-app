@@ -34,12 +34,12 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public List<InvoiceItem> findInvoiceItemsByInvoiceId(Long invoiceId) {
+    public List<InvoiceItem> findInvoiceItemByInvoiceId(Long invoiceId) {
         return invoiceItemRepository.findByInvoiceId(invoiceId);
     }
 
     @Override
-    public List<InvoiceItem> findInvoiceItemsByProductId(Long productId) {
+    public List<InvoiceItem> findInvoiceItemByProductId(Long productId) {
         return invoiceItemRepository.findByProductId(productId);
     }
 

@@ -39,7 +39,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public List<Supplier> findSuppliersByStatus(CompanyStatus status) {
+    public List<Supplier> findSupplierByStatus(CompanyStatus status) {
         return supplierRepository.findByCompanyStatus(status);
     }
 

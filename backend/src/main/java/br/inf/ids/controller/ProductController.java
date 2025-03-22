@@ -46,7 +46,7 @@ public class ProductController {
 
     @GET
     @Path("/buscar")
-    public Response searchProducts(@QueryParam("description") String description) {
+    public Response getProductByDescription(@QueryParam("description") String description) {
         List<Product> products = productService.findProductByDescription(description);
 
         return Response.ok(products).build();

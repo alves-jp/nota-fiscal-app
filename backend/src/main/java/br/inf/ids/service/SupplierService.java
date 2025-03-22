@@ -13,7 +13,7 @@ public interface SupplierService {
 
     List<Supplier> findAllSuppliers();
 
-    List<Supplier> findSuppliersByStatus(CompanyStatus status);
+    List<Supplier> findSupplierByStatus(CompanyStatus status);
 
     Optional<Supplier> findSupplierByCnpj(String cnpj);
 

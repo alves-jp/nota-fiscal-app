@@ -13,7 +13,7 @@ public interface ProductService {
 
     List<Product> findAllProducts();
 
-    List<Product> findProductsByStatus(ProductStatus status);
+    List<Product> findProductByStatus(ProductStatus status);
 
     List<Product> findProductByDescription(String description);
 

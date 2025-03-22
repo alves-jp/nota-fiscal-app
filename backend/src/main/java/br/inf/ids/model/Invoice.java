@@ -12,7 +12,7 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "numero_nf", nullable = false, unique = true)
     private String invoiceNumber;
 
     @Column(name = "data_emissao", nullable = false)
@@ -25,7 +25,7 @@ public class Invoice {
     @Column(name = "endereco", nullable = false)
     private String address;
 
-    @Column(nullable = false)
+    @Column(name = "valor_total", nullable = false)
     private Double totalValue;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)

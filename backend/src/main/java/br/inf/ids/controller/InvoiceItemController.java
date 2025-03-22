@@ -46,8 +46,8 @@ public class InvoiceItemController {
 
     @GET
     @Path("/buscar-nf/{invoiceId}")
-    public Response getInvoiceItemsByInvoiceId(@PathParam("invoiceId") Long invoiceId) {
-        List<InvoiceItem> invoiceItems = invoiceItemService.findInvoiceItemsByInvoiceId(invoiceId);
+    public Response getInvoiceItemByInvoiceId(@PathParam("invoiceId") Long invoiceId) {
+        List<InvoiceItem> invoiceItems = invoiceItemService.findInvoiceItemByInvoiceId(invoiceId);
 
         return Response.ok(invoiceItems).build();
     }

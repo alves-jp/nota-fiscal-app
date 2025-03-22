@@ -49,7 +49,7 @@ public class SupplierController {
 
     @GET
     @Path("/buscar")
-    public Response searchSuppliers(@QueryParam("companyName") String companyName) {
+    public Response getSupplierByName(@QueryParam("companyName") String companyName) {
         List<Supplier> suppliers = supplierService.findSuppliersByName(companyName);
 
         return Response.ok(suppliers).build();

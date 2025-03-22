@@ -11,7 +11,7 @@ public class InvoiceItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "codigo_nota_fiscal", nullable = false)
+    @JoinColumn(name = "nota_fiscal_id", nullable = false)
     private Invoice invoice;
 
     @ManyToOne
@@ -21,7 +21,7 @@ public class InvoiceItem {
     @Column(name = "valor_unitario", nullable = false)
     private Double unitValue;
 
-    @Column(nullable = false)
+    @Column(name = "quantidade", nullable = false)
     private Integer quantity;
 
 

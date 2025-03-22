@@ -12,9 +12,10 @@ public class Product {
     @Column(name = "codigo_produto")
     private Long id;
 
+    @Column(name = "descricao")
     private String description;
 
-    @Column(nullable = false)
+    @Column(name = "situacao", nullable = false)
     @Enumerated(EnumType.STRING)
     private ProductStatus productStatus;
 

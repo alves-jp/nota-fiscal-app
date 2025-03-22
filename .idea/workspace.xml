@@ -5,49 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b94e760-b86e-4f3d-a0d4-0290e1b65c4b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.dockerignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.dockerignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.mvn/wrapper/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/MavenWrapperDownloader.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/backend/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/backend/mvnw.cmd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/docker/Dockerfile.jvm" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/docker/Dockerfile.jvm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/docker/Dockerfile.legacy-jar" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/docker/Dockerfile.legacy-jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/docker/Dockerfile.native" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/docker/Dockerfile.native" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/docker/Dockerfile.native-micro" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/docker/Dockerfile.native-micro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/GreetingResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/GreetingResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/controller/InvoiceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/controller/InvoiceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/controller/InvoiceItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/controller/InvoiceItemController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/controller/SupplierController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/controller/SupplierController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/dto/InvoiceDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/dto/InvoiceDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/dto/InvoiceItemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/dto/InvoiceItemDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/dto/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/dto/ProductDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/dto/SupplierDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/dto/SupplierDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/model/Invoice.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/model/Invoice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/model/InvoiceItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/model/InvoiceItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/model/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/model/Supplier.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/model/Supplier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/model/enums/CompanyStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/model/enums/CompanyStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/model/enums/ProductStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/model/enums/ProductStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/repository/InvoiceItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/repository/InvoiceItemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/repository/InvoiceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/repository/InvoiceRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/repository/ProductRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/repository/SupplierRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/repository/SupplierRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/service/InvoiceItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/service/InvoiceItemService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/service/InvoiceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/service/InvoiceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/service/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/service/SupplierService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/service/SupplierService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/service/impl/InvoiceItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/service/impl/InvoiceItemServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/service/impl/InvoiceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/service/impl/InvoiceServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/service/impl/ProductServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/br/inf/ids/service/impl/SupplierServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/br/inf/ids/service/impl/SupplierServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/br/inf/ids/GreetingResourceIT.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/br/inf/ids/GreetingResourceIT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/br/inf/ids/GreetingResourceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/br/inf/ids/GreetingResourceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,16 +35,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/T-GAMER/Documents/Projetos/ids-nota-fiscal/backend",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/T-GAMER/Documents/Projetos/ids-nota-fiscal/backend&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="br.inf.ids.model" />
@@ -100,6 +58,19 @@
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="br.inf.ids.model.enums" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="ids-nota-fiscal" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="ids-nota-fiscal" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

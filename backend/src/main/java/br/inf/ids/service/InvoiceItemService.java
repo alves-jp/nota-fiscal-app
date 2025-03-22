@@ -13,9 +13,9 @@ public interface InvoiceItemService {
 
     List<InvoiceItem> findAllInvoiceItems();
 
-    List<InvoiceItem> findInvoiceItemsByInvoiceId(Long invoiceId);
+    List<InvoiceItem> findInvoiceItemByInvoiceId(Long invoiceId);
 
-    List<InvoiceItem> findInvoiceItemsByProductId(Long productId);
+    List<InvoiceItem> findInvoiceItemByProductId(Long productId);
 
     InvoiceItem updateInvoiceItem(Long id, InvoiceItem invoiceItem);
 
