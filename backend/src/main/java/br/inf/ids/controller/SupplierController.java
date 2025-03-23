@@ -23,7 +23,7 @@ public class SupplierController {
     public Response createSupplier(SupplierDTO supplierDTO) {
         if (supplierDTO.getCompanyName() == null || supplierDTO.getCompanyName().isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("A razão social da empresa é obrigatória.")
+                    .entity("A razão social do fornecedor é obrigatória.")
                     .build();
 
         } if (supplierDTO.getCnpj() == null || supplierDTO.getCnpj().isBlank()) {
@@ -55,9 +55,14 @@ public class SupplierController {
 
             return Response.status(Response.Status.CREATED).entity(supplier).build();
 
+        } catch (BusinessException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
+
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao criar o fornecedor.")
+                    .entity("Erro ao criar novo fornecedor.")
                     .build();
         }
     }
@@ -84,7 +89,7 @@ public class SupplierController {
     public Response getSupplierByName(@QueryParam("companyName") String companyName) {
         if (companyName == null || companyName.isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("A razão social da empresa é obrigatória para a busca.")
+                    .entity("A razão social do fornecedor é obrigatória para a busca.")
                     .build();
 
         }
@@ -103,7 +108,7 @@ public class SupplierController {
 
         } if (supplierDTO.getCnpj() == null || supplierDTO.getCnpj().isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O CNPJ é obrigatório.")
+                    .entity("O CNPJ do fornecedor é obrigatório.")
                     .build();
 
         } if (supplierDTO.getCompanyStatus() == null) {
@@ -135,6 +140,11 @@ public class SupplierController {
 
             }
             return Response.ok(updatedSupplier).build();
+
+        } catch (BusinessException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

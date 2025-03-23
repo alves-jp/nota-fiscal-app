@@ -26,7 +26,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Transactional
     public Supplier createSupplier(Supplier supplier) {
         if (supplierRepository.findByCnpj(supplier.getCnpj()) != null) {
-            throw new IllegalArgumentException("Erro: Já existe um fornecedor com o CNPJ informado.");
+            throw new BusinessException("Erro: Já existe um fornecedor com o CNPJ informado.");
 
         }
         supplierRepository.persist(supplier);

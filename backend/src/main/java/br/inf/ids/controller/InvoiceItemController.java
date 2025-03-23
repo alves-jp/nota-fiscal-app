@@ -69,7 +69,7 @@ public class InvoiceItemController {
 
             if (invoiceItems.isEmpty()) {
                 return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Nenhum item encontrado na fatura.")
+                        .entity("Nenhum item encontrado.")
                         .build();
 
             }
@@ -89,7 +89,7 @@ public class InvoiceItemController {
 
         if (invoiceItems.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Nenhum item encontrado para a fatura com ID " + invoiceId)
+                    .entity("Nenhum item encontrado na nota fiscal de ID " + invoiceId)
                     .build();
 
         }
@@ -103,7 +103,7 @@ public class InvoiceItemController {
 
         if (invoiceItems.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Nenhum item encontrado para o produto com ID " + productId)
+                    .entity("Nenhum item encontrado que possua o produto de ID " + productId)
                     .build();
 
         }
@@ -141,7 +141,7 @@ public class InvoiceItemController {
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Ocorreu um erro ao atualizar o item da fatura.")
+                    .entity("Ocorreu um erro ao atualizar o item.")
                     .build();
         }
     }
@@ -164,7 +164,7 @@ public class InvoiceItemController {
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Ocorreu um erro ao excluir o item da fatura.")
+                    .entity("Ocorreu um erro ao excluir o item.")
                     .build();
         }
     }
