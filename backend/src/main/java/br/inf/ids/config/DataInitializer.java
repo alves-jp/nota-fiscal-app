@@ -12,7 +12,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class DataInitializer {
@@ -28,7 +31,6 @@ public class DataInitializer {
 
     @Inject
     InvoiceItemRepository invoiceItemRepository;
-
 
     @Transactional
     public void onStart(@Observes StartupEvent ev) {
@@ -53,24 +55,23 @@ public class DataInitializer {
 
 
             Product product1 = new Product();
-            product1.setProductCode("PROD-000001");
+            product1.setProductCode("PROD-10000");
             product1.setDescription("Notebook Dell Inspiron");
             product1.setProductStatus(ProductStatus.ACTIVE);
             productRepository.persist(product1);
 
             Product product2 = new Product();
-            product2.setProductCode("PROD-000002");
+            product2.setProductCode("PROD-20000");
             product2.setDescription("Monitor LG 24 Polegadas");
             product2.setProductStatus(ProductStatus.ACTIVE);
             productRepository.persist(product2);
 
 
             Invoice invoice1 = new Invoice();
-            invoice1.setInvoiceNumber("123456");
+            invoice1.setInvoiceNumber("NF-123.456");
             invoice1.setIssueDate(LocalDateTime.now());
             invoice1.setSupplier(supplier1);
             invoice1.setAddress("Av. Brasil, 123");
-            invoice1.setTotalValue(1500.00);
             invoiceRepository.persist(invoice1);
 
 
@@ -80,6 +81,13 @@ public class DataInitializer {
             item1.setUnitValue(500.00);
             item1.setQuantity(3);
             invoiceItemRepository.persist(item1);
+
+
+            List<InvoiceItem> items = new ArrayList<>();
+            items.add(item1);
+            invoice1.setItems(items);
+
+            invoiceRepository.persist(invoice1);
 
             System.out.println("Dados iniciais cadastrados com sucesso!");
         }

@@ -18,4 +18,6 @@ public interface InvoiceService {
     Invoice updateInvoice(Long id, Invoice invoice);
 
     void deleteInvoice(Long id);
+
+    Double calculateTotalValue(Invoice invoice);
 }

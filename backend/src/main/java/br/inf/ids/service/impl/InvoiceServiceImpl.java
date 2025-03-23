@@ -1,7 +1,5 @@
 package br.inf.ids.service.impl;
 
-import br.inf.ids.dto.InvoiceDTO;
-import br.inf.ids.exception.InvalidDataException;
 import br.inf.ids.model.Invoice;
 import br.inf.ids.repository.InvoiceRepository;
 import br.inf.ids.service.InvoiceService;
@@ -17,10 +15,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Inject
     InvoiceRepository invoiceRepository;
 
-
     @Override
     @Transactional
     public Invoice createInvoice(Invoice invoice) {
+        if (invoice.getItems() != null) {
+            double totalValue = invoice.getItems().stream()
+                    .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
+                    .sum();
+        }
         invoiceRepository.persist(invoice);
 
         return invoice;
@@ -51,8 +53,14 @@ public class InvoiceServiceImpl implements InvoiceService {
             existingInvoice.setIssueDate(invoice.getIssueDate());
             existingInvoice.setSupplier(invoice.getSupplier());
             existingInvoice.setAddress(invoice.getAddress());
-            existingInvoice.setTotalValue(invoice.getTotalValue());
 
+            if (invoice.getItems() != null) {
+                existingInvoice.setItems(invoice.getItems());
+
+                double totalValue = invoice.getItems().stream()
+                        .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
+                        .sum();
+            }
         }
         return existingInvoice;
     }
@@ -65,5 +73,16 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (invoice != null) {
             invoiceRepository.delete(invoice);
         }
+    }
+
+    @Override
+    public Double calculateTotalValue(Invoice invoice) {
+        if (invoice.getItems() == null || invoice.getItems().isEmpty()) {
+            return 0.0;
+
+        }
+        return invoice.getItems().stream()
+                .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
+                .sum();
     }
 }

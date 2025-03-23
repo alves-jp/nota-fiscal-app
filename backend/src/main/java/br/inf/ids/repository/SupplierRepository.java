@@ -13,10 +13,6 @@ public class SupplierRepository implements PanacheRepository<Supplier> {
         return list("LOWER(companyName) LIKE LOWER(?1)", "%" + companyName + "%");
     }
 
-    public List<Supplier> findByCompanyStatus(CompanyStatus companyStatus) {
-        return list("companyStatus", companyStatus);
-    }
-
     public Supplier findByCnpj(String cnpj) {
         return find("cnpj", cnpj).firstResult();
     }

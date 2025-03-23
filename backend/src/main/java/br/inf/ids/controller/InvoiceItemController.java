@@ -1,7 +1,11 @@
 package br.inf.ids.controller;
 
 import br.inf.ids.dto.InvoiceItemDTO;
+import br.inf.ids.model.Invoice;
 import br.inf.ids.model.InvoiceItem;
+import br.inf.ids.model.Product;
+import br.inf.ids.repository.InvoiceRepository;
+import br.inf.ids.repository.ProductRepository;
 import br.inf.ids.service.InvoiceItemService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -18,21 +22,45 @@ public class InvoiceItemController {
     @Inject
     InvoiceItemService invoiceItemService;
 
+    @Inject
+    InvoiceRepository invoiceRepository;
+
+    @Inject
+    ProductRepository productRepository;
+
     @POST
     public Response createInvoiceItem(InvoiceItemDTO invoiceItemDTO) {
-        if (invoiceItemDTO.getUnitValue() == null || invoiceItemDTO.getUnitValue() <= 0) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O valor unitário deve ser maior que 0,00.")
-                    .build();
+        try {
+            Invoice invoice = invoiceRepository.findById(invoiceItemDTO.getInvoiceId());
 
-        } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("A quantidade deve ser maior que zero.")
-                    .build();
+            if (invoice == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Nota fiscal com ID " + invoiceItemDTO.getInvoiceId() + " não encontrada.")
+                        .build();
 
-        } try {
+            }
+            Product product = productRepository.findById(invoiceItemDTO.getProductId());
+
+            if (product == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Produto com ID " + invoiceItemDTO.getProductId() + " não encontrado.")
+                        .build();
+
+            } if (invoiceItemDTO.getUnitValue() == null || invoiceItemDTO.getUnitValue() <= 0) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("O valor unitário deve ser maior que 0,00.")
+                        .build();
+
+            } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("A quantidade de produtos deve ser maior que zero.")
+                        .build();
+
+            }
             InvoiceItem invoiceItem = new InvoiceItem();
 
+            invoiceItem.setInvoice(invoice);
+            invoiceItem.setProduct(product);
             invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
             invoiceItem.setQuantity(invoiceItemDTO.getQuantity());
 
@@ -71,7 +99,6 @@ public class InvoiceItemController {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("Nenhum item encontrado.")
                         .build();
-
             }
             return Response.ok(invoiceItems).build();
 
@@ -91,7 +118,6 @@ public class InvoiceItemController {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("Nenhum item encontrado na nota fiscal de ID " + invoiceId)
                     .build();
-
         }
         return Response.ok(invoiceItems).build();
     }
@@ -105,7 +131,6 @@ public class InvoiceItemController {
             return Response.status(Response.Status.NOT_FOUND)
                     .entity("Nenhum item encontrado que possua o produto de ID " + productId)
                     .build();
-
         }
         return Response.ok(invoiceItems).build();
     }
@@ -120,7 +145,7 @@ public class InvoiceItemController {
 
         } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("A quantidade deve ser maior que zero.")
+                    .entity("A quantidade de produtos deve ser maior que zero.")
                     .build();
 
         } try {
@@ -135,7 +160,6 @@ public class InvoiceItemController {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("Item não encontrado.")
                         .build();
-
             }
             return Response.ok(updatedInvoiceItem).build();
 
@@ -156,7 +180,6 @@ public class InvoiceItemController {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("Item não encontrado.")
                         .build();
-
             }
             invoiceItemService.deleteInvoiceItem(id);
 

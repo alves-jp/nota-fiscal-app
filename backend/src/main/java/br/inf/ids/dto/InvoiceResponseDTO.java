@@ -1,35 +1,19 @@
-package br.inf.ids.model;
+package br.inf.ids.dto;
 
-import jakarta.persistence.*;
+import br.inf.ids.model.InvoiceItem;
+import br.inf.ids.model.Supplier;
 import java.time.LocalDateTime;
-import jakarta.json.bind.annotation.JsonbTransient;
-import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "notas_fiscais")
-public class Invoice {
+public class InvoiceResponseDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "numero_nf", nullable = false, unique = true)
     private String invoiceNumber;
-
-    @Column(name = "data_emissao", nullable = false)
     private LocalDateTime issueDate;
-
-    @ManyToOne
-    @JoinColumn(name = "fornecedor", nullable = false)
     private Supplier supplier;
-
-    @Column(name = "endereco", nullable = false)
     private String address;
-
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<InvoiceItem> items = new ArrayList<>();
-
+    private List<InvoiceItem> items;
+    private Double totalValue;
 
     public Long getId() {
         return id;
@@ -77,5 +61,13 @@ public class Invoice {
 
     public void setItems(List<InvoiceItem> items) {
         this.items = items;
+    }
+
+    public Double getTotalValue() {
+        return totalValue;
+    }
+
+    public void setTotalValue(Double totalValue) {
+        this.totalValue = totalValue;
     }
 }

@@ -12,10 +12,6 @@ import static java.util.Collections.list;
 @ApplicationScoped
 public class ProductRepository implements PanacheRepository<Product> {
 
-    public List<Product> findByProductStatus(ProductStatus productStatus) {
-        return list("productStatus", productStatus);
-    }
-
     public List<Product> findByCode(String productCode) {
         return list("LOWER(productCode) LIKE LOWER(?1)", "%" + productCode + "%");
     }

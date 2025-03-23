@@ -3,7 +3,6 @@ package br.inf.ids.service.impl;
 import br.inf.ids.exception.BusinessException;
 import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Product;
-import br.inf.ids.model.enums.ProductStatus;
 import br.inf.ids.repository.ProductRepository;
 import br.inf.ids.service.ProductService;
 import jakarta.enterprise.context.ApplicationScoped;

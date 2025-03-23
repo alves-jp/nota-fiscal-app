@@ -1,7 +1,10 @@
 package br.inf.ids.controller;
 
 import br.inf.ids.dto.InvoiceDTO;
+import br.inf.ids.dto.InvoiceResponseDTO;
 import br.inf.ids.model.Invoice;
+import br.inf.ids.model.Supplier;
+import br.inf.ids.repository.SupplierRepository;
 import br.inf.ids.service.InvoiceService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -17,30 +20,26 @@ public class InvoiceController {
     @Inject
     InvoiceService invoiceService;
 
+    @Inject
+    SupplierRepository supplierRepository;
+
     @POST
     public Response createInvoice(InvoiceDTO invoiceDTO) {
-        if (invoiceDTO.getInvoiceNumber() == null || invoiceDTO.getInvoiceNumber().isBlank()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O número da nota fiscal é obrigatório.")
-                    .build();
+        try {
+            Supplier supplier = supplierRepository.findById(invoiceDTO.getSupplierId());
 
-        } if (invoiceDTO.getIssueDate() == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("A data de emissão é obrigatória.")
-                    .build();
+            if (supplier == null) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Fornecedor com ID " + invoiceDTO.getSupplierId() + " não encontrado.")
+                        .build();
 
-        } if (invoiceDTO.getTotalValue() == null || invoiceDTO.getTotalValue() <= 0) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O valor total da nota fiscal deve ser maior que 0,00.")
-                    .build();
-
-        } try {
+            }
             Invoice invoice = new Invoice();
 
             invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
             invoice.setIssueDate(invoiceDTO.getIssueDate());
             invoice.setAddress(invoiceDTO.getAddress());
-            invoice.setTotalValue(invoiceDTO.getTotalValue());
+            invoice.setSupplier(supplier);
 
             invoiceService.createInvoice(invoice);
 
@@ -57,7 +56,23 @@ public class InvoiceController {
     @Path("/{id}")
     public Response getInvoiceById(@PathParam("id") Long id) {
         return invoiceService.findInvoiceById(id)
-                .map(invoice -> Response.ok(invoice).build())
+                .map(invoice -> {
+                    double totalValue = invoice.getItems().stream()
+                            .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
+                            .sum();
+
+                    InvoiceResponseDTO responseDTO = new InvoiceResponseDTO();
+
+                    responseDTO.setId(invoice.getId());
+                    responseDTO.setInvoiceNumber(invoice.getInvoiceNumber());
+                    responseDTO.setIssueDate(invoice.getIssueDate());
+                    responseDTO.setSupplier(invoice.getSupplier());
+                    responseDTO.setAddress(invoice.getAddress());
+                    responseDTO.setItems(invoice.getItems());
+                    responseDTO.setTotalValue(totalValue);
+
+                    return Response.ok(responseDTO).build();
+                })
                 .orElse(Response.status(Response.Status.NOT_FOUND)
                         .entity("Nota fiscal não encontrada.")
                         .build());
@@ -67,7 +82,27 @@ public class InvoiceController {
     public Response getAllInvoices() {
         List<Invoice> invoices = invoiceService.findAllInvoices();
 
-        return Response.ok(invoices).build();
+        List<InvoiceResponseDTO> responseDTOs = invoices.stream()
+                .map(invoice -> {
+                    double totalValue = invoice.getItems().stream()
+                            .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
+                            .sum();
+
+                    InvoiceResponseDTO responseDTO = new InvoiceResponseDTO();
+
+                    responseDTO.setId(invoice.getId());
+                    responseDTO.setInvoiceNumber(invoice.getInvoiceNumber());
+                    responseDTO.setIssueDate(invoice.getIssueDate());
+                    responseDTO.setSupplier(invoice.getSupplier());
+                    responseDTO.setAddress(invoice.getAddress());
+                    responseDTO.setItems(invoice.getItems());
+                    responseDTO.setTotalValue(totalValue);
+
+                    return responseDTO;
+                })
+                .toList();
+
+        return Response.ok(responseDTOs).build();
     }
 
     @GET
@@ -97,18 +132,12 @@ public class InvoiceController {
                     .entity("A data de emissão é obrigatória.")
                     .build();
 
-        } if (invoiceDTO.getTotalValue() == null || invoiceDTO.getTotalValue() <= 0) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O valor total da nota fiscal deve ser maior que 0,00.")
-                    .build();
-
         } try {
             Invoice invoice = new Invoice();
 
             invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
             invoice.setIssueDate(invoiceDTO.getIssueDate());
             invoice.setAddress(invoiceDTO.getAddress());
-            invoice.setTotalValue(invoiceDTO.getTotalValue());
 
             Invoice updatedInvoice = invoiceService.updateInvoice(id, invoice);
 
@@ -116,7 +145,6 @@ public class InvoiceController {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity("Nota fiscal não encontrada.")
                         .build();
-
             }
             return Response.ok(updatedInvoice).build();
 

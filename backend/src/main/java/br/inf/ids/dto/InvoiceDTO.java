@@ -9,15 +9,13 @@ public class InvoiceDTO {
     private LocalDateTime issueDate;
     private Long supplierId;
     private String address;
-    private Double totalValue;
 
-    public InvoiceDTO(Long id, String invoiceNumber, LocalDateTime issueDate, Long supplierId, String address, Double totalValue) {
+    public InvoiceDTO(Long id, String invoiceNumber, LocalDateTime issueDate, Long supplierId, String address) {
         this.id = id;
         this.invoiceNumber = invoiceNumber;
         this.issueDate = issueDate;
         this.supplierId = supplierId;
         this.address = address;
-        this.totalValue = totalValue;
     }
 
     public InvoiceDTO() {
@@ -25,6 +23,10 @@ public class InvoiceDTO {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getInvoiceNumber() {
@@ -57,13 +59,5 @@ public class InvoiceDTO {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public Double getTotalValue() {
-        return totalValue;
-    }
-
-    public void setTotalValue(Double totalValue) {
-        this.totalValue = totalValue;
     }
 }

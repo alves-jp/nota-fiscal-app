@@ -3,7 +3,6 @@ package br.inf.ids.service.impl;
 import br.inf.ids.exception.BusinessException;
 import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Supplier;
-import br.inf.ids.model.enums.CompanyStatus;
 import br.inf.ids.repository.InvoiceRepository;
 import br.inf.ids.repository.SupplierRepository;
 import br.inf.ids.service.SupplierService;
@@ -82,7 +81,6 @@ public class SupplierServiceImpl implements SupplierService {
 
             if (hasMovements) {
                 throw new BusinessException("Erro: Não é possível excluir um fornecedor com movimentação.");
-
             }
             supplierRepository.delete(supplier);
 
