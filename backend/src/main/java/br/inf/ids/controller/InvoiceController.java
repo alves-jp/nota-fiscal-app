@@ -31,7 +31,7 @@ public class InvoiceController {
 
         } if (invoiceDTO.getTotalValue() == null || invoiceDTO.getTotalValue() <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O valor total deve ser positivo.")
+                    .entity("O valor total deve ser maior que 0,00.")
                     .build();
 
         } try {
@@ -99,7 +99,7 @@ public class InvoiceController {
 
         } if (invoiceDTO.getTotalValue() == null || invoiceDTO.getTotalValue() <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O valor total deve ser positivo.")
+                    .entity("O valor total deve ser maior que 0,00.")
                     .build();
 
         } try {

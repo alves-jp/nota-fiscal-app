@@ -1,6 +1,8 @@
 package br.inf.ids.controller;
 
 import br.inf.ids.dto.ProductDTO;
+import br.inf.ids.exception.BusinessException;
+import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Product;
 import br.inf.ids.service.ProductService;
 import jakarta.inject.Inject;
@@ -29,9 +31,15 @@ public class ProductController {
                     .entity("O status do produto é obrigatório.")
                     .build();
 
+        } if (productDTO.getProductCode() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O código do produto é obrigatório.")
+                    .build();
+
         } try {
             Product product = new Product();
 
+            product.setProductCode(productDTO.getProductCode());
             product.setDescription(productDTO.getDescription());
             product.setProductStatus(productDTO.getProductStatus());
 
@@ -65,14 +73,14 @@ public class ProductController {
 
     @GET
     @Path("/buscar")
-    public Response getProductByDescription(@QueryParam("description") String description) {
-        if (description == null || description.isBlank()) {
+    public Response getProductByCode(@QueryParam("productCode") String productCode) {
+        if (productCode == null || productCode.isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("A descrição do produto é obrigatória para a busca.")
+                    .entity("O código do produto é obrigatório para a busca.")
                     .build();
 
         }
-        List<Product> products = productService.findProductByDescription(description);
+        List<Product> products = productService.findProductByCode(productCode);
 
         return Response.ok(products).build();
     }
@@ -90,9 +98,15 @@ public class ProductController {
                     .entity("O status do produto é obrigatório.")
                     .build();
 
+        } if (productDTO.getProductCode() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O código do produto é obrigatório.")
+                    .build();
+
         } try {
             Product product = new Product();
 
+            product.setProductCode(productDTO.getProductCode());
             product.setDescription(productDTO.getDescription());
             product.setProductStatus(productDTO.getProductStatus());
 
@@ -117,15 +131,19 @@ public class ProductController {
     @Path("/{id}")
     public Response deleteProduct(@PathParam("id") Long id) {
         try {
-            if (productService.findProductById(id).isEmpty()) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Produto não encontrado.")
-                        .build();
-
-            }
             productService.deleteProduct(id);
 
             return Response.noContent().build();
+
+        } catch (BusinessException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
+
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(e.getMessage())
+                    .build();
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

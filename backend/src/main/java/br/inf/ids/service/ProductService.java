@@ -13,7 +13,7 @@ public interface ProductService {
 
     List<Product> findAllProducts();
 
-    List<Product> findProductByDescription(String description);
+    List<Product> findProductByCode(String productCode);
 
     Product updateProduct(Long id, Product product);
 

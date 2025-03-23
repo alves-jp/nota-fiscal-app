@@ -34,6 +34,7 @@ public class DataInitializer {
     public void onStart(@Observes StartupEvent ev) {
         if (supplierRepository.count() == 0 && productRepository.count() == 0) {
             Supplier supplier1 = new Supplier();
+            supplier1.setSupplierCode("F-2025-00001");
             supplier1.setCompanyName("Fornecedor ABC");
             supplier1.setsupplierEmail("fornecedor.abc@mail.com");
             supplier1.setsupplierPhone("11999999999");
@@ -42,6 +43,7 @@ public class DataInitializer {
             supplierRepository.persist(supplier1);
 
             Supplier supplier2 = new Supplier();
+            supplier2.setSupplierCode("F-2025-00002");
             supplier2.setCompanyName("123 Empreitadas");
             supplier2.setsupplierEmail("123empreitadas@mail.com");
             supplier2.setsupplierPhone("21988888888");
@@ -51,11 +53,13 @@ public class DataInitializer {
 
 
             Product product1 = new Product();
+            product1.setProductCode("PROD-000001");
             product1.setDescription("Notebook Dell Inspiron");
             product1.setProductStatus(ProductStatus.ACTIVE);
             productRepository.persist(product1);
 
             Product product2 = new Product();
+            product2.setProductCode("PROD-000002");
             product2.setDescription("Monitor LG 24 Polegadas");
             product2.setProductStatus(ProductStatus.ACTIVE);
             productRepository.persist(product2);
@@ -65,7 +69,7 @@ public class DataInitializer {
             invoice1.setInvoiceNumber("123456");
             invoice1.setIssueDate(LocalDateTime.now());
             invoice1.setSupplier(supplier1);
-            invoice1.setAddress("Rua das Flores, 123");
+            invoice1.setAddress("Av. Brasil, 123");
             invoice1.setTotalValue(1500.00);
             invoiceRepository.persist(invoice1);
 

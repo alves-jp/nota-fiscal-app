@@ -9,8 +9,10 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codigo_produto")
     private Long id;
+
+    @Column(name = "codigo", unique = true, nullable = false)
+    private String productCode;
 
     @Column(name = "descricao")
     private String description;
@@ -20,7 +22,8 @@ public class Product {
     private ProductStatus productStatus;
 
 
-    public Product(String description, ProductStatus productStatus) {
+    public Product(String productCode, String description, ProductStatus productStatus) {
+        this.productCode = productCode;
         this.description = description;
         this.productStatus = productStatus;
     }
@@ -30,6 +33,14 @@ public class Product {
 
     public Long getId() {
         return id;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public String getDescription() {

@@ -5,11 +5,13 @@ import br.inf.ids.model.enums.ProductStatus;
 public class ProductDTO {
 
     private Long id;
+    private String productCode;
     private String description;
     private ProductStatus productStatus;
 
-    public ProductDTO(Long id, String description, ProductStatus productStatus) {
+    public ProductDTO(Long id, String productCode, String description, ProductStatus productStatus) {
         this.id = id;
+        this.productCode = productCode;
         this.description = description;
         this.productStatus = productStatus;
     }
@@ -19,6 +21,14 @@ public class ProductDTO {
 
     public Long getId() {
         return id;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
     }
 
     public String getDescription() {

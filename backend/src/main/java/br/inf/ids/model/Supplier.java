@@ -10,8 +10,10 @@ public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "codigo_fornecedor")
     private Long id;
+
+    @Column(name = "codigo", unique = true, nullable = false)
+    private String supplierCode;
 
     @Column(name = "razao_social", nullable = false)
     private String companyName;
@@ -33,8 +35,9 @@ public class Supplier {
     private LocalDate companyDeactivationDate;
 
 
-    public Supplier(String companyName, String supplierEmail, String supplierPhone,
+    public Supplier(String supplierCode, String companyName, String supplierEmail, String supplierPhone,
                     String cnpj, CompanyStatus companyStatus, LocalDate companyDeactivationDate) {
+        this.supplierCode = supplierCode;
         this.companyName = companyName;
         this.supplierEmail = supplierEmail;
         this.supplierPhone = supplierPhone;
@@ -48,6 +51,14 @@ public class Supplier {
 
     public Long getId() {
         return id;
+    }
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
     }
 
     public String getCompanyName() {

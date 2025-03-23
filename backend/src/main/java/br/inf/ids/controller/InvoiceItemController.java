@@ -22,7 +22,7 @@ public class InvoiceItemController {
     public Response createInvoiceItem(InvoiceItemDTO invoiceItemDTO) {
         if (invoiceItemDTO.getUnitValue() == null || invoiceItemDTO.getUnitValue() <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O valor unitário deve ser positivo.")
+                    .entity("O valor unitário deve ser maior que 0,00.")
                     .build();
 
         } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
@@ -42,7 +42,7 @@ public class InvoiceItemController {
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Ocorreu um erro ao criar o item de fatura.")
+                    .entity("Ocorreu um erro ao criar o item.")
                     .build();
         }
     }
@@ -57,7 +57,7 @@ public class InvoiceItemController {
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Ocorreu um erro ao buscar o item de fatura.")
+                    .entity("Ocorreu um erro ao buscar o item.")
                     .build();
         }
     }
@@ -69,7 +69,7 @@ public class InvoiceItemController {
 
             if (invoiceItems.isEmpty()) {
                 return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Nenhum item de fatura encontrado.")
+                        .entity("Nenhum item encontrado na fatura.")
                         .build();
 
             }
@@ -77,7 +77,7 @@ public class InvoiceItemController {
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Ocorreu um erro ao buscar os itens de fatura.")
+                    .entity("Ocorreu um erro ao buscar os itens.")
                     .build();
         }
     }
@@ -89,7 +89,7 @@ public class InvoiceItemController {
 
         if (invoiceItems.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Nenhum item de fatura encontrado para a fatura com ID " + invoiceId)
+                    .entity("Nenhum item encontrado para a fatura com ID " + invoiceId)
                     .build();
 
         }
@@ -103,7 +103,7 @@ public class InvoiceItemController {
 
         if (invoiceItems.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Nenhum item de fatura encontrado para o produto com ID " + productId)
+                    .entity("Nenhum item encontrado para o produto com ID " + productId)
                     .build();
 
         }
@@ -115,7 +115,7 @@ public class InvoiceItemController {
     public Response updateInvoiceItem(@PathParam("id") Long id, InvoiceItemDTO invoiceItemDTO) {
         if (invoiceItemDTO.getUnitValue() == null || invoiceItemDTO.getUnitValue() <= 0) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O valor unitário deve ser positivo.")
+                    .entity("O valor unitário deve ser maior que 0,00.")
                     .build();
 
         } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
@@ -133,7 +133,7 @@ public class InvoiceItemController {
 
             if (updatedInvoiceItem == null) {
                 return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Item da fatura não encontrado.")
+                        .entity("Item não encontrado.")
                         .build();
 
             }
@@ -154,7 +154,7 @@ public class InvoiceItemController {
 
             if (invoiceItem.isEmpty()) {
                 return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Item da fatura não encontrado.")
+                        .entity("Item não encontrado.")
                         .build();
 
             }

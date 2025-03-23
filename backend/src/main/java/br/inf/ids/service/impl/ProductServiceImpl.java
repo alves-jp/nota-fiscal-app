@@ -38,8 +38,8 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public List<Product> findProductByDescription(String description) {
-        return productRepository.findByDescription(description);
+    public List<Product> findProductByCode(String productCode) {
+        return productRepository.findByCode(productCode);
     }
 
     @Override
@@ -48,6 +48,7 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct = productRepository.findById(id);
 
         if (existingProduct != null) {
+            existingProduct.setProductCode(product.getProductCode());
             existingProduct.setDescription(product.getDescription());
             existingProduct.setProductStatus(product.getProductStatus());
 

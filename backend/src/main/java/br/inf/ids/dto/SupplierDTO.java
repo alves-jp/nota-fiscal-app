@@ -6,6 +6,7 @@ import java.time.LocalDate;
 public class SupplierDTO {
 
     private Long id;
+    private String supplierCode;
     private String companyName;
     private String supplierEmail;
     private String supplierPhone;
@@ -13,8 +14,9 @@ public class SupplierDTO {
     private CompanyStatus companyStatus;
     private LocalDate companyDeactivationDate;
     
-    public SupplierDTO(Long id, String companyName, String supplierEmail, String supplierPhone, String cnpj, CompanyStatus companyStatus, LocalDate companyDeactivationDate) {
+    public SupplierDTO(Long id, String supplierCode, String companyName, String supplierEmail, String supplierPhone, String cnpj, CompanyStatus companyStatus, LocalDate companyDeactivationDate) {
         this.id = id;
+        this.supplierCode = supplierCode;
         this.companyName = companyName;
         this.supplierEmail = supplierEmail;
         this.supplierPhone = supplierPhone;
@@ -28,6 +30,14 @@ public class SupplierDTO {
 
     public Long getId() {
         return id;
+    }
+
+    public String getSupplierCode() {
+        return supplierCode;
+    }
+
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
     }
 
     public String getCompanyName() {

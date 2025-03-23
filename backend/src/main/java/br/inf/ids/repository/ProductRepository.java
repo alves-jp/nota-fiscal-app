@@ -16,8 +16,8 @@ public class ProductRepository implements PanacheRepository<Product> {
         return list("productStatus", productStatus);
     }
 
-    public List<Product> findByDescription(String description) {
-        return list("LOWER(description) LIKE LOWER(?1)", "%" + description + "%");
+    public List<Product> findByCode(String productCode) {
+        return list("LOWER(productCode) LIKE LOWER(?1)", "%" + productCode + "%");
     }
 
     public boolean hasInvoiceItems(Long productId) {

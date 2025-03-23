@@ -1,6 +1,8 @@
 package br.inf.ids.controller;
 
 import br.inf.ids.dto.SupplierDTO;
+import br.inf.ids.exception.BusinessException;
+import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Supplier;
 import br.inf.ids.service.SupplierService;
 import jakarta.inject.Inject;
@@ -21,7 +23,7 @@ public class SupplierController {
     public Response createSupplier(SupplierDTO supplierDTO) {
         if (supplierDTO.getCompanyName() == null || supplierDTO.getCompanyName().isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O nome da empresa é obrigatório.")
+                    .entity("A razão social da empresa é obrigatória.")
                     .build();
 
         } if (supplierDTO.getCnpj() == null || supplierDTO.getCnpj().isBlank()) {
@@ -34,9 +36,15 @@ public class SupplierController {
                     .entity("O status da empresa é obrigatório.")
                     .build();
 
+        } if (supplierDTO.getSupplierCode() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O código do fornecedor é obrigatório.")
+                    .build();
+
         } try {
             Supplier supplier = new Supplier();
 
+            supplier.setSupplierCode(supplierDTO.getSupplierCode());
             supplier.setCompanyName(supplierDTO.getCompanyName());
             supplier.setsupplierEmail(supplierDTO.getsupplierEmail());
             supplier.setsupplierPhone(supplierDTO.getsupplierPhone());
@@ -76,7 +84,7 @@ public class SupplierController {
     public Response getSupplierByName(@QueryParam("companyName") String companyName) {
         if (companyName == null || companyName.isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O nome da empresa é obrigatório para a busca.")
+                    .entity("A razão social da empresa é obrigatória para a busca.")
                     .build();
 
         }
@@ -90,7 +98,7 @@ public class SupplierController {
     public Response updateSupplier(@PathParam("id") Long id, SupplierDTO supplierDTO) {
         if (supplierDTO.getCompanyName() == null || supplierDTO.getCompanyName().isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O nome da empresa é obrigatório.")
+                    .entity("A razão social do fornecedor é obrigatória.")
                     .build();
 
         } if (supplierDTO.getCnpj() == null || supplierDTO.getCnpj().isBlank()) {
@@ -103,9 +111,15 @@ public class SupplierController {
                     .entity("O status da empresa é obrigatório.")
                     .build();
 
+        } if (supplierDTO.getSupplierCode() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("O código do fornecedor é obrigatório.")
+                    .build();
+
         } try {
             Supplier supplier = new Supplier();
 
+            supplier.setSupplierCode(supplierDTO.getSupplierCode());
             supplier.setCompanyName(supplierDTO.getCompanyName());
             supplier.setsupplierEmail(supplierDTO.getsupplierEmail());
             supplier.setsupplierPhone(supplierDTO.getsupplierPhone());
@@ -133,15 +147,19 @@ public class SupplierController {
     @Path("/{id}")
     public Response deleteSupplier(@PathParam("id") Long id) {
         try {
-            if (supplierService.findSupplierById(id).isEmpty()) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Fornecedor não encontrado.")
-                        .build();
-
-            }
             supplierService.deleteSupplier(id);
 
             return Response.noContent().build();
+
+        } catch (BusinessException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
+
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(e.getMessage())
+                    .build();
 
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

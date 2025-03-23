@@ -61,6 +61,7 @@ public class SupplierServiceImpl implements SupplierService {
                 throw new IllegalArgumentException("Erro: Já existe um fornecedor com este CNPJ.");
 
             }
+            existingSupplier.setSupplierCode(supplier.getSupplierCode());
             existingSupplier.setCompanyName(supplier.getCompanyName());
             existingSupplier.setsupplierEmail(supplier.getsupplierEmail());
             existingSupplier.setsupplierPhone(supplier.getsupplierPhone());
@@ -89,5 +90,4 @@ public class SupplierServiceImpl implements SupplierService {
             throw new EntityNotFoundException("Erro: Fornecedor não encontrado.");
         }
     }
-
 }
