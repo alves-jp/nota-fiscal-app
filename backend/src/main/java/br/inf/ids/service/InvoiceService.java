@@ -22,4 +22,6 @@ public interface InvoiceService {
     void deleteInvoice(Long id) throws EntityNotFoundException;
 
     Double calculateTotalValue(Invoice invoice);
+
+    void updateTotalValue(Invoice invoice);
 }

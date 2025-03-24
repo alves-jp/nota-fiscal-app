@@ -16,6 +16,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +64,14 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         invoiceItem.setQuantity(invoiceItemDTO.getQuantity());
 
         invoiceItemRepository.persist(invoiceItem);
+
+        if (invoice.getItems() == null) {
+            invoice.setItems(new ArrayList<>());
+
+        }
+        invoice.getItems().add(invoiceItem);
+        invoiceService.updateTotalValue(invoice);
+
         return invoiceItem;
     }
 
@@ -105,6 +114,9 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         existingInvoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
         existingInvoiceItem.setQuantity(invoiceItemDTO.getQuantity());
 
+        Invoice invoice = existingInvoiceItem.getInvoice();
+        invoiceService.updateTotalValue(invoice);
+
         return existingInvoiceItem;
     }
 
@@ -115,16 +127,11 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
                 .orElseThrow(() -> new EntityNotFoundException("Item não encontrado."));
 
         Invoice invoice = invoiceItem.getInvoice();
-
         invoiceItemRepository.delete(invoiceItem);
 
         if (invoice != null) {
             invoice.getItems().remove(invoiceItem);
-
-            Double totalValue = invoiceService.calculateTotalValue(invoice);
-            invoice.setTotalValue(totalValue);
-
-            invoiceRepository.persist(invoice);
+            invoiceService.updateTotalValue(invoice);
         }
     }
 }

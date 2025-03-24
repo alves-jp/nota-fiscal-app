@@ -74,7 +74,6 @@ public class DataInitializer {
             invoice1.setAddress("Av. Brasil, 123");
             invoiceRepository.persist(invoice1);
 
-
             InvoiceItem item1 = new InvoiceItem();
             item1.setInvoice(invoice1);
             item1.setProduct(product1);
@@ -87,9 +86,12 @@ public class DataInitializer {
             items.add(item1);
             invoice1.setItems(items);
 
-            invoiceRepository.persist(invoice1);
+            Double totalValue = invoice1.getItems().stream()
+                    .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
+                    .sum();
+            invoice1.setTotalValue(totalValue);
 
-            System.out.println("Dados iniciais cadastrados com sucesso!");
+            invoiceRepository.persist(invoice1);
         }
     }
 }

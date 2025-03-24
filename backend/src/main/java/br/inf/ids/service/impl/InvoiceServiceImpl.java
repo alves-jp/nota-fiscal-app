@@ -42,6 +42,14 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setAddress(invoiceDTO.getAddress());
         invoice.setSupplier(supplier);
 
+        if (invoice.getItems() != null && !invoice.getItems().isEmpty()) {
+            Double totalValue = calculateTotalValue(invoice);
+            invoice.setTotalValue(totalValue);
+
+        } else {
+            invoice.setTotalValue(0.0);
+
+        }
         invoiceRepository.persist(invoice);
         return invoice;
     }
@@ -97,8 +105,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     public Double calculateTotalValue(Invoice invoice) {
         if (invoice.getItems() == null || invoice.getItems().isEmpty()) {
             return 0.0;
-
         }
+
         return invoice.getItems().stream()
                 .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
                 .sum();
@@ -125,8 +133,29 @@ public class InvoiceServiceImpl implements InvoiceService {
         responseDTO.setSupplier(invoice.getSupplier());
         responseDTO.setAddress(invoice.getAddress());
         responseDTO.setItems(invoice.getItems());
-        responseDTO.setTotalValue(calculateTotalValue(invoice));
+
+        Double totalValue = calculateTotalValue(invoice);
+        responseDTO.setTotalValue(totalValue);
+
+        invoice.setTotalValue(totalValue);
+        invoiceRepository.persist(invoice);
 
         return responseDTO;
+    }
+
+    @Override
+    @Transactional
+    public void updateTotalValue(Invoice invoice) {
+        if (invoice.getItems() == null || invoice.getItems().isEmpty()) {
+            invoice.setTotalValue(0.0);
+
+        } else {
+            Double totalValue = invoice.getItems().stream()
+                    .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
+                    .sum();
+            invoice.setTotalValue(totalValue);
+
+        }
+        invoiceRepository.persist(invoice);
     }
 }
