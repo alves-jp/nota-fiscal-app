@@ -1,8 +1,6 @@
 package br.inf.ids.controller;
 
 import br.inf.ids.dto.ProductDTO;
-import br.inf.ids.exception.BusinessException;
-import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Product;
 import br.inf.ids.service.ProductService;
 import jakarta.inject.Inject;
@@ -21,109 +19,54 @@ public class ProductController {
 
     @POST
     public Response createProduct(ProductDTO productDTO) {
-        if (productDTO.getDescription() == null || productDTO.getDescription().isBlank()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("A descrição do produto é obrigatória.")
-                    .build();
-
-        } if (productDTO.getProductStatus() == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O status do produto é obrigatório.")
-                    .build();
-
-        } if (productDTO.getProductCode() == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O código do produto é obrigatório.")
-                    .build();
-
-        } try {
-            Product product = new Product();
-
-            product.setProductCode(productDTO.getProductCode());
-            product.setDescription(productDTO.getDescription());
-            product.setProductStatus(productDTO.getProductStatus());
-
-            productService.createProduct(product);
-
+        try {
+            Product product = productService.createProduct(productDTO);
             return Response.status(Response.Status.CREATED).entity(product).build();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao criar o produto.")
-                    .build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
     @GET
     @Path("/{id}")
     public Response getProductById(@PathParam("id") Long id) {
-        return productService.findProductById(id)
-                .map(product -> Response.ok(product).build())
-                .orElse(Response.status(Response.Status.NOT_FOUND)
-                        .entity("Produto não encontrado.")
-                        .build());
+        try {
+            Product product = productService.findProductById(id);
+            return Response.ok(product).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+        }
     }
 
     @GET
     public Response getAllProducts() {
         List<Product> products = productService.findAllProducts();
-
         return Response.ok(products).build();
     }
 
     @GET
     @Path("/buscar")
     public Response getProductByCode(@QueryParam("productCode") String productCode) {
-        if (productCode == null || productCode.isBlank()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O código do produto é obrigatório para a busca.")
-                    .build();
+        try {
+            List<Product> products = productService.findProductByCode(productCode);
+            return Response.ok(products).build();
 
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
-        List<Product> products = productService.findProductByCode(productCode);
-
-        return Response.ok(products).build();
     }
 
     @PUT
     @Path("/{id}")
     public Response updateProduct(@PathParam("id") Long id, ProductDTO productDTO) {
-        if (productDTO.getDescription() == null || productDTO.getDescription().isBlank()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("A descrição do produto é obrigatória.")
-                    .build();
-
-        } if (productDTO.getProductStatus() == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O status do produto é obrigatório.")
-                    .build();
-
-        } if (productDTO.getProductCode() == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O código do produto é obrigatório.")
-                    .build();
-
-        } try {
-            Product product = new Product();
-
-            product.setProductCode(productDTO.getProductCode());
-            product.setDescription(productDTO.getDescription());
-            product.setProductStatus(productDTO.getProductStatus());
-
-            Product updatedProduct = productService.updateProduct(id, product);
-
-            if (updatedProduct == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Produto não encontrado.")
-                        .build();
-
-            }
+        try {
+            Product updatedProduct = productService.updateProduct(id, productDTO);
             return Response.ok(updatedProduct).build();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar o produto.")
-                    .build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
@@ -132,23 +75,10 @@ public class ProductController {
     public Response deleteProduct(@PathParam("id") Long id) {
         try {
             productService.deleteProduct(id);
-
             return Response.noContent().build();
 
-        } catch (BusinessException e) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(e.getMessage())
-                    .build();
-
-        } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(e.getMessage())
-                    .build();
-
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao excluir o produto.")
-                    .build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 }

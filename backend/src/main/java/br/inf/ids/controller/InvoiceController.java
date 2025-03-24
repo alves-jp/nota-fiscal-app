@@ -2,9 +2,9 @@ package br.inf.ids.controller;
 
 import br.inf.ids.dto.InvoiceDTO;
 import br.inf.ids.dto.InvoiceResponseDTO;
+import br.inf.ids.exception.EntityNotFoundException;
+import br.inf.ids.exception.InvalidDataException;
 import br.inf.ids.model.Invoice;
-import br.inf.ids.model.Supplier;
-import br.inf.ids.repository.SupplierRepository;
 import br.inf.ids.service.InvoiceService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -20,138 +20,73 @@ public class InvoiceController {
     @Inject
     InvoiceService invoiceService;
 
-    @Inject
-    SupplierRepository supplierRepository;
-
     @POST
     public Response createInvoice(InvoiceDTO invoiceDTO) {
         try {
-            Supplier supplier = supplierRepository.findById(invoiceDTO.getSupplierId());
-
-            if (supplier == null) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .entity("Fornecedor com ID " + invoiceDTO.getSupplierId() + " não encontrado.")
-                        .build();
-
-            }
-            Invoice invoice = new Invoice();
-
-            invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
-            invoice.setIssueDate(invoiceDTO.getIssueDate());
-            invoice.setAddress(invoiceDTO.getAddress());
-            invoice.setSupplier(supplier);
-
-            invoiceService.createInvoice(invoice);
-
+            Invoice invoice = invoiceService.createInvoice(invoiceDTO);
             return Response.status(Response.Status.CREATED).entity(invoice).build();
 
+        } catch (InvalidDataException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao criar a nota fiscal.")
-                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao criar nota fiscal.").build();
         }
     }
 
     @GET
     @Path("/{id}")
     public Response getInvoiceById(@PathParam("id") Long id) {
-        return invoiceService.findInvoiceById(id)
-                .map(invoice -> {
-                    double totalValue = invoice.getItems().stream()
-                            .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
-                            .sum();
+        try {
+            InvoiceResponseDTO responseDTO = invoiceService.getInvoiceById(id);
+            return Response.ok(responseDTO).build();
 
-                    InvoiceResponseDTO responseDTO = new InvoiceResponseDTO();
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
 
-                    responseDTO.setId(invoice.getId());
-                    responseDTO.setInvoiceNumber(invoice.getInvoiceNumber());
-                    responseDTO.setIssueDate(invoice.getIssueDate());
-                    responseDTO.setSupplier(invoice.getSupplier());
-                    responseDTO.setAddress(invoice.getAddress());
-                    responseDTO.setItems(invoice.getItems());
-                    responseDTO.setTotalValue(totalValue);
-
-                    return Response.ok(responseDTO).build();
-                })
-                .orElse(Response.status(Response.Status.NOT_FOUND)
-                        .entity("Nota fiscal não encontrada.")
-                        .build());
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar nota fiscal.").build();
+        }
     }
 
     @GET
     public Response getAllInvoices() {
-        List<Invoice> invoices = invoiceService.findAllInvoices();
+        try {
+            List<InvoiceResponseDTO> responseDTOs = invoiceService.findAllInvoices();
+            return Response.ok(responseDTOs).build();
 
-        List<InvoiceResponseDTO> responseDTOs = invoices.stream()
-                .map(invoice -> {
-                    double totalValue = invoice.getItems().stream()
-                            .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
-                            .sum();
-
-                    InvoiceResponseDTO responseDTO = new InvoiceResponseDTO();
-
-                    responseDTO.setId(invoice.getId());
-                    responseDTO.setInvoiceNumber(invoice.getInvoiceNumber());
-                    responseDTO.setIssueDate(invoice.getIssueDate());
-                    responseDTO.setSupplier(invoice.getSupplier());
-                    responseDTO.setAddress(invoice.getAddress());
-                    responseDTO.setItems(invoice.getItems());
-                    responseDTO.setTotalValue(totalValue);
-
-                    return responseDTO;
-                })
-                .toList();
-
-        return Response.ok(responseDTOs).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar notas fiscais.").build();
+        }
     }
 
     @GET
     @Path("/buscar")
     public Response getInvoiceByNumber(@QueryParam("invoiceNumber") String invoiceNumber) {
-        if (invoiceNumber == null || invoiceNumber.isBlank()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O número da nota fiscal é obrigatório para a busca.")
-                    .build();
+        try {
+            List<Invoice> invoices = invoiceService.findInvoiceByNumber(invoiceNumber);
+            return Response.ok(invoices).build();
 
+        } catch (InvalidDataException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar nota fiscal.").build();
         }
-        List<Invoice> invoices = invoiceService.findInvoiceByNumber(invoiceNumber);
-
-        return Response.ok(invoices).build();
     }
 
     @PUT
     @Path("/{id}")
     public Response updateInvoice(@PathParam("id") Long id, InvoiceDTO invoiceDTO) {
-        if (invoiceDTO.getInvoiceNumber() == null || invoiceDTO.getInvoiceNumber().isBlank()) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("O número da nota fiscal é obrigatório.")
-                    .build();
-
-        } if (invoiceDTO.getIssueDate() == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("A data de emissão é obrigatória.")
-                    .build();
-
-        } try {
-            Invoice invoice = new Invoice();
-
-            invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
-            invoice.setIssueDate(invoiceDTO.getIssueDate());
-            invoice.setAddress(invoiceDTO.getAddress());
-
-            Invoice updatedInvoice = invoiceService.updateInvoice(id, invoice);
-
-            if (updatedInvoice == null) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Nota fiscal não encontrada.")
-                        .build();
-            }
+        try {
+            Invoice updatedInvoice = invoiceService.updateInvoice(id, invoiceDTO);
             return Response.ok(updatedInvoice).build();
 
+        } catch (InvalidDataException | EntityNotFoundException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar a nota fiscal.")
-                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar nota fiscal.").build();
         }
     }
 
@@ -159,20 +94,14 @@ public class InvoiceController {
     @Path("/{id}")
     public Response deleteInvoice(@PathParam("id") Long id) {
         try {
-            if (invoiceService.findInvoiceById(id).isEmpty()) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Nota fiscal não encontrada.")
-                        .build();
-
-            }
             invoiceService.deleteInvoice(id);
-
             return Response.noContent().build();
 
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao excluir a nota fiscal.")
-                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao excluir nota fiscal.").build();
         }
     }
 }

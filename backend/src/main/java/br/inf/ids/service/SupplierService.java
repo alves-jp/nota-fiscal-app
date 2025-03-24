@@ -1,21 +1,24 @@
 package br.inf.ids.service;
 
+import br.inf.ids.dto.SupplierDTO;
 import br.inf.ids.model.Supplier;
-import br.inf.ids.model.enums.CompanyStatus;
+import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 public interface SupplierService {
 
-    Supplier createSupplier(Supplier supplier);
+    @Transactional
+    Supplier createSupplier(SupplierDTO supplierDTO);
 
-    Optional<Supplier> findSupplierById(Long id);
+    Supplier findSupplierById(Long id);
 
     List<Supplier> findAllSuppliers();
 
     List<Supplier> findSuppliersByName(String companyName);
 
-    Supplier updateSupplier(Long id, Supplier supplier);
+    @Transactional
+    Supplier updateSupplier(Long id, SupplierDTO supplierDTO);
 
+    @Transactional
     void deleteSupplier(Long id);
 }

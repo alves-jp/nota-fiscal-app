@@ -1,23 +1,25 @@
 package br.inf.ids.service;
 
+import br.inf.ids.dto.InvoiceDTO;
+import br.inf.ids.dto.InvoiceResponseDTO;
+import br.inf.ids.exception.InvalidDataException;
+import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Invoice;
-
 import java.util.List;
-import java.util.Optional;
 
 public interface InvoiceService {
 
-    Invoice createInvoice(Invoice invoice);
+    Invoice createInvoice(InvoiceDTO invoiceDTO) throws InvalidDataException;
 
-    Optional<Invoice> findInvoiceById(Long id);
+    InvoiceResponseDTO getInvoiceById(Long id) throws EntityNotFoundException;
 
-    List<Invoice> findAllInvoices();
+    List<InvoiceResponseDTO> findAllInvoices();
 
-    List<Invoice> findInvoiceByNumber(String invoiceNumber);
+    List<Invoice> findInvoiceByNumber(String invoiceNumber) throws InvalidDataException;
 
-    Invoice updateInvoice(Long id, Invoice invoice);
+    Invoice updateInvoice(Long id, InvoiceDTO invoiceDTO) throws InvalidDataException, EntityNotFoundException;
 
-    void deleteInvoice(Long id);
+    void deleteInvoice(Long id) throws EntityNotFoundException;
 
     Double calculateTotalValue(Invoice invoice);
 }

@@ -17,7 +17,7 @@ public class InvoiceItem {
     private Invoice invoice;
 
     @ManyToOne
-    @JoinColumn(name = "produto", nullable = false)
+    @JoinColumn(name = "produto_id", nullable = false)
     private Product product;
 
     @Column(name = "valor_unitario", nullable = false)

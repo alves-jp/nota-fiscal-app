@@ -1,5 +1,6 @@
 package br.inf.ids.service.impl;
 
+import br.inf.ids.dto.SupplierDTO;
 import br.inf.ids.exception.BusinessException;
 import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Supplier;
@@ -10,7 +11,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class SupplierServiceImpl implements SupplierService {
@@ -21,9 +21,20 @@ public class SupplierServiceImpl implements SupplierService {
     @Inject
     InvoiceRepository invoiceRepository;
 
-    @Override
     @Transactional
-    public Supplier createSupplier(Supplier supplier) {
+    @Override
+    public Supplier createSupplier(SupplierDTO supplierDTO) {
+        validateSupplierDTO(supplierDTO);
+
+        Supplier supplier = new Supplier();
+
+        supplier.setSupplierCode(supplierDTO.getSupplierCode());
+        supplier.setCompanyName(supplierDTO.getCompanyName());
+        supplier.setsupplierEmail(supplierDTO.getsupplierEmail());
+        supplier.setsupplierPhone(supplierDTO.getsupplierPhone());
+        supplier.setCnpj(supplierDTO.getCnpj());
+        supplier.setCompanyStatus(supplierDTO.getCompanyStatus());
+
         if (supplierRepository.findByCnpj(supplier.getCnpj()) != null) {
             throw new BusinessException("Erro: Já existe um fornecedor com o CNPJ informado.");
 
@@ -34,8 +45,9 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Optional<Supplier> findSupplierById(Long id) {
-        return supplierRepository.findByIdOptional(id);
+    public Supplier findSupplierById(Long id) {
+        return supplierRepository.findByIdOptional(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
     }
 
     @Override
@@ -45,47 +57,63 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public List<Supplier> findSuppliersByName(String companyName) {
+        if (companyName == null || companyName.isBlank()) {
+            throw new BusinessException("A razão social do fornecedor é obrigatória para a busca.");
+        }
         return supplierRepository.findByCompanyName(companyName);
     }
 
     @Override
     @Transactional
-    public Supplier updateSupplier(Long id, Supplier supplier) {
-        Supplier existingSupplier = supplierRepository.findById(id);
+    public Supplier updateSupplier(Long id, SupplierDTO supplierDTO) {
+        validateSupplierDTO(supplierDTO);
 
-        if (existingSupplier != null) {
-            Supplier supplierWithSameCnpj = supplierRepository.findByCnpj(supplier.getCnpj());
+        Supplier existingSupplier = supplierRepository.findByIdOptional(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
 
-            if (supplierWithSameCnpj != null && !supplierWithSameCnpj.getId().equals(id)) {
-                throw new IllegalArgumentException("Erro: Já existe um fornecedor com este CNPJ.");
+        Supplier supplierWithSameCnpj = supplierRepository.findByCnpj(supplierDTO.getCnpj());
 
-            }
-            existingSupplier.setSupplierCode(supplier.getSupplierCode());
-            existingSupplier.setCompanyName(supplier.getCompanyName());
-            existingSupplier.setsupplierEmail(supplier.getsupplierEmail());
-            existingSupplier.setsupplierPhone(supplier.getsupplierPhone());
-            existingSupplier.setCnpj(supplier.getCnpj());
-            existingSupplier.setCompanyStatus(supplier.getCompanyStatus());
+        if (supplierWithSameCnpj != null && !supplierWithSameCnpj.getId().equals(id)) {
+            throw new BusinessException("Erro: Já existe um fornecedor com este CNPJ.");
 
         }
+        existingSupplier.setSupplierCode(supplierDTO.getSupplierCode());
+        existingSupplier.setCompanyName(supplierDTO.getCompanyName());
+        existingSupplier.setsupplierEmail(supplierDTO.getsupplierEmail());
+        existingSupplier.setsupplierPhone(supplierDTO.getsupplierPhone());
+        existingSupplier.setCnpj(supplierDTO.getCnpj());
+        existingSupplier.setCompanyStatus(supplierDTO.getCompanyStatus());
+
         return existingSupplier;
     }
 
     @Override
     @Transactional
     public void deleteSupplier(Long id) {
-        Supplier supplier = supplierRepository.findById(id);
+        Supplier supplier = supplierRepository.findByIdOptional(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
 
-        if (supplier != null) {
-            boolean hasMovements = invoiceRepository.count("supplier.id", id) > 0;
+        boolean hasMovements = invoiceRepository.count("supplier.id", id) > 0;
 
-            if (hasMovements) {
-                throw new BusinessException("Erro: Não é possível excluir um fornecedor com movimentação.");
-            }
-            supplierRepository.delete(supplier);
+        if (hasMovements) {
+            throw new BusinessException("Erro: Não é possível excluir um fornecedor com movimentação.");
 
-        } else {
-            throw new EntityNotFoundException("Erro: Fornecedor não encontrado.");
+        }
+        supplierRepository.delete(supplier);
+    }
+
+    private void validateSupplierDTO(SupplierDTO supplierDTO) {
+        if (supplierDTO.getCompanyName() == null || supplierDTO.getCompanyName().isBlank()) {
+            throw new BusinessException("A razão social do fornecedor é obrigatória.");
+
+        } if (supplierDTO.getCnpj() == null || supplierDTO.getCnpj().isBlank()) {
+            throw new BusinessException("O CNPJ é obrigatório.");
+
+        } if (supplierDTO.getCompanyStatus() == null) {
+            throw new BusinessException("O status da empresa é obrigatório.");
+
+        } if (supplierDTO.getSupplierCode() == null) {
+            throw new BusinessException("O código do fornecedor é obrigatório.");
         }
     }
 }

@@ -1,5 +1,8 @@
 package br.inf.ids.service;
 
+import br.inf.ids.dto.InvoiceItemDTO;
+import br.inf.ids.exception.InvalidDataException;
+import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.InvoiceItem;
 
 import java.util.List;
@@ -7,7 +10,7 @@ import java.util.Optional;
 
 public interface InvoiceItemService {
 
-    InvoiceItem createInvoiceItem(InvoiceItem invoiceItem);
+    InvoiceItem createInvoiceItem(InvoiceItemDTO invoiceItemDTO) throws InvalidDataException;
 
     Optional<InvoiceItem> findInvoiceItemById(Long id);
 
@@ -17,7 +20,7 @@ public interface InvoiceItemService {
 
     List<InvoiceItem> findInvoiceItemByProductId(Long productId);
 
-    InvoiceItem updateInvoiceItem(Long id, InvoiceItem invoiceItem);
+    InvoiceItem updateInvoiceItem(Long id, InvoiceItemDTO invoiceItemDTO) throws InvalidDataException, EntityNotFoundException;
 
-    void deleteInvoiceItem(Long id);
+    void deleteInvoiceItem(Long id) throws EntityNotFoundException;
 }

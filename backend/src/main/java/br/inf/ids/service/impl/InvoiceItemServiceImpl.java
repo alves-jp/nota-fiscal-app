@@ -1,11 +1,20 @@
 package br.inf.ids.service.impl;
 
+import br.inf.ids.dto.InvoiceItemDTO;
+import br.inf.ids.exception.InvalidDataException;
+import br.inf.ids.exception.EntityNotFoundException;
+import br.inf.ids.exception.ItemAssignedException;
+import br.inf.ids.model.Invoice;
 import br.inf.ids.model.InvoiceItem;
+import br.inf.ids.model.Product;
+import br.inf.ids.repository.InvoiceRepository;
 import br.inf.ids.repository.InvoiceItemRepository;
+import br.inf.ids.repository.ProductRepository;
 import br.inf.ids.service.InvoiceItemService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,11 +24,41 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     @Inject
     InvoiceItemRepository invoiceItemRepository;
 
+    @Inject
+    InvoiceRepository invoiceRepository;
+
+    @Inject
+    ProductRepository productRepository;
+
     @Override
     @Transactional
-    public InvoiceItem createInvoiceItem(InvoiceItem invoiceItem) {
-        invoiceItemRepository.persist(invoiceItem);
+    public InvoiceItem createInvoiceItem(InvoiceItemDTO invoiceItemDTO) throws InvalidDataException {
+        Invoice invoice = invoiceRepository.findById(invoiceItemDTO.getInvoiceId());
 
+        if (invoice == null) {
+            throw new InvalidDataException("Nota fiscal com ID " + invoiceItemDTO.getInvoiceId() + " não encontrada.");
+        }
+
+        Product product = productRepository.findById(invoiceItemDTO.getProductId());
+
+        if (product == null) {
+            throw new InvalidDataException("Produto com ID " + invoiceItemDTO.getProductId() + " não encontrado.");
+
+        } if (invoiceItemDTO.getUnitValue() == null || invoiceItemDTO.getUnitValue() <= 0) {
+            throw new InvalidDataException("O valor unitário deve ser maior que 0,00.");
+
+        } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
+            throw new InvalidDataException("A quantidade de produtos deve ser maior que zero.");
+
+        }
+        InvoiceItem invoiceItem = new InvoiceItem();
+
+        invoiceItem.setInvoice(invoice);
+        invoiceItem.setProduct(product);
+        invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
+        invoiceItem.setQuantity(invoiceItemDTO.getQuantity());
+
+        invoiceItemRepository.persist(invoiceItem);
         return invoiceItem;
     }
 
@@ -45,26 +84,36 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
     @Override
     @Transactional
-    public InvoiceItem updateInvoiceItem(Long id, InvoiceItem invoiceItem) {
-        InvoiceItem existingInvoiceItem = invoiceItemRepository.findById(id);
+    public InvoiceItem updateInvoiceItem(Long id, InvoiceItemDTO invoiceItemDTO) throws InvalidDataException, EntityNotFoundException {
+        if (invoiceItemDTO.getUnitValue() == null || invoiceItemDTO.getUnitValue() <= 0) {
+            throw new InvalidDataException("O valor unitário deve ser maior que 0,00.");
 
-        if (existingInvoiceItem != null) {
-            existingInvoiceItem.setInvoice(invoiceItem.getInvoice());
-            existingInvoiceItem.setProduct(invoiceItem.getProduct());
-            existingInvoiceItem.setUnitValue(invoiceItem.getUnitValue());
-            existingInvoiceItem.setQuantity(invoiceItem.getQuantity());
+        } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
+            throw new InvalidDataException("A quantidade de produtos deve ser maior que zero.");
 
         }
+        InvoiceItem existingInvoiceItem = invoiceItemRepository.findById(id);
+
+        if (existingInvoiceItem == null) {
+            throw new EntityNotFoundException("Item não encontrado.");
+
+        }
+        existingInvoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
+        existingInvoiceItem.setQuantity(invoiceItemDTO.getQuantity());
+
         return existingInvoiceItem;
     }
 
     @Override
     @Transactional
-    public void deleteInvoiceItem(Long id) {
-        InvoiceItem invoiceItem = invoiceItemRepository.findById(id);
+    public void deleteInvoiceItem(Long id) throws EntityNotFoundException, ItemAssignedException {
+        InvoiceItem invoiceItem = invoiceItemRepository.findByIdOptional(id)
+                .orElseThrow(() -> new EntityNotFoundException("Item não encontrado."));
 
-        if (invoiceItem != null) {
-            invoiceItemRepository.delete(invoiceItem);
+        if (invoiceItem.getInvoice() != null) {
+            throw new ItemAssignedException("O item não pode ser excluído porque está vinculado a uma nota fiscal.");
         }
+
+        invoiceItemRepository.delete(invoiceItem);
     }
 }

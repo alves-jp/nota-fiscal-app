@@ -1,5 +1,6 @@
 package br.inf.ids.service.impl;
 
+import br.inf.ids.dto.ProductDTO;
 import br.inf.ids.exception.BusinessException;
 import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Product;
@@ -9,7 +10,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @ApplicationScoped
 public class ProductServiceImpl implements ProductService {
@@ -19,15 +19,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product createProduct(Product product) {
+    public Product createProduct(ProductDTO productDTO) {
+        validateProductDTO(productDTO);
+
+        Product product = new Product();
+
+        product.setProductCode(productDTO.getProductCode());
+        product.setDescription(productDTO.getDescription());
+        product.setProductStatus(productDTO.getProductStatus());
         productRepository.persist(product);
 
         return product;
     }
 
     @Override
-    public Optional<Product> findProductById(Long id) {
-        return productRepository.findByIdOptional(id);
+    public Product findProductById(Long id) {
+        return productRepository.findByIdOptional(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
     }
 
     @Override
@@ -35,39 +43,51 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.listAll();
     }
 
-
     @Override
     public List<Product> findProductByCode(String productCode) {
+        if (productCode == null || productCode.isBlank()) {
+            throw new BusinessException("O código do produto é obrigatório para a busca.");
+        }
         return productRepository.findByCode(productCode);
     }
 
     @Override
     @Transactional
-    public Product updateProduct(Long id, Product product) {
-        Product existingProduct = productRepository.findById(id);
+    public Product updateProduct(Long id, ProductDTO productDTO) {
+        validateProductDTO(productDTO);
 
-        if (existingProduct != null) {
-            existingProduct.setProductCode(product.getProductCode());
-            existingProduct.setDescription(product.getDescription());
-            existingProduct.setProductStatus(product.getProductStatus());
+        Product existingProduct = productRepository.findByIdOptional(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
 
-        }
+        existingProduct.setProductCode(productDTO.getProductCode());
+        existingProduct.setDescription(productDTO.getDescription());
+        existingProduct.setProductStatus(productDTO.getProductStatus());
+
         return existingProduct;
     }
 
     @Override
     @Transactional
     public void deleteProduct(Long id) {
-        Product product = productRepository.findById(id);
+        Product product = productRepository.findByIdOptional(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
 
-        if (product == null) {
-            throw new EntityNotFoundException("Produto não encontrado.");
-
-        }
         if (productRepository.hasInvoiceItems(id)) {
             throw new BusinessException("Não é possível excluir um produto com movimentação.");
 
         }
         productRepository.delete(product);
+    }
+
+    private void validateProductDTO(ProductDTO productDTO) {
+        if (productDTO.getDescription() == null || productDTO.getDescription().isBlank()) {
+            throw new BusinessException("A descrição do produto é obrigatória.");
+
+        } if (productDTO.getProductStatus() == null) {
+            throw new BusinessException("O status do produto é obrigatório.");
+
+        } if (productDTO.getProductCode() == null) {
+            throw new BusinessException("O código do produto é obrigatório.");
+        }
     }
 }

@@ -24,6 +24,11 @@ public class GlobalExceptionHandler implements ExceptionMapper<RuntimeException>
                     .entity(new ErrorResponse(exception.getMessage()))
                     .build();
 
+        } else if (exception instanceof ItemAssignedException) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ErrorResponse(exception.getMessage()))
+                    .build();
+
         } else {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity(new ErrorResponse("Ocorreu um erro interno no servidor."))

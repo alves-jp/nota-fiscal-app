@@ -1,21 +1,24 @@
 package br.inf.ids.service;
 
+import br.inf.ids.dto.ProductDTO;
 import br.inf.ids.model.Product;
-import br.inf.ids.model.enums.ProductStatus;
+import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
 
-    Product createProduct(Product product);
+    @Transactional
+    Product createProduct(ProductDTO productDTO);
 
-    Optional<Product> findProductById(Long id);
+    Product findProductById(Long id);
 
     List<Product> findAllProducts();
 
     List<Product> findProductByCode(String productCode);
 
-    Product updateProduct(Long id, Product product);
+    @Transactional
+    Product updateProduct(Long id, ProductDTO productDTO);
 
+    @Transactional
     void deleteProduct(Long id);
 }
