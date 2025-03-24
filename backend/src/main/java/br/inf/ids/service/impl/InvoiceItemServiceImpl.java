@@ -3,7 +3,6 @@ package br.inf.ids.service.impl;
 import br.inf.ids.dto.InvoiceItemDTO;
 import br.inf.ids.exception.InvalidDataException;
 import br.inf.ids.exception.EntityNotFoundException;
-import br.inf.ids.exception.ItemAssignedException;
 import br.inf.ids.model.Invoice;
 import br.inf.ids.model.InvoiceItem;
 import br.inf.ids.model.Product;
