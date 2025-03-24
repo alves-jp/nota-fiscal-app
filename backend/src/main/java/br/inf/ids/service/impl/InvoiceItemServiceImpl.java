@@ -11,6 +11,7 @@ import br.inf.ids.repository.InvoiceRepository;
 import br.inf.ids.repository.InvoiceItemRepository;
 import br.inf.ids.repository.ProductRepository;
 import br.inf.ids.service.InvoiceItemService;
+import br.inf.ids.service.InvoiceService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -23,6 +24,9 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
     @Inject
     InvoiceItemRepository invoiceItemRepository;
+
+    @Inject
+    InvoiceService invoiceService;
 
     @Inject
     InvoiceRepository invoiceRepository;
@@ -106,14 +110,21 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
     @Override
     @Transactional
-    public void deleteInvoiceItem(Long id) throws EntityNotFoundException, ItemAssignedException {
+    public void deleteInvoiceItem(Long id) throws EntityNotFoundException {
         InvoiceItem invoiceItem = invoiceItemRepository.findByIdOptional(id)
                 .orElseThrow(() -> new EntityNotFoundException("Item não encontrado."));
 
-        if (invoiceItem.getInvoice() != null) {
-            throw new ItemAssignedException("O item não pode ser excluído porque está vinculado a uma nota fiscal.");
-        }
+        Invoice invoice = invoiceItem.getInvoice();
 
         invoiceItemRepository.delete(invoiceItem);
+
+        if (invoice != null) {
+            invoice.getItems().remove(invoiceItem);
+
+            Double totalValue = invoiceService.calculateTotalValue(invoice);
+            invoice.setTotalValue(totalValue);
+
+            invoiceRepository.persist(invoice);
+        }
     }
 }

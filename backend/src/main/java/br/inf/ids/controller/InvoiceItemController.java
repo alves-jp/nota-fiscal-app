@@ -125,11 +125,6 @@ public class InvoiceItemController {
                     .entity(e.getMessage())
                     .build();
 
-        } catch (ItemAssignedException e) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(e.getMessage())
-                    .build();
-
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Ocorreu um erro ao excluir o item.")
