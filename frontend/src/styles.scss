@@ -1,7 +1,8 @@
-/* styles.scss */
 @import '@fortawesome/fontawesome-free/css/all.min.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
 :root {
+  --font-family: 'Montserrat', sans-serif;
   --primary-color: #2c3e50;
   --secondary-color: #3498db;
   --secondary-color-dark: #2581c7;
@@ -17,10 +18,11 @@ body {
   font-family: var(--font-family);
   background-color: var(--light-bg);
   color: var(--text-color);
+  font-weight: 400;
 }
 
 .p-component {
-  font-family: var(--font-family);
+  font-family: var(--font-family) !important;
 }
 
 .differential-card {
