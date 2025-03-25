@@ -7,16 +7,19 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss'],
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     ToastModule,
     InputNumberModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DropdownModule
   ]
 })
 export class ProductFormComponent implements OnInit {
@@ -25,6 +28,10 @@ export class ProductFormComponent implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   productForm: FormGroup;
+  statusOptions = [
+    { label: 'Ativo', value: 'ACTIVE' },
+    { label: 'Inativo', value: 'INACTIVE' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -36,7 +43,8 @@ export class ProductFormComponent implements OnInit {
       code: ['', [Validators.required, Validators.maxLength(20)]],
       name: ['', [Validators.required, Validators.maxLength(100)]],
       description: ['', Validators.maxLength(255)],
-      price: [null, [Validators.required, Validators.min(0)]]
+      price: [null, [Validators.required, Validators.min(0)]],
+      status: ['ACTIVE', Validators.required]
     });
   }
 
@@ -51,7 +59,6 @@ export class ProductFormComponent implements OnInit {
       const productData = this.productForm.value;
 
       if (productData.id) {
-        // Atualização
         this.productService.updateProduct(productData.id, productData).subscribe({
           next: (updatedProduct) => {
             this.messageService.add({
@@ -70,7 +77,6 @@ export class ProductFormComponent implements OnInit {
           }
         });
       } else {
-        // Criação
         this.productService.createProduct(productData).subscribe({
           next: (newProduct) => {
             this.messageService.add({

@@ -1,68 +1,97 @@
 <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <div class="p-fluid p-formgrid p-grid">
-      <div class="p-field p-col-12 p-md-6">
-        <label for="code">Código</label>
-        <input 
-          id="code" 
-          type="text" 
-          pInputText 
-          formControlName="code"
-          [ngClass]="{'p-invalid': productForm.get('code')?.invalid && productForm.get('code')?.touched}"
-        >
-        <small 
-          *ngIf="productForm.get('code')?.invalid && productForm.get('code')?.touched" 
-          class="p-error"
-        >
-          Código é obrigatório
-        </small>
-      </div>
-  
-  
-      <div class="p-field p-col-12">
-        <label for="description">Descrição</label>
-        <textarea 
-          id="description" 
-          pInputTextarea 
-          formControlName="description"
-        ></textarea>
-      </div>
-  
-      <div class="p-field p-col-12 p-md-6">
-        <label for="price">Preço</label>
-        <p-inputNumber 
-          id="price"
-          formControlName="price"
-          [minFractionDigits]="2" 
-          [maxFractionDigits]="2"
-          mode="currency" 
-          currency="BRL"
-          [ngClass]="{'p-invalid': productForm.get('price')?.invalid && productForm.get('price')?.touched}"
-        ></p-inputNumber>
-        <small 
-          *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" 
-          class="p-error"
-        >
-          Preço é obrigatório e deve ser maior que zero
-        </small>
-      </div>
-  
-      <div class="p-field p-col-12">
-        <button 
-          pButton 
-          type="submit" 
-          label="Salvar" 
-          class="p-mr-2"
-          [disabled]="productForm.invalid"
-        ></button>
-        <button 
-          pButton 
-          type="button" 
-          label="Cancelar" 
-          class="p-button-secondary"
-          (click)="onCancel()"
-        ></button>
-      </div>
+  <div class="p-fluid p-formgrid p-grid">
+    <div class="p-field p-col-12 p-md-6">
+      <label for="code">Código *</label>
+      <input 
+        id="code" 
+        type="text" 
+        pInputText 
+        formControlName="code"
+        [ngClass]="{'p-invalid': productForm.get('code')?.invalid && productForm.get('code')?.touched}"
+      >
+      <small 
+        *ngIf="productForm.get('code')?.invalid && productForm.get('code')?.touched" 
+        class="p-error"
+      >
+        Código é obrigatório
+      </small>
     </div>
-  </form>
-  
-  <p-toast></p-toast>
+
+    <div class="p-field p-col-12 p-md-6">
+      <label for="name">Nome *</label>
+      <input 
+        id="name" 
+        type="text" 
+        pInputText 
+        formControlName="name"
+        [ngClass]="{'p-invalid': productForm.get('name')?.invalid && productForm.get('name')?.touched}"
+      >
+      <small 
+        *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" 
+        class="p-error"
+      >
+        Nome é obrigatório
+      </small>
+    </div>
+
+    <div class="p-field p-col-12 p-md-6">
+      <label for="status">Status *</label>
+      <p-dropdown
+        id="status"
+        formControlName="status"
+        [options]="statusOptions"
+        optionLabel="label"
+        [ngClass]="{'p-invalid': productForm.get('status')?.invalid && productForm.get('status')?.touched}"
+      ></p-dropdown>
+    </div>
+
+    <div class="p-field p-col-12 p-md-6">
+      <label for="price">Preço *</label>
+      <p-inputNumber 
+        id="price"
+        formControlName="price"
+        [minFractionDigits]="2" 
+        [maxFractionDigits]="2"
+        mode="currency" 
+        currency="BRL"
+        [ngClass]="{'p-invalid': productForm.get('price')?.invalid && productForm.get('price')?.touched}"
+      ></p-inputNumber>
+      <small 
+        *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" 
+        class="p-error"
+      >
+        Preço é obrigatório e deve ser maior que zero
+      </small>
+    </div>
+
+    <div class="p-field p-col-12">
+      <label for="description">Descrição</label>
+      <textarea 
+        id="description" 
+        pInputTextarea 
+        formControlName="description"
+        rows="3"
+      ></textarea>
+    </div>
+
+    <div class="form-actions p-col-12">
+      <button 
+        pButton 
+        type="button" 
+        label="Cancelar" 
+        icon="pi pi-times" 
+        class="p-button-outlined p-button-secondary" 
+        (click)="onCancel()"
+      ></button>
+      <button 
+        pButton 
+        type="submit" 
+        label="Salvar" 
+        icon="pi pi-check" 
+        [disabled]="productForm.invalid"
+      ></button>
+    </div>
+  </div>
+</form>
+
+<p-toast></p-toast>

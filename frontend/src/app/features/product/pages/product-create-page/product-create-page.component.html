@@ -1,8 +1,8 @@
 <div class="product-create-container">
   <p-toast position="top-right"></p-toast>
   
-  <p-card header="Novo Produto" [style]="{'margin-bottom': '2em'}">
-    <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+  <p-card header="Novo Produto" [style]="{'margin-bottom': '2em', 'max-width': '800px'}">
+    <form (ngSubmit)="onSubmit()" #productForm="ngForm" class="form-container">
       <div class="p-fluid grid">
         
         <!-- Código do Produto -->
@@ -13,9 +13,10 @@
             id="productCode" 
             name="productCode"
             [(ngModel)]="product.productCode" 
-            placeholder="Ex: PRD-001"
+            placeholder="Ex: PROD-0001"
             required
             [disabled]="loading"
+            class="form-input"
           />
           <small *ngIf="submitted && !product.productCode" class="p-error">
             Código é obrigatório
@@ -35,6 +36,7 @@
             placeholder="Selecione o status"
             required
             [disabled]="loading"
+            class="form-dropdown"
           ></p-dropdown>
         </div>
 
@@ -46,10 +48,11 @@
             id="description" 
             name="description"
             [(ngModel)]="product.description" 
-            rows="3"
+            rows="5"
             placeholder="Descrição detalhada do produto"
             required
             [disabled]="loading"
+            class="form-textarea"
           ></textarea>
           <small *ngIf="submitted && !product.description" class="p-error">
             Descrição é obrigatória
@@ -63,7 +66,7 @@
           type="button" 
           label="Cancelar" 
           icon="pi pi-times" 
-          class="p-button-outlined p-button-secondary" 
+          class="p-button-outlined p-button-secondary cancel-btn" 
           (click)="onCancel()"
           [disabled]="loading"
         ></button>
@@ -72,6 +75,7 @@
           type="submit" 
           label="Salvar" 
           icon="pi pi-check" 
+          class="submit-btn"
           [loading]="loading"
         ></button>
       </div>

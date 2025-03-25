@@ -46,8 +46,7 @@ export class ProductCreatePageComponent {
 
   statusOptions: StatusOption[] = [
     { label: 'Ativo', value: 'ACTIVE' },
-    { label: 'Inativo', value: 'INACTIVE' },
-    { label: 'Pendente', value: 'PENDING' }
+    { label: 'Inativo', value: 'INACTIVE' }
   ];
 
   constructor(
