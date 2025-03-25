@@ -187,7 +187,7 @@ class ProductControllerTest {
 
         productDTO.setDescription("Test Product");
         productDTO.setProductCode("PROD-001");
-        
+
         return productDTO;
     }
 }
