@@ -10,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ProductServiceImpl implements ProductService {
@@ -19,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product createProduct(ProductDTO productDTO) {
+    public ProductDTO createProduct(ProductDTO productDTO) {
         validateProductDTO(productDTO);
 
         Product product = new Product();
@@ -29,31 +30,40 @@ public class ProductServiceImpl implements ProductService {
         product.setProductStatus(productDTO.getProductStatus());
         productRepository.persist(product);
 
-        return product;
+        return convertToDTO(product);
     }
 
     @Override
-    public Product findProductById(Long id) {
-        return productRepository.findByIdOptional(id)
+    public ProductDTO findProductById(Long id) {
+        Product product = productRepository.findByIdOptional(id)
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
+
+        return convertToDTO(product);
     }
 
     @Override
-    public List<Product> findAllProducts() {
-        return productRepository.listAll();
+    public List<ProductDTO> findAllProducts() {
+        List<Product> products = productRepository.listAll();
+        return products.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Product> findProductByCode(String productCode) {
+    public List<ProductDTO> findProductByCode(String productCode) {
         if (productCode == null || productCode.isBlank()) {
             throw new BusinessException("O código do produto é obrigatório para a busca.");
+
         }
-        return productRepository.findByCode(productCode);
+        List<Product> products = productRepository.findByCode(productCode);
+        return products.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public Product updateProduct(Long id, ProductDTO productDTO) {
+    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         validateProductDTO(productDTO);
 
         Product existingProduct = productRepository.findByIdOptional(id)
@@ -63,7 +73,9 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setProductStatus(productDTO.getProductStatus());
 
-        return existingProduct;
+        productRepository.persist(existingProduct);
+
+        return convertToDTO(existingProduct);
     }
 
     @Override
@@ -89,5 +101,9 @@ public class ProductServiceImpl implements ProductService {
         } if (productDTO.getProductCode() == null) {
             throw new BusinessException("O código do produto é obrigatório.");
         }
+    }
+
+    private ProductDTO convertToDTO(Product product) {
+        return new ProductDTO(product.getId(), product.getProductCode(), product.getDescription(), product.getProductStatus());
     }
 }

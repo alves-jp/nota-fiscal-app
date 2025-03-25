@@ -1,7 +1,6 @@
 package br.inf.ids.controller;
 
 import br.inf.ids.dto.ProductDTO;
-import br.inf.ids.model.Product;
 import br.inf.ids.service.ProductService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -29,12 +28,12 @@ public class ProductController {
     @Operation(summary = "Criar um novo produto", description = "Cria um novo produto no sistema.")
     @APIResponse(responseCode = "201", description = "Produto criado com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Product.class)))
+                    schema = @Schema(implementation = ProductDTO.class)))
     @APIResponse(responseCode = "400", description = "Erro ao criar o produto")
     public Response createProduct(ProductDTO productDTO) {
         try {
-            Product product = productService.createProduct(productDTO);
-            return Response.status(Response.Status.CREATED).entity(product).build();
+            ProductDTO createdProduct = productService.createProduct(productDTO);
+            return Response.status(Response.Status.CREATED).entity(createdProduct).build();
 
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
@@ -46,12 +45,12 @@ public class ProductController {
     @Operation(summary = "Buscar produto por ID", description = "Retorna um produto específico pelo ID.")
     @APIResponse(responseCode = "200", description = "Produto encontrado",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Product.class)))
+                    schema = @Schema(implementation = ProductDTO.class)))
     @APIResponse(responseCode = "404", description = "Produto não encontrado")
     public Response getProductById(@PathParam("id")
                                    @Parameter(description = "ID do produto", required = true) Long id) {
         try {
-            Product product = productService.findProductById(id);
+            ProductDTO product = productService.findProductById(id);
             return Response.ok(product).build();
 
         } catch (Exception e) {
@@ -63,9 +62,9 @@ public class ProductController {
     @Operation(summary = "Listar todos os produtos", description = "Retorna a lista de produtos cadastrados.")
     @APIResponse(responseCode = "200", description = "Lista de produtos retornada com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Product.class)))
+                    schema = @Schema(implementation = ProductDTO.class)))
     public Response getAllProducts() {
-        List<Product> products = productService.findAllProducts();
+        List<ProductDTO> products = productService.findAllProducts();
         return Response.ok(products).build();
     }
 
@@ -75,12 +74,12 @@ public class ProductController {
             description = "Retorna a lista de produtos que possuem um código específico.")
     @APIResponse(responseCode = "200", description = "Produtos encontrados",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Product.class)))
+                    schema = @Schema(implementation = ProductDTO.class)))
     public Response getProductByCode(@QueryParam("productCode")
                                      @Parameter(description = "Código do produto", required = true)
-                                         String productCode) {
+                                     String productCode) {
         try {
-            List<Product> products = productService.findProductByCode(productCode);
+            List<ProductDTO> products = productService.findProductByCode(productCode);
             return Response.ok(products).build();
 
         } catch (Exception e) {
@@ -93,13 +92,13 @@ public class ProductController {
     @Operation(summary = "Atualizar um produto", description = "Atualiza os dados de um produto pelo ID.")
     @APIResponse(responseCode = "200", description = "Produto atualizado com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Product.class)))
+                    schema = @Schema(implementation = ProductDTO.class)))
     @APIResponse(responseCode = "400", description = "Erro ao atualizar o produto")
     public Response updateProduct(@PathParam("id")
                                   @Parameter(description = "ID do produto", required = true)
-                                      Long id, ProductDTO productDTO) {
+                                  Long id, ProductDTO productDTO) {
         try {
-            Product updatedProduct = productService.updateProduct(id, productDTO);
+            ProductDTO updatedProduct = productService.updateProduct(id, productDTO);
             return Response.ok(updatedProduct).build();
 
         } catch (Exception e) {
