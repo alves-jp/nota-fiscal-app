@@ -66,7 +66,6 @@ public class ProductServiceImplTest {
         assertEquals(ProductStatus.ACTIVE, createdProductDTO.getProductStatus());
     }
 
-
     @Test
     public void testCreateProduct_Failure_DescriptionIsBlank() {
         productDTO.setDescription("");
@@ -77,7 +76,6 @@ public class ProductServiceImplTest {
 
         assertEquals("A descrição do produto é obrigatória.", exception.getMessage());
     }
-
 
     @Test
     public void testFindProductById_Success() {
@@ -149,8 +147,6 @@ public class ProductServiceImplTest {
         assertEquals("Updated Description", updatedProductDTO.getDescription());
         assertEquals(ProductStatus.INACTIVE, updatedProductDTO.getProductStatus());
     }
-
-
 
     @Test
     public void testUpdateProduct_Failure_ProductNotFound() {

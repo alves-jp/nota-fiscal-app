@@ -77,7 +77,6 @@ public class InvoiceItemServiceImplTest {
         verify(invoiceService).updateTotalValue(invoice);
     }
 
-
     @Test
     public void testCreateInvoiceItem_InvoiceNotFound() {
         when(invoiceRepository.findById(invoiceItemDTO.getInvoiceId())).thenReturn(null);
@@ -123,7 +122,6 @@ public class InvoiceItemServiceImplTest {
         assertEquals(120.0, result.getUnitValue(), 0.01);
         assertEquals(3, result.getQuantity());
     }
-
 
     @Test
     public void testDeleteInvoiceItem_Success() throws EntityNotFoundException {

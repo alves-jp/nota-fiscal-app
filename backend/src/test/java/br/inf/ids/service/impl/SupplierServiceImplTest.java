@@ -100,7 +100,7 @@ public class SupplierServiceImplTest {
         assertEquals("12345678000195", updatedSupplier.getCnpj());
         assertEquals(CompanyStatus.INACTIVE, updatedSupplier.getCompanyStatus());
     }
-    
+
     @Test
     public void testDeleteSupplier_Failure_WithMovements() {
         Supplier supplier = new Supplier();
