@@ -33,14 +33,14 @@ public class ProductServiceImplTest {
     @BeforeEach
     public void setUp() {
         productDTO = new ProductDTO();
-        productDTO.setProductCode("P12345");
-        productDTO.setDescription("Product Description");
+        productDTO.setProductCode("P-00001-TESTE");
+        productDTO.setDescription("Computador Teste V1");
         productDTO.setProductStatus(ProductStatus.valueOf("ACTIVE"));
 
         product = new Product();
         product.setId(1L);
-        product.setProductCode("P12345");
-        product.setDescription("Product Description");
+        product.setProductCode("P-00001-TESTE");
+        product.setDescription("Computador Teste V1");
         product.setProductStatus(ProductStatus.valueOf("ACTIVE"));
     }
 
@@ -54,15 +54,15 @@ public class ProductServiceImplTest {
         }).when(productRepository).persist(any(Product.class));
 
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setProductCode("P12345");
-        productDTO.setDescription("Product Description");
+        productDTO.setProductCode("P-00001-TESTE");
+        productDTO.setDescription("Computador Teste V1");
         productDTO.setProductStatus(ProductStatus.ACTIVE);
 
         ProductDTO createdProductDTO = productService.createProduct(productDTO);
 
         assertNotNull(createdProductDTO);
-        assertEquals("P12345", createdProductDTO.getProductCode());
-        assertEquals("Product Description", createdProductDTO.getDescription());
+        assertEquals("P-00001-TESTE", createdProductDTO.getProductCode());
+        assertEquals("Computador Teste V1", createdProductDTO.getDescription());
         assertEquals(ProductStatus.ACTIVE, createdProductDTO.getProductStatus());
     }
 
@@ -85,7 +85,7 @@ public class ProductServiceImplTest {
 
         assertNotNull(foundProductDTO);
         assertEquals(1L, foundProductDTO.getId());
-        assertEquals("P12345", foundProductDTO.getProductCode());
+        assertEquals("P-00001-TESTE", foundProductDTO.getProductCode());
     }
 
     @Test
@@ -107,18 +107,18 @@ public class ProductServiceImplTest {
 
         assertNotNull(products);
         assertEquals(1, products.size());
-        assertEquals("P12345", products.get(0).getProductCode());
+        assertEquals("P-00001-TESTE", products.get(0).getProductCode());
     }
 
     @Test
     public void testFindProductByCode_Success() {
-        when(productRepository.findByCode("P12345")).thenReturn(List.of(product));
+        when(productRepository.findByCode("P-00001-TESTE")).thenReturn(List.of(product));
 
-        List<ProductDTO> products = productService.findProductByCode("P12345");
+        List<ProductDTO> products = productService.findProductByCode("P-00001-TESTE");
 
         assertNotNull(products);
         assertEquals(1, products.size());
-        assertEquals("P12345", products.get(0).getProductCode());
+        assertEquals("P-00001-TESTE", products.get(0).getProductCode());
     }
 
     @Test
@@ -136,15 +136,15 @@ public class ProductServiceImplTest {
 
         doNothing().when(productRepository).persist(any(Product.class));
 
-        productDTO.setProductCode("P54321");
-        productDTO.setDescription("Updated Description");
+        productDTO.setProductCode("P-00001-NOVO");
+        productDTO.setDescription("Computador Novo");
         productDTO.setProductStatus(ProductStatus.valueOf("INACTIVE"));
 
         ProductDTO updatedProductDTO = productService.updateProduct(1L, productDTO);
 
         assertNotNull(updatedProductDTO);
-        assertEquals("P54321", updatedProductDTO.getProductCode());
-        assertEquals("Updated Description", updatedProductDTO.getDescription());
+        assertEquals("P-00001-NOVO", updatedProductDTO.getProductCode());
+        assertEquals("Computador Novo", updatedProductDTO.getDescription());
         assertEquals(ProductStatus.INACTIVE, updatedProductDTO.getProductStatus());
     }
 

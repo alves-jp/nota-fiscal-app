@@ -41,19 +41,19 @@ public class InvoiceServiceImplTest {
     @BeforeEach
     public void setUp() {
         invoiceDTO = new InvoiceDTO();
-        invoiceDTO.setInvoiceNumber("12345");
+        invoiceDTO.setInvoiceNumber("NF-123.4");
         invoiceDTO.setIssueDate(LocalDateTime.parse("2025-03-25T00:00:00", DateTimeFormatter.ISO_DATE_TIME));
         invoiceDTO.setSupplierId(1L);
 
 
         supplier = new Supplier();
         supplier.setId(1L);
-        supplier.setCompanyName("Supplier Name");
+        supplier.setCompanyName("Fornecedor Teste");
 
 
         invoice = new Invoice();
         invoice.setId(1L);
-        invoice.setInvoiceNumber("12345");
+        invoice.setInvoiceNumber("NF-123.4");
     }
 
     @Test
@@ -68,7 +68,7 @@ public class InvoiceServiceImplTest {
         Invoice createdInvoice = invoiceService.createInvoice(invoiceDTO);
 
         assertNotNull(createdInvoice);
-        assertEquals("12345", createdInvoice.getInvoiceNumber());
+        assertEquals("NF-123.4", createdInvoice.getInvoiceNumber());
         assertEquals(supplier, createdInvoice.getSupplier());
         assertNotNull(createdInvoice.getId());
         verify(invoiceRepository, times(1)).persist(any(Invoice.class));
@@ -92,7 +92,7 @@ public class InvoiceServiceImplTest {
         InvoiceResponseDTO result = invoiceService.getInvoiceById(1L);
 
         assertNotNull(result);
-        assertEquals("12345", result.getInvoiceNumber());
+        assertEquals("NF-123.4", result.getInvoiceNumber());
         assertEquals(1L, result.getId());
     }
 
@@ -110,15 +110,15 @@ public class InvoiceServiceImplTest {
     @Test
     public void testUpdateInvoice_Success() throws InvalidDataException, EntityNotFoundException {
         when(invoiceRepository.findByIdOptional(1L)).thenReturn(Optional.of(invoice));
-        invoiceDTO.setInvoiceNumber("54321");
+        invoiceDTO.setInvoiceNumber("NF-456.7");
         invoiceDTO.setIssueDate(LocalDateTime.parse("2025-03-26T00:00:00", DateTimeFormatter.ISO_DATE_TIME));
-        invoiceDTO.setAddress("New Address");
+        invoiceDTO.setAddress("Av. Teste");
 
         Invoice updatedInvoice = invoiceService.updateInvoice(1L, invoiceDTO);
 
         assertNotNull(updatedInvoice);
-        assertEquals("54321", updatedInvoice.getInvoiceNumber());
-        assertEquals("New Address", updatedInvoice.getAddress());
+        assertEquals("NF-456.7", updatedInvoice.getInvoiceNumber());
+        assertEquals("Av. Teste", updatedInvoice.getAddress());
     }
 
     @Test

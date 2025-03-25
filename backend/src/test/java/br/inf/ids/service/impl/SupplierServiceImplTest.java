@@ -40,8 +40,8 @@ public class SupplierServiceImplTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         supplierDTO = new SupplierDTO();
-        supplierDTO.setSupplierCode("S12345");
-        supplierDTO.setCompanyName("Test Company");
+        supplierDTO.setSupplierCode("F-12345");
+        supplierDTO.setCompanyName("Fornecedora Teste");
         supplierDTO.setsupplierEmail("test@company.com");
         supplierDTO.setsupplierPhone("123456789");
         supplierDTO.setCnpj("12345678000195");
@@ -56,8 +56,8 @@ public class SupplierServiceImplTest {
         SupplierDTO createdSupplier = supplierService.createSupplier(supplierDTO);
 
         assertNotNull(createdSupplier);
-        assertEquals("S12345", createdSupplier.getSupplierCode());
-        assertEquals("Test Company", createdSupplier.getCompanyName());
+        assertEquals("F-12345", createdSupplier.getSupplierCode());
+        assertEquals("Fornecedora Teste", createdSupplier.getCompanyName());
     }
 
     @Test
@@ -75,9 +75,9 @@ public class SupplierServiceImplTest {
     public void testUpdateSupplier_Success() {
         Supplier existingSupplier = new Supplier();
         existingSupplier.setId(1L);
-        existingSupplier.setSupplierCode("S12345");
-        existingSupplier.setCompanyName("Test Company");
-        existingSupplier.setsupplierEmail("supplier@example.com");
+        existingSupplier.setSupplierCode("F-12345");
+        existingSupplier.setCompanyName("Fornecedora Teste");
+        existingSupplier.setsupplierEmail("fornecedor.teste@mail.com");
         existingSupplier.setsupplierPhone("1234567890");
         existingSupplier.setCnpj("12345678000195");
         existingSupplier.setCompanyStatus(CompanyStatus.ACTIVE);
@@ -85,8 +85,8 @@ public class SupplierServiceImplTest {
 
         doNothing().when(supplierRepository).persist(any(Supplier.class));
         supplierDTO.setSupplierCode("S54321");
-        supplierDTO.setCompanyName("Updated Company");
-        supplierDTO.setsupplierEmail("updated@example.com");
+        supplierDTO.setCompanyName("Fornecedora Nova");
+        supplierDTO.setsupplierEmail("fornecedora.nova@mail.com");
         supplierDTO.setsupplierPhone("9876543210");
         supplierDTO.setCnpj("12345678000195");
         supplierDTO.setCompanyStatus(CompanyStatus.INACTIVE);
@@ -94,8 +94,8 @@ public class SupplierServiceImplTest {
 
         assertNotNull(updatedSupplier);
         assertEquals("S54321", updatedSupplier.getSupplierCode());
-        assertEquals("Updated Company", updatedSupplier.getCompanyName());
-        assertEquals("updated@example.com", updatedSupplier.getsupplierEmail());
+        assertEquals("Fornecedora Nova", updatedSupplier.getCompanyName());
+        assertEquals("fornecedora.nova@mail.com", updatedSupplier.getsupplierEmail());
         assertEquals("9876543210", updatedSupplier.getsupplierPhone());
         assertEquals("12345678000195", updatedSupplier.getCnpj());
         assertEquals(CompanyStatus.INACTIVE, updatedSupplier.getCompanyStatus());

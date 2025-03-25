@@ -48,7 +48,7 @@ public class InvoiceItemServiceImplTest {
         invoice = new Invoice();
         product = new Product();
         product.setId(1L);
-        product.setDescription("Product 1");
+        product.setDescription("Notebook Teste");
 
         invoiceItemDTO = new InvoiceItemDTO();
         invoiceItemDTO.setInvoiceId(1L);
