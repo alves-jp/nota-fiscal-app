@@ -88,7 +88,7 @@ public class InvoiceServiceImplTest {
     @Test
     public void testGetInvoiceById_Success() throws EntityNotFoundException {
         when(invoiceRepository.findByIdOptional(1L)).thenReturn(Optional.of(invoice));
-        
+
         InvoiceResponseDTO result = invoiceService.getInvoiceById(1L);
 
         assertNotNull(result);
