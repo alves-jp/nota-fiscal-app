@@ -1,0 +1,14 @@
+<div class="p-grid">
+    <div class="p-col-12">
+      <h1>Produtos</h1>
+      <button 
+        pButton 
+        label="Novo Produto" 
+        icon="pi pi-plus" 
+        class="p-mb-3"
+        (click)="onNewProduct()"
+      ></button>
+  
+      <app-product-list (editProduct)="onEditProduct($event)"></app-product-list>
+    </div>
+  </div>

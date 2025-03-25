@@ -1,0 +1,11 @@
+<div class="p-grid">
+    <div class="p-col-12">
+      <h1>Editar Produto</h1>
+      <app-product-form 
+        *ngIf="product"
+        [product]="product"
+        (formSubmit)="onProductUpdated($event)"
+        (formCancel)="onCancel()"
+      ></app-product-form>
+    </div>
+  </div>

@@ -1,0 +1,9 @@
+<div class="p-grid">
+    <div class="p-col-12">
+      <h1>Novo Produto</h1>
+      <app-product-form 
+        (formSubmit)="onProductCreated($event)"
+        (formCancel)="onCancel()"
+      ></app-product-form>
+    </div>
+  </div>
