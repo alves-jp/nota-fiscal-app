@@ -29,15 +29,17 @@
           <div class="action-buttons">
             <button 
               pButton 
-              icon="pi pi-pencil" 
-              class="p-button-rounded p-button-text p-button-sm"
+              icon="fa-regular fa-pen-to-square" 
+              class="p-button-rounded p-button-text p-button-sm edit-btn"
               (click)="onEdit(product)"
+              pTooltip="Editar" tooltipPosition="top"
             ></button>
             <button 
               pButton 
-              icon="pi pi-trash" 
-              class="p-button-rounded p-button-text p-button-sm p-button-danger"
+              icon="fa-regular fa-trash-can" 
+              class="p-button-rounded p-button-text p-button-sm delete-btn"
               (click)="onDelete(product)"
+              pTooltip="Excluir" tooltipPosition="top"
             ></button>
           </div>
         </td>

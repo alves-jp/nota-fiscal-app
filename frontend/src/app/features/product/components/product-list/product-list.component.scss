@@ -1,61 +1,85 @@
 .product-list-container {
-    padding: 1.5rem;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid var(--secondary-color);
+
+  .p-datatable {
+    margin-top: 1rem;
+    
+    .p-datatable-thead > tr > th {
+      background-color: var(--primary-color);
+      font-weight: 600;
+      color: white;
+      border: none;
+    }
+
+    .p-datatable-tbody > tr {
+      transition: background-color 0.2s;
+      
+      &:hover {
+        background-color: rgba(52, 152, 219, 0.1);
+      }
+    }
+
+    .p-tag {
+      &.p-tag-success { background-color: #22c55e; }
+      &.p-tag-danger { background-color: var(--accent-color); }
+      &.p-tag-warning { background-color: #f59e0b; }
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+
+    .edit-btn {
+      color: var(--secondary-color) !important;
+      
+      &:hover {
+        background-color: rgba(52, 152, 219, 0.1) !important;
+        transform: scale(1.1);
+      }
+    }
+    
+    .delete-btn {
+      color: var(--accent-color) !important;
+      
+      &:hover {
+        background-color: rgba(239, 68, 68, 0.1) !important;
+        transform: scale(1.1);
+      }
+    }
+    
+    .fa-solid, .fa-regular {
+      font-size: 0.9rem;
+    }
+  }
+
+  .text-center {
+    text-align: center;
+    padding: 1rem;
+    color: #64748b;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .product-list-container {
+    padding: 1rem;
+    
     .p-datatable {
-      margin-top: 1rem;
+      font-size: 0.875rem;
       
-      .p-datatable-thead > tr > th {
-        background-color: #f8f9fa;
-        font-weight: 600;
-        color: #495057;
-      }
-  
-      .p-tag {
-        &.p-tag-success { background-color: #22c55e; }
-        &.p-tag-danger { background-color: #ef4444; }
-        &.p-tag-warning { background-color: #f59e0b; }
-      }
-    }
-  
-    .action-buttons {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-  
       .p-button {
-        transition: all 0.2s;
-  
-        &:hover {
-          transform: scale(1.1);
-        }
-      }
-    }
-  
-    .text-center {
-      text-align: center;
-      padding: 1rem;
-      color: #64748b;
-    }
-  }
-  
-  @media screen and (max-width: 768px) {
-    .product-list-container {
-      padding: 1rem;
-      
-      .p-datatable {
-        font-size: 0.875rem;
+        width: 2rem;
+        height: 2rem;
         
-        .p-button {
-          width: 2rem;
-          height: 2rem;
-          
-          .pi {
-            font-size: 0.875rem;
-          }
+        .pi {
+          font-size: 0.875rem;
         }
       }
     }
   }
+}

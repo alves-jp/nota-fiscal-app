@@ -1,11 +1,63 @@
 /* styles.scss */
-/* Estilos globais adicionais */
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --secondary-color-dark: #2581c7;
+  --accent-color: #e74c3c;
+  --text-color: #333;
+  --light-bg: #f8f9fa;
+  --border-color: #e0e0e0;
+  --button-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 body {
   margin: 0;
   font-family: var(--font-family);
-  background-color: #f8f9fa;
+  background-color: var(--light-bg);
+  color: var(--text-color);
 }
 
 .p-component {
   font-family: var(--font-family);
+}
+
+.differential-card {
+  border-left: 4px solid var(--secondary-color);
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  
+  h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    
+    &:before {
+      content: "●";
+      color: var(--secondary-color);
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.icon {
+  &-sm {
+    font-size: 0.9rem;
+  }
+  &-md {
+    font-size: 1.2rem;
+  }
+  &-lg {
+    font-size: 1.5rem;
+  }
+}
+
+.fa, .fas, .far, .fal, .fab {
+  font-family: 'Font Awesome 6 Free' !important;
 }
