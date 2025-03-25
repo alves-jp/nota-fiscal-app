@@ -74,7 +74,7 @@ public class ProductServiceImplTest {
         BusinessException exception = assertThrows(BusinessException.class, () -> {
             productService.createProduct(productDTO);
         });
-        
+
         assertEquals("A descrição do produto é obrigatória.", exception.getMessage());
     }
 
