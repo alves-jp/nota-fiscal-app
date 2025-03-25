@@ -37,7 +37,7 @@ export class ProductListComponent implements OnInit {
   loading = true;
   
   @Output() editProduct = new EventEmitter<Product>();
-  @Output() createSuccess = new EventEmitter<{ message: string }>(); // Updated output
+  @Output() createSuccess = new EventEmitter<{ message: string }>();
 
   readonly statusSeverity: StatusSeverityMap = {
     ACTIVE: 'success',
@@ -93,7 +93,7 @@ export class ProductListComponent implements OnInit {
       next: () => {
         this.showSuccess('Produto excluído');
         this.loadProducts();
-        this.createSuccess.emit({ message: 'Produto excluído com sucesso' }); // Emitting success event
+        this.createSuccess.emit({ message: 'Produto excluído com sucesso' });
       },
       error: () => this.showError('Falha ao excluir produto')
     });
