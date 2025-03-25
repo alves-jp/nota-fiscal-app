@@ -41,6 +41,10 @@ public class InvoiceItem {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Invoice getInvoice() {
         return invoice;
     }
