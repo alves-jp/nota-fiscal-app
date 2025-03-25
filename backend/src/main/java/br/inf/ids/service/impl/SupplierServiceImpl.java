@@ -11,6 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class SupplierServiceImpl implements SupplierService {
@@ -23,7 +24,7 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Transactional
     @Override
-    public Supplier createSupplier(SupplierDTO supplierDTO) {
+    public SupplierDTO createSupplier(SupplierDTO supplierDTO) {
         validateSupplierDTO(supplierDTO);
 
         Supplier supplier = new Supplier();
@@ -41,31 +42,38 @@ public class SupplierServiceImpl implements SupplierService {
         }
         supplierRepository.persist(supplier);
 
-        return supplier;
+        return mapToDTO(supplier);
     }
 
     @Override
-    public Supplier findSupplierById(Long id) {
-        return supplierRepository.findByIdOptional(id)
+    public SupplierDTO findSupplierById(Long id) {
+        Supplier supplier = supplierRepository.findByIdOptional(id)
                 .orElseThrow(() -> new EntityNotFoundException("Fornecedor não encontrado."));
+
+        return mapToDTO(supplier);
     }
 
     @Override
-    public List<Supplier> findAllSuppliers() {
-        return supplierRepository.listAll();
+    public List<SupplierDTO> findAllSuppliers() {
+        return supplierRepository.listAll().stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Supplier> findSuppliersByName(String companyName) {
+    public List<SupplierDTO> findSuppliersByName(String companyName) {
         if (companyName == null || companyName.isBlank()) {
             throw new BusinessException("A razão social do fornecedor é obrigatória para a busca.");
+
         }
-        return supplierRepository.findByCompanyName(companyName);
+        return supplierRepository.findByCompanyName(companyName).stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public Supplier updateSupplier(Long id, SupplierDTO supplierDTO) {
+    public SupplierDTO updateSupplier(Long id, SupplierDTO supplierDTO) {
         validateSupplierDTO(supplierDTO);
 
         Supplier existingSupplier = supplierRepository.findByIdOptional(id)
@@ -84,7 +92,7 @@ public class SupplierServiceImpl implements SupplierService {
         existingSupplier.setCnpj(supplierDTO.getCnpj());
         existingSupplier.setCompanyStatus(supplierDTO.getCompanyStatus());
 
-        return existingSupplier;
+        return mapToDTO(existingSupplier);
     }
 
     @Override
@@ -115,5 +123,18 @@ public class SupplierServiceImpl implements SupplierService {
         } if (supplierDTO.getSupplierCode() == null) {
             throw new BusinessException("O código do fornecedor é obrigatório.");
         }
+    }
+
+    private SupplierDTO mapToDTO(Supplier supplier) {
+        SupplierDTO supplierDTO = new SupplierDTO();
+
+        supplierDTO.setSupplierCode(supplier.getSupplierCode());
+        supplierDTO.setCompanyName(supplier.getCompanyName());
+        supplierDTO.setsupplierEmail(supplier.getsupplierEmail());
+        supplierDTO.setsupplierPhone(supplier.getsupplierPhone());
+        supplierDTO.setCnpj(supplier.getCnpj());
+        supplierDTO.setCompanyStatus(supplier.getCompanyStatus());
+
+        return supplierDTO;
     }
 }

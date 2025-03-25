@@ -8,16 +8,16 @@ import java.util.List;
 public interface SupplierService {
 
     @Transactional
-    Supplier createSupplier(SupplierDTO supplierDTO);
+    SupplierDTO createSupplier(SupplierDTO supplierDTO);
 
-    Supplier findSupplierById(Long id);
+    SupplierDTO findSupplierById(Long id);
 
-    List<Supplier> findAllSuppliers();
+    List<SupplierDTO> findAllSuppliers();
 
-    List<Supplier> findSuppliersByName(String companyName);
+    List<SupplierDTO> findSuppliersByName(String companyName);
 
     @Transactional
-    Supplier updateSupplier(Long id, SupplierDTO supplierDTO);
+    SupplierDTO updateSupplier(Long id, SupplierDTO supplierDTO);
 
     @Transactional
     void deleteSupplier(Long id);

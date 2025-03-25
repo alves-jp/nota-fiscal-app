@@ -1,7 +1,6 @@
 package br.inf.ids.controller;
 
 import br.inf.ids.dto.SupplierDTO;
-import br.inf.ids.model.Supplier;
 import br.inf.ids.service.SupplierService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -29,11 +28,11 @@ public class SupplierController {
     @Operation(summary = "Criar um fornecedor", description = "Cria um novo fornecedor no sistema.")
     @APIResponse(responseCode = "201", description = "Fornecedor criado com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Supplier.class)))
+                    schema = @Schema(implementation = SupplierDTO.class)))
     @APIResponse(responseCode = "400", description = "Erro ao criar o fornecedor")
     public Response createSupplier(SupplierDTO supplierDTO) {
         try {
-            Supplier supplier = supplierService.createSupplier(supplierDTO);
+            SupplierDTO supplier = supplierService.createSupplier(supplierDTO);
             return Response.status(Response.Status.CREATED).entity(supplier).build();
 
         } catch (Exception e) {
@@ -46,12 +45,12 @@ public class SupplierController {
     @Operation(summary = "Buscar fornecedor por ID", description = "Retorna um fornecedor específico pelo ID.")
     @APIResponse(responseCode = "200", description = "Fornecedor encontrado",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Supplier.class)))
+                    schema = @Schema(implementation = SupplierDTO.class)))
     @APIResponse(responseCode = "404", description = "Fornecedor não encontrado")
     public Response getSupplierById(@PathParam("id")
                                     @Parameter(description = "ID do fornecedor", required = true) Long id) {
         try {
-            Supplier supplier = supplierService.findSupplierById(id);
+            SupplierDTO supplier = supplierService.findSupplierById(id);
             return Response.ok(supplier).build();
 
         } catch (Exception e) {
@@ -64,9 +63,9 @@ public class SupplierController {
             description = "Retorna a lista de fornecedores cadastrados.")
     @APIResponse(responseCode = "200", description = "Lista de fornecedores retornada com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Supplier.class)))
+                    schema = @Schema(implementation = SupplierDTO.class)))
     public Response getAllSuppliers() {
-        List<Supplier> suppliers = supplierService.findAllSuppliers();
+        List<SupplierDTO> suppliers = supplierService.findAllSuppliers();
         return Response.ok(suppliers).build();
     }
 
@@ -76,12 +75,12 @@ public class SupplierController {
             description = "Retorna a lista de fornecedores que possuem um nome específico.")
     @APIResponse(responseCode = "200", description = "Fornecedores encontrados",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Supplier.class)))
+                    schema = @Schema(implementation = SupplierDTO.class)))
     public Response getSupplierByName(@QueryParam("companyName")
                                       @Parameter(description = "Nome da empresa", required = true)
-                                          String companyName) {
+                                      String companyName) {
         try {
-            List<Supplier> suppliers = supplierService.findSuppliersByName(companyName);
+            List<SupplierDTO> suppliers = supplierService.findSuppliersByName(companyName);
             return Response.ok(suppliers).build();
 
         } catch (Exception e) {
@@ -94,13 +93,13 @@ public class SupplierController {
     @Operation(summary = "Atualizar um fornecedor", description = "Atualiza os dados de um fornecedor pelo ID.")
     @APIResponse(responseCode = "200", description = "Fornecedor atualizado com sucesso",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
-                    schema = @Schema(implementation = Supplier.class)))
+                    schema = @Schema(implementation = SupplierDTO.class)))
     @APIResponse(responseCode = "400", description = "Erro ao atualizar o fornecedor")
     public Response updateSupplier(@PathParam("id")
                                    @Parameter(description = "ID do fornecedor", required = true)
-                                       Long id, SupplierDTO supplierDTO) {
+                                   Long id, SupplierDTO supplierDTO) {
         try {
-            Supplier updatedSupplier = supplierService.updateSupplier(id, supplierDTO);
+            SupplierDTO updatedSupplier = supplierService.updateSupplier(id, supplierDTO);
             return Response.ok(updatedSupplier).build();
 
         } catch (Exception e) {
@@ -118,7 +117,7 @@ public class SupplierController {
         try {
             supplierService.deleteSupplier(id);
             return Response.noContent().build();
-            
+
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
