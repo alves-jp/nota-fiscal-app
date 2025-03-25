@@ -1,9 +1,80 @@
-<div class="p-grid">
-    <div class="p-col-12">
-      <h1>Novo Produto</h1>
-      <app-product-form 
-        (formSubmit)="onProductCreated($event)"
-        (formCancel)="onCancel()"
-      ></app-product-form>
-    </div>
-  </div>
+<div class="product-create-container">
+  <p-toast position="top-right"></p-toast>
+  
+  <p-card header="Novo Produto" [style]="{'margin-bottom': '2em'}">
+    <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+      <div class="p-fluid grid">
+        
+        <!-- Código do Produto -->
+        <div class="field col-12 md:col-6">
+          <label for="productCode">Código do Produto *</label>
+          <input 
+            pInputText 
+            id="productCode" 
+            name="productCode"
+            [(ngModel)]="product.productCode" 
+            placeholder="Ex: PRD-001"
+            required
+            [disabled]="loading"
+          />
+          <small *ngIf="submitted && !product.productCode" class="p-error">
+            Código é obrigatório
+          </small>
+        </div>
+
+        <!-- Status -->
+        <div class="field col-12 md:col-6">
+          <label for="productStatus">Status *</label>
+          <p-dropdown 
+            id="productStatus"
+            name="productStatus"
+            [(ngModel)]="product.productStatus"
+            [options]="statusOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione o status"
+            required
+            [disabled]="loading"
+          ></p-dropdown>
+        </div>
+
+        <!-- Descrição -->
+        <div class="field col-12">
+          <label for="description">Descrição *</label>
+          <textarea 
+            pInputTextarea 
+            id="description" 
+            name="description"
+            [(ngModel)]="product.description" 
+            rows="3"
+            placeholder="Descrição detalhada do produto"
+            required
+            [disabled]="loading"
+          ></textarea>
+          <small *ngIf="submitted && !product.description" class="p-error">
+            Descrição é obrigatória
+          </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button 
+          pButton 
+          type="button" 
+          label="Cancelar" 
+          icon="pi pi-times" 
+          class="p-button-outlined p-button-secondary" 
+          (click)="onCancel()"
+          [disabled]="loading"
+        ></button>
+        <button 
+          pButton 
+          type="submit" 
+          label="Salvar" 
+          icon="pi pi-check" 
+          [loading]="loading"
+        ></button>
+      </div>
+    </form>
+  </p-card>
+</div>

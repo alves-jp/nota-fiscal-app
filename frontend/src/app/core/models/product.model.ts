@@ -1,7 +1,8 @@
 export interface Product {
-    id?: number;
-    code: string;
-    name: string;
-    description?: string;
-    price: number;
-  }
+  id: number;
+  productCode: string;
+  description: string;
+  productStatus: 'ACTIVE' | 'INACTIVE' | 'PENDING';
+  createdAt?: Date;
+  updatedAt?: Date;
+}

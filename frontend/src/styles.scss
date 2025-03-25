@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+/* styles.scss */
+/* Estilos globais adicionais */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: #f8f9fa;
+}
+
+.p-component {
+  font-family: var(--font-family);
+}

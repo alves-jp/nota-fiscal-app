@@ -1,34 +1,60 @@
-<p-table [value]="products" [paginator]="true" [rows]="10">
+<div class="product-list-container">
+  <p-table 
+    [value]="products" 
+    [paginator]="true" 
+    [rows]="10"
+    [loading]="loading"
+    styleClass="p-datatable-gridlines"
+    [globalFilterFields]="['productCode','description']"
+  >
     <ng-template pTemplate="header">
       <tr>
-        <th>Código</th>
-        <th>Nome</th>
-        <th>Preço</th>
-        <th>Ações</th>
+        <th pSortableColumn="productCode">Código <p-sortIcon field="productCode"></p-sortIcon></th>
+        <th pSortableColumn="description">Descrição <p-sortIcon field="description"></p-sortIcon></th>
+        <th>Status</th>
+        <th style="width: 120px">Ações</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr>
-        <td>{{ product.code }}</td>
-        <td>{{ product.name }}</td>
-        <td>{{ product.price | currency:'BRL' }}</td>
+        <td>{{ product.productCode }}</td>
+        <td>{{ product.description }}</td>
         <td>
-          <button 
-            pButton 
-            icon="pi pi-pencil" 
-            class="p-button-rounded p-button-success p-mr-2"
-            (click)="onEdit(product)"
-          ></button>
-          <button 
-            pButton 
-            icon="pi pi-trash" 
-            class="p-button-rounded p-button-danger"
-            (click)="onDelete(product)"
-          ></button>
+          <p-tag 
+            [value]="product.productStatus" 
+            [severity]="getSeverity(product.productStatus)"
+          ></p-tag>
+        </td>
+        <td>
+          <div class="action-buttons">
+            <button 
+              pButton 
+              icon="pi pi-pencil" 
+              class="p-button-rounded p-button-text p-button-sm"
+              (click)="onEdit(product)"
+            ></button>
+            <button 
+              pButton 
+              icon="pi pi-trash" 
+              class="p-button-rounded p-button-text p-button-sm p-button-danger"
+              (click)="onDelete(product)"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" class="text-center">
+          Nenhum produto encontrado
         </td>
       </tr>
     </ng-template>
   </p-table>
-  
-  <p-confirmDialog></p-confirmDialog>
-  <p-toast></p-toast>
+
+  <p-confirmDialog 
+    [style]="{width: '450px'}"
+    [baseZIndex]="10000"
+  ></p-confirmDialog>
+  <p-toast position="top-center"></p-toast>
+</div>
