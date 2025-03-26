@@ -91,7 +91,6 @@ export class ProductListComponent implements OnInit {
   private deleteProduct(id: number): void {
     this.productService.deleteProduct(id).subscribe({
       next: () => {
-        this.showSuccess('Produto excluído');
         this.loadProducts();
         this.createSuccess.emit({ message: 'Produto excluído com sucesso' });
       },
