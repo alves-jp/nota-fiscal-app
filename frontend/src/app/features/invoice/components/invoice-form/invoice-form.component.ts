@@ -35,6 +35,7 @@ export class InvoiceFormComponent implements OnInit {
 
   invoiceForm: FormGroup;
   minDate = new Date();
+  maxDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +44,7 @@ export class InvoiceFormComponent implements OnInit {
     this.invoiceForm = this.fb.group({
       id: [null],
       invoiceNumber: ['', [Validators.required, Validators.maxLength(50)]],
-      issueDate: [null, Validators.required],
+      issueDate: [null, [Validators.required]],
       supplierId: [null, Validators.required],
       address: ['', [Validators.required, Validators.maxLength(255)]]
     });
@@ -51,35 +52,50 @@ export class InvoiceFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.invoice) {
-      this.invoiceForm.patchValue({
-        id: this.invoice.id,
-        invoiceNumber: this.invoice.invoiceNumber,
-        issueDate: new Date(this.invoice.issueDate),
-        supplierId: this.invoice.supplier.id,
-        address: this.invoice.address
-      });
+      this.patchFormWithInvoiceData();
     }
   }
 
+  private patchFormWithInvoiceData(): void {
+    if (!this.invoice) return;
+
+    this.invoiceForm.patchValue({
+      id: this.invoice.id,
+      invoiceNumber: this.invoice.invoiceNumber,
+      issueDate: this.invoice.issueDate ? new Date(this.invoice.issueDate) : null,
+      supplierId: this.invoice.supplier?.id || null,
+      address: this.invoice.address
+    });
+  }
+
   onSubmit(): void {
-    if (this.invoiceForm.valid) {
-      const formValue = this.invoiceForm.value;
-      const invoiceData: InvoiceDTO = {
-        id: formValue.id,
-        invoiceNumber: formValue.invoiceNumber,
-        issueDate: formValue.issueDate,
-        supplierId: formValue.supplierId,
-        address: formValue.address
-      };
-      this.formSubmit.emit(invoiceData);
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Erro',
-        detail: 'Preencha todos os campos obrigatórios'
-      });
-      this.markAllAsTouched();
+    if (this.invoiceForm.invalid) {
+      this.handleInvalidForm();
+      return;
     }
+
+    const invoiceData = this.prepareInvoiceData();
+    this.formSubmit.emit(invoiceData);
+  }
+
+  private handleInvalidForm(): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Erro',
+      detail: 'Preencha todos os campos obrigatórios'
+    });
+    this.markAllAsTouched();
+  }
+
+  private prepareInvoiceData(): InvoiceDTO {
+    const formValue = this.invoiceForm.value;
+    return {
+      id: formValue.id,
+      invoiceNumber: formValue.invoiceNumber,
+      issueDate: formValue.issueDate,
+      supplierId: formValue.supplierId,
+      address: formValue.address
+    };
   }
 
   onCancel(): void {

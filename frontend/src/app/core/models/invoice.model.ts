@@ -19,12 +19,4 @@ export interface InvoiceResponseDTO {
   totalValue: number;
 }
 
-export interface Invoice {
-  id: number;
-  invoiceNumber: string;
-  issueDate: Date;
-  supplier: Supplier;
-  address: string;
-  items: InvoiceItem[];
-  totalValue: number;
-}
+export interface Invoice extends InvoiceResponseDTO {}

@@ -24,6 +24,23 @@
     }
   }
 
+  .supplier-info {
+    display: flex;
+    flex-direction: column;
+    
+    .supplier-code {
+      color: #64748b;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .p-tag {
+    min-width: 2rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
   .action-buttons {
     display: flex;
     gap: 0.5rem;
@@ -59,7 +76,6 @@
   }
 }
 
-/* Diálogo Customizado */
 .custom-dialog {
   border: none;
   border-radius: 8px;

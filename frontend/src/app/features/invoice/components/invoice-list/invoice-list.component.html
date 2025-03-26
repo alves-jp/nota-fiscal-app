@@ -5,13 +5,14 @@
     [rows]="10"
     [loading]="loading"
     styleClass="p-datatable-gridlines"
-    [globalFilterFields]="['invoiceNumber','supplier.name']"
+    [globalFilterFields]="['invoiceNumber','supplier.companyName']"
   >
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="invoiceNumber">Número <p-sortIcon field="invoiceNumber"></p-sortIcon></th>
         <th pSortableColumn="issueDate">Data <p-sortIcon field="issueDate"></p-sortIcon></th>
-        <th pSortableColumn="supplier.name">Fornecedor <p-sortIcon field="supplier.name"></p-sortIcon></th>
+        <th pSortableColumn="supplier.companyName">Fornecedor <p-sortIcon field="supplier.companyName"></p-sortIcon></th>
+        <th>Itens</th>
         <th pSortableColumn="totalValue">Valor Total <p-sortIcon field="totalValue"></p-sortIcon></th>
         <th style="width: 120px">Ações</th>
       </tr>
@@ -20,7 +21,15 @@
       <tr>
         <td>{{ invoice.invoiceNumber }}</td>
         <td>{{ formatDate(invoice.issueDate) }}</td>
-        <td>{{ invoice.supplier.name }}</td>
+        <td>
+          <div class="supplier-info">
+            <span>{{ invoice.supplier.companyName }}</span>
+            <small class="supplier-code">{{ invoice.supplier.supplierCode }}</small>
+          </div>
+        </td>
+        <td>
+          <p-tag [value]="invoice.items.length" severity="info"></p-tag>
+        </td>
         <td>{{ formatCurrency(invoice.totalValue) }}</td>
         <td>
           <div class="action-buttons">
@@ -44,7 +53,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="5" class="text-center">
+        <td colspan="6" class="text-center">
           Nenhuma nota fiscal encontrada
         </td>
       </tr>

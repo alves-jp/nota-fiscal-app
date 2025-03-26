@@ -13,8 +13,8 @@ export class InvoiceService {
 
   constructor(private http: HttpClient) {}
 
-  createInvoice(invoice: InvoiceDTO): Observable<Invoice> {
-    return this.http.post<Invoice>(this.apiUrl, invoice)
+  createInvoice(invoice: InvoiceDTO): Observable<InvoiceResponseDTO> {
+    return this.http.post<InvoiceResponseDTO>(this.apiUrl, invoice)
       .pipe(catchError(this.handleError));
   }
 
@@ -28,8 +28,8 @@ export class InvoiceService {
       .pipe(catchError(this.handleError));
   }
 
-  updateInvoice(id: number, invoice: InvoiceDTO): Observable<Invoice> {
-    return this.http.put<Invoice>(`${this.apiUrl}/${id}`, invoice)
+  updateInvoice(id: number, invoice: InvoiceDTO): Observable<InvoiceResponseDTO> {
+    return this.http.put<InvoiceResponseDTO>(`${this.apiUrl}/${id}`, invoice)
       .pipe(catchError(this.handleError));
   }
 
@@ -38,9 +38,10 @@ export class InvoiceService {
       .pipe(catchError(this.handleError));
   }
 
-  getInvoiceByNumber(number: string): Observable<Invoice[]> {
-    return this.http.get<Invoice[]>(`${this.apiUrl}/buscar?invoiceNumber=${encodeURIComponent(number)}`)
-      .pipe(catchError(this.handleError));
+  getInvoiceByNumber(number: string): Observable<InvoiceResponseDTO[]> {
+    return this.http.get<InvoiceResponseDTO[]>(
+      `${this.apiUrl}/buscar?invoiceNumber=${encodeURIComponent(number)}`
+    ).pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -55,8 +56,7 @@ export class InvoiceService {
         try {
           const errorBody = JSON.parse(error.error);
           errorMessage = errorBody.message || errorMessage;
-        } catch (e) {
-        }
+        } catch (e) {}
       }
     }
     

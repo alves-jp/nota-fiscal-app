@@ -27,6 +27,7 @@
             formControlName="issueDate"
             [showIcon]="true"
             [minDate]="minDate"
+            [maxDate]="maxDate"
             dateFormat="dd/mm/yy"
             [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('issueDate')?.invalid && invoiceForm.get('issueDate')?.touched}">
           </p-calendar>
@@ -42,7 +43,7 @@
             id="supplierId"
             [options]="suppliers" 
             formControlName="supplierId"
-            optionLabel="name" 
+            optionLabel="companyName" 
             optionValue="id"
             placeholder="Selecione um fornecedor"
             [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('supplierId')?.invalid && invoiceForm.get('supplierId')?.touched}">
