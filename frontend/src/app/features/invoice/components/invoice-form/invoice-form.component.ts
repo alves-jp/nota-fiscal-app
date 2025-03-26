@@ -9,9 +9,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
-import { AutoCompleteSelectEvent } from 'primeng/autocomplete';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { Supplier } from '../../../../core/models/supplier.model';
+import { SupplierService } from '../../../../core/services/api/supplier.service';
 
 @Component({
   selector: 'app-invoice-form',
@@ -32,18 +32,18 @@ import { Supplier } from '../../../../core/models/supplier.model';
 })
 export class InvoiceFormComponent implements OnInit {
   @Input() invoice?: InvoiceResponseDTO;
-  @Input() suppliers: Supplier[] = [];
   @Output() formSubmit = new EventEmitter<InvoiceDTO>();
   @Output() formCancel = new EventEmitter<void>();
 
   invoiceForm: FormGroup;
   filteredSuppliers: Supplier[] = [];
   currentDate = new Date();
-  loading = false;
+  suppliers: Supplier[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private supplierService: SupplierService
   ) {
     this.invoiceForm = this.fb.group({
       id: [null],
@@ -55,9 +55,26 @@ export class InvoiceFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadSuppliers();
+    
     if (this.invoice) {
       this.patchFormWithInvoiceData();
     }
+  }
+
+  private loadSuppliers(): void {
+    this.supplierService.getAllSuppliers().subscribe({
+      next: (suppliers) => {
+        this.suppliers = suppliers;
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Não foi possível carregar os fornecedores'
+        });
+      }
+    });
   }
 
   private pastDateValidator(control: any): { [key: string]: boolean } | null {
@@ -112,7 +129,6 @@ export class InvoiceFormComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
     const formValue = this.invoiceForm.value;
     const invoiceData: InvoiceDTO = {
       id: formValue.id,
