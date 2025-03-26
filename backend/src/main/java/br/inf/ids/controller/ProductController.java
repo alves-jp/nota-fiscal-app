@@ -1,13 +1,15 @@
 package br.inf.ids.controller;
 
 import br.inf.ids.dto.ProductDTO;
+import br.inf.ids.exception.BusinessException;
+import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.service.ProductService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.List;
-
+import java.util.Map;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
@@ -117,8 +119,23 @@ public class ProductController {
             productService.deleteProduct(id);
             return Response.noContent().build();
 
+        } catch (BusinessException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(Map.of("message", e.getMessage()))
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+
+        } catch (EntityNotFoundException e) {
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(Map.of("message", e.getMessage()))
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+
         } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(Map.of("message", "Erro interno ao excluir o produto"))
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
         }
     }
 }

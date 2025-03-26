@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../enviroments/environment';
 import { Product } from '../../models/product.model';
 
@@ -34,7 +35,9 @@ export class ProductService {
 
   deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getProductByCode(code: string): Observable<Product[]> {
@@ -45,12 +48,23 @@ export class ProductService {
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocorreu um erro desconhecido';
     
+    // Verifica se o erro tem uma resposta do servidor
     if (error.error instanceof ErrorEvent) {
       // Erro do lado do cliente
       errorMessage = `Erro: ${error.error.message}`;
     } else {
-      // Erro do lado do servidor
-      errorMessage = error.error?.message || error.message;
+      // Tenta extrair a mensagem de erro do corpo da resposta
+      if (error.error && error.error.message) {
+        errorMessage = error.error.message;
+      } else if (error.status === 400 || error.status === 404) {
+        // Caso específico para erros 400 e 404
+        try {
+          const errorBody = JSON.parse(error.error);
+          errorMessage = errorBody.message || errorMessage;
+        } catch (e) {
+          // Se não conseguir parsear, usa a mensagem padrão
+        }
+      }
     }
     
     return throwError(() => new Error(errorMessage));

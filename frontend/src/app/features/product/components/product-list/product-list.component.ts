@@ -95,7 +95,10 @@ export class ProductListComponent implements OnInit {
         this.loadProducts();
         this.createSuccess.emit({ message: 'Produto excluído com sucesso' });
       },
-      error: () => this.showError('Falha ao excluir produto')
+      error: (error: Error) => {
+        const errorMessage = error.message || 'Falha ao excluir produto';
+        this.showError(errorMessage);
+      }
     });
   }
 
