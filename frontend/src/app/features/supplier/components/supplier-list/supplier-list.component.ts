@@ -95,13 +95,14 @@ export class SupplierListComponent implements OnInit {
     this.confirmDialog.nativeElement.close(result.toString());
   }
 
-  private deleteSupplier(id: number): void {
+  deleteSupplier(id: number): void {
     this.supplierService.deleteSupplier(id).subscribe({
       next: () => {
-        this.loadSuppliers();
         this.showSuccess('Fornecedor excluído com sucesso');
+        this.loadSuppliers();
       },
       error: (error: Error) => {
+        // Aqui a mensagem do backend será propagada
         this.showError(error.message || 'Falha ao excluir fornecedor');
       }
     });
