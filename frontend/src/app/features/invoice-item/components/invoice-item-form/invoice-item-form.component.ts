@@ -43,7 +43,8 @@ export class InvoiceItemFormComponent implements OnInit {
       id: [null],
       product: [null, Validators.required],
       unitPrice: [null, [Validators.required, Validators.min(0.01)]],
-      quantity: [1, [Validators.required, Validators.min(1)]]
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      total: [{value: 0, disabled: true}]
     });
   }
 
@@ -53,15 +54,19 @@ export class InvoiceItemFormComponent implements OnInit {
         id: this.invoiceItem.id,
         product: this.invoiceItem.product,
         unitPrice: this.invoiceItem.unitPrice,
-        quantity: this.invoiceItem.quantity
+        quantity: this.invoiceItem.quantity,
+        total: this.invoiceItem.unitPrice * this.invoiceItem.quantity
       });
     }
+    
+    this.invoiceItemForm.get('unitPrice')?.valueChanges.subscribe(() => this.updateTotal());
+    this.invoiceItemForm.get('quantity')?.valueChanges.subscribe(() => this.updateTotal());
   }
 
-  calculateTotal(): number {
+  updateTotal(): void {
     const unitPrice = this.invoiceItemForm.get('unitPrice')?.value || 0;
     const quantity = this.invoiceItemForm.get('quantity')?.value || 0;
-    return unitPrice * quantity;
+    this.invoiceItemForm.get('total')?.setValue(unitPrice * quantity, {emitEvent: false});
   }
 
   onSubmit(): void {

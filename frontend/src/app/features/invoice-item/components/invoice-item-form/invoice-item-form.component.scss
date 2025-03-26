@@ -1,147 +1,186 @@
 :host {
-    display: block;
-    padding: 1.5rem;
-    
-    .p-card {
+  display: block;
+  padding: 1.5rem;
+  
+  .p-card {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+    .p-card-header {
+      background-color: #f8fafc;
+      border-bottom: 2px solid #3498db;
+      color: #2c3e50;
+      font-weight: 600;
+      padding: 1.5rem;
+      text-align: center;
+      border-radius: 6px 6px 0 0;
+      font-size: 1.5rem;
+    }
+
+    .p-card-content {
+      padding: 2rem;
+    }
+  }
+
+  .p-field {
+    margin-bottom: 1.75rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 0.95rem;
+    }
+
+    /* Estilo unificado para todos os inputs - IDÊNTICO ao product-form */
+    .p-inputtext,
+    .p-inputnumber .p-inputtext,
+    .p-dropdown {
       width: 100%;
-      max-width: 900px;
-      margin: 0 auto;
-      border: 2px solid #3498db;
-      border-radius: 8px;
-      background-color: #ffffff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  
-      .p-card-header {
-        background-color: #f8fafc;
-        border-bottom: 2px solid #3498db;
-        color: #2c3e50;
-        font-weight: 600;
-        padding: 1.5rem;
-        text-align: center;
-        border-radius: 6px 6px 0 0;
-        font-size: 1.5rem;
-      }
-  
-      .p-card-content {
-        padding: 2rem;
-      }
-    }
-  
-    .p-field {
-      margin-bottom: 1.75rem;
-  
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 0.95rem;
-      }
-  
-      .p-dropdown, .p-inputnumber {
-        width: 100%;
-        
-        .p-dropdown, .p-inputtext {
-          width: 100%;
-          background-color: #ffffff !important;
-          border: 1px solid #d1d5db !important;
-          border-radius: 6px;
-          padding: 0.65rem 1rem !important;
-          font-size: 1rem !important;
-          color: #374151;
-          transition: all 0.2s;
-  
-          &:hover {
-            border-color: #3498db !important;
-          }
-  
-          &:focus, &.ng-dirty.ng-invalid {
-            border-color: #3498db !important;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
-          }
-  
-          &.ng-invalid.ng-dirty {
-            border-color: #e53e3e !important;
-          }
-        }
-      }
-  
-      .p-error {
-        color: #e53e3e;
-        font-size: 0.85rem;
-        margin-top: 0.35rem;
-        font-weight: 500;
-      }
-    }
-  
-    .form-actions {
+      height: 2.5rem;
+      background-color: #ffffff !important;
+      border: 1px solid #d1d5db !important;
+      border-radius: 6px;
+      padding: 0.5rem 1rem !important;
+      font-size: 1rem !important;
+      color: #374151;
+      transition: all 0.2s;
+      line-height: 1.5;
       display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      padding-top: 1.5rem;
-      margin-top: 1rem;
-      border-top: 1px solid #e5e7eb;
-  
-      .p-button {
-        min-width: 120px;
-        padding: 0.7rem 1.25rem !important;
-        font-size: 0.95rem !important;
-        font-weight: 500;
-        border-radius: 6px;
-        transition: all 0.2s;
-        
-        &.p-button-outlined {
-          background: transparent !important;
-          border: 1px solid #6b7280 !important;
-          color: #6b7280 !important;
-          
-          &:hover {
-            background: #f3f4f6 !important;
-            border-color: #4b5563 !important;
-          }
-        }
-        
-        &:not(.p-button-outlined) {
-          background: #3498db !important;
-          border: 1px solid #3498db !important;
-          color: white !important;
-          
-          &:hover {
-            background: #2980b9 !important;
-            border-color: #2980b9 !important;
-          }
-  
-          &:disabled {
-            background: #a0aec0 !important;
-            border-color: #a0aec0 !important;
-            cursor: not-allowed;
-          }
-        }
+      align-items: center;
+
+      &:hover {
+        border-color: #3498db !important;
+      }
+
+      &:focus, &.ng-dirty.ng-invalid {
+        border-color: #3498db !important;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
+      }
+
+      &.ng-invalid.ng-dirty {
+        border-color: #e53e3e !important;
       }
     }
-  
-    @media (max-width: 768px) {
-      padding: 1rem;
+
+    /* Ajuste específico para inputs numéricos */
+    .p-inputnumber {
+      .p-inputtext {
+        padding: 0.5rem 1rem !important;
+        height: 2.5rem;
+      }
       
-      .p-card {
-        border-width: 1px;
+      .p-inputnumber-input {
+        padding: 0 !important;
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    /* Estilo específico para o dropdown */
+    .p-dropdown {
+      .p-dropdown-label {
+        padding: 0.5rem 1rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+      }
+      
+      .p-dropdown-trigger {
+        width: 2.5rem;
+      }
+    }
+
+    /* Estilo para o input readonly (total) */
+    .p-inputnumber[readonly] .p-inputtext {
+      background-color: #f8f9fa !important;
+      border-color: #e5e7eb !important;
+      cursor: not-allowed;
+    }
+
+    .p-error {
+      color: #e53e3e;
+      font-size: 0.85rem;
+      margin-top: 0.35rem;
+      font-weight: 500;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    margin-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+
+    .p-button {
+      min-width: 120px;
+      padding: 0.7rem 1.25rem !important;
+      font-size: 0.95rem !important;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: all 0.2s;
+      
+      &.p-button-outlined {
+        background: transparent !important;
+        border: 1px solid #6b7280 !important;
+        color: #6b7280 !important;
         
-        .p-card-header {
-          padding: 1rem;
-          font-size: 1.25rem;
-        }
-        
-        .p-card-content {
-          padding: 1.25rem;
+        &:hover {
+          background: #f3f4f6 !important;
+          border-color: #4b5563 !important;
         }
       }
       
-      .form-actions {
-        flex-direction: column;
+      &:not(.p-button-outlined) {
+        background: #3498db !important;
+        border: 1px solid #3498db !important;
+        color: white !important;
         
-        .p-button {
-          width: 100%;
+        &:hover {
+          background: #2980b9 !important;
+          border-color: #2980b9 !important;
+        }
+
+        &:disabled {
+          background: #a0aec0 !important;
+          border-color: #a0aec0 !important;
+          cursor: not-allowed;
         }
       }
     }
   }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    
+    .p-card {
+      border-width: 1px;
+      
+      .p-card-header {
+        padding: 1rem;
+        font-size: 1.25rem;
+      }
+      
+      .p-card-content {
+        padding: 1.25rem;
+      }
+    }
+    
+    .form-actions {
+      flex-direction: column;
+      
+      .p-button {
+        width: 100%;
+      }
+    }
+  }
+}
