@@ -12,7 +12,6 @@
   --border-color: #e0e0e0;
   --button-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   
-  /* Toast notification colors */
   --toast-success-bg: #48bb78;
   --toast-success-text: #ffffff;
   --toast-error-bg: #e53e3e;
@@ -35,7 +34,6 @@ body {
   font-family: var(--font-family) !important;
 }
 
-/* Estilos globais para notificações Toast */
 .p-toast {
   .p-toast-message {
     border-radius: 6px !important;

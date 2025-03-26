@@ -14,7 +14,10 @@ export class ProductService {
   constructor(private http: HttpClient) {}
 
   createProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product)
+    return this.http.post<Product>(this.apiUrl, {
+      ...product,
+      productStatus: product.productStatus.toUpperCase()
+    })
       .pipe(catchError(this.handleError));
   }
 
@@ -29,7 +32,10 @@ export class ProductService {
   }
 
   updateProduct(id: number, product: Product): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, product)
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, {
+      ...product,
+      productStatus: product.productStatus.toUpperCase()
+    })
       .pipe(catchError(this.handleError));
   }
 
@@ -48,21 +54,16 @@ export class ProductService {
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocorreu um erro desconhecido';
     
-    // Verifica se o erro tem uma resposta do servidor
     if (error.error instanceof ErrorEvent) {
-      // Erro do lado do cliente
       errorMessage = `Erro: ${error.error.message}`;
     } else {
-      // Tenta extrair a mensagem de erro do corpo da resposta
       if (error.error && error.error.message) {
         errorMessage = error.error.message;
       } else if (error.status === 400 || error.status === 404) {
-        // Caso específico para erros 400 e 404
         try {
           const errorBody = JSON.parse(error.error);
           errorMessage = errorBody.message || errorMessage;
         } catch (e) {
-          // Se não conseguir parsear, usa a mensagem padrão
         }
       }
     }

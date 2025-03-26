@@ -15,6 +15,7 @@ import { ProductFormComponent } from '../../components/product-form/product-form
 })
 export class ProductEditPageComponent implements OnInit {
   product?: Product;
+  isLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,14 +25,21 @@ export class ProductEditPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadProduct();
+  }
+
+  loadProduct(): void {
     const productId = this.route.snapshot.paramMap.get('id');
     
     if (productId) {
+      this.isLoading = true;
       this.productService.getProductById(Number(productId)).subscribe({
         next: (product) => {
           this.product = product;
+          this.isLoading = false;
         },
         error: (error) => {
+          this.isLoading = false;
           this.messageService.add({
             severity: 'error', 
             summary: 'Erro', 
@@ -43,8 +51,28 @@ export class ProductEditPageComponent implements OnInit {
     }
   }
 
-  onProductUpdated(product: Product): void {
-    this.router.navigate(['/produtos']);
+  onProductUpdated(updatedProduct: Product): void {
+    if (!this.product?.id) return;
+
+    this.isLoading = true;
+    this.productService.updateProduct(this.product.id, updatedProduct).subscribe({
+      next: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso',
+          detail: 'Produto atualizado com sucesso'
+        });
+        this.router.navigate(['/produtos']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: error.message || 'Falha ao atualizar produto'
+        });
+      }
+    });
   }
 
   onCancel(): void {
