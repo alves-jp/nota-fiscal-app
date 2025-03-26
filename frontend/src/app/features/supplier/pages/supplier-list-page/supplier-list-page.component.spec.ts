@@ -3,7 +3,7 @@ import { SupplierListPageComponent } from './supplier-list-page.component';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { SupplierListComponent } from '../../components/supplier-list/supplier-list.component';
-import { SupplierDTO, Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
+import { Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
 
 class MockRouter {
   navigate = jasmine.createSpy('navigate');

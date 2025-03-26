@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SupplierService } from '../../../../core/services/api/supplier.service';
-import { SupplierDTO, Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
+import {  Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
 import { MessageService } from 'primeng/api';
 import { SupplierFormComponent } from '../../components/supplier-form/supplier-form.component';
 
@@ -51,7 +51,7 @@ export class SupplierEditPageComponent implements OnInit {
     }
   }
 
-  onSupplierUpdated(updatedSupplier: SupplierDTO): void {
+  onSupplierUpdated(updatedSupplier: Supplier): void {
     if (!this.supplier?.id) return;
 
     this.isLoading = true;

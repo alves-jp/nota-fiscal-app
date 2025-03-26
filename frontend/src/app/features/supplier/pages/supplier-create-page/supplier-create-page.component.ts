@@ -6,7 +6,7 @@ import { SupplierFormComponent } from '../../components/supplier-form/supplier-f
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { SupplierDTO, Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
+import { Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
 import { SupplierService } from '../../../../core/services/api/supplier.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class SupplierCreatePageComponent {
     private messageService: MessageService
   ) {}
 
-  handleFormSubmit(supplier: SupplierDTO): void {
+  handleFormSubmit(supplier: Supplier): void {
     this.submitted = true;
     this.loading = true;
 

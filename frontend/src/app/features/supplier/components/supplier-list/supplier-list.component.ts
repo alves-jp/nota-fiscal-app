@@ -58,6 +58,14 @@ export class SupplierListComponent implements OnInit {
   }
 
   onEdit(supplier: Supplier): void {
+    console.log('Supplier object received:', supplier); // Verifique se o ID está presente
+    
+    if (!supplier?.id) {
+      console.error('Cannot edit: supplier ID is missing', supplier);
+      this.showError('Fornecedor inválido: ID não encontrado');
+      return;
+    }
+    
     this.editSupplier.emit(supplier);
   }
 
@@ -129,7 +137,7 @@ export class SupplierListComponent implements OnInit {
   getStatusSeverity(status: CompanyStatus): PrimeSeverity {
     switch(status) {
       case CompanyStatus.ACTIVE: return 'success';
-      case CompanyStatus.SUSPENDED: return 'warn';  // Note que é 'warn' em vez de 'warning'
+      case CompanyStatus.SUSPENDED: return 'warn';
       case CompanyStatus.INACTIVE: return 'danger';
       default: return undefined;
     }

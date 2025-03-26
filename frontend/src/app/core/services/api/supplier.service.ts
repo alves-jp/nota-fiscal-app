@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../enviroments/environment';
-import { Supplier, SupplierDTO } from '../../models/supplier.model';
+import { Supplier } from '../../models/supplier.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class SupplierService {
 
   constructor(private http: HttpClient) {}
 
-  createSupplier(supplier: SupplierDTO): Observable<Supplier> {
+  createSupplier(supplier: Supplier): Observable<Supplier> {
     return this.http.post<Supplier>(this.apiUrl, supplier)
       .pipe(catchError(this.handleError));
   }
@@ -33,7 +33,7 @@ export class SupplierService {
       .pipe(catchError(this.handleError));
   }
 
-  updateSupplier(id: number, supplier: SupplierDTO): Observable<Supplier> {
+  updateSupplier(id: number, supplier: Supplier): Observable<Supplier> {
     return this.http.put<Supplier>(`${this.apiUrl}/${id}`, supplier)
       .pipe(catchError(this.handleError));
   }

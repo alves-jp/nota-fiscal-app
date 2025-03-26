@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { SupplierDTO, Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
+import { Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
 import { MessageService } from 'primeng/api';
 import { SupplierListComponent } from '../../components/supplier-list/supplier-list.component';
 import { ToastModule } from 'primeng/toast';
@@ -24,6 +24,17 @@ export class SupplierListPageComponent {
   ) {}
 
   onEditSupplier(supplier: Supplier): void {
+    if (!supplier?.id) {
+      console.error('Invalid supplier object:', supplier);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Não foi possível editar: ID do fornecedor não encontrado',
+        life: 5000
+      });
+      return;
+    }
+    
     this.router.navigate(['/fornecedores/editar', supplier.id]);
   }
 

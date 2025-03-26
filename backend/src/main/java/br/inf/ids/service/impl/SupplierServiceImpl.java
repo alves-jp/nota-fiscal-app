@@ -29,6 +29,7 @@ public class SupplierServiceImpl implements SupplierService {
 
         Supplier supplier = new Supplier();
 
+        supplier.setId(supplierDTO.getId());
         supplier.setSupplierCode(supplierDTO.getSupplierCode());
         supplier.setCompanyName(supplierDTO.getCompanyName());
         supplier.setsupplierEmail(supplierDTO.getsupplierEmail());
@@ -85,6 +86,7 @@ public class SupplierServiceImpl implements SupplierService {
             throw new BusinessException("Erro: Já existe um fornecedor com este CNPJ.");
 
         }
+        existingSupplier.setId(supplierDTO.getId());
         existingSupplier.setSupplierCode(supplierDTO.getSupplierCode());
         existingSupplier.setCompanyName(supplierDTO.getCompanyName());
         existingSupplier.setsupplierEmail(supplierDTO.getsupplierEmail());
@@ -128,6 +130,7 @@ public class SupplierServiceImpl implements SupplierService {
     private SupplierDTO mapToDTO(Supplier supplier) {
         SupplierDTO supplierDTO = new SupplierDTO();
 
+        supplierDTO.setId(supplier.getId());
         supplierDTO.setSupplierCode(supplier.getSupplierCode());
         supplierDTO.setCompanyName(supplier.getCompanyName());
         supplierDTO.setsupplierEmail(supplier.getsupplierEmail());

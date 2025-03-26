@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SupplierDTO, CompanyStatus } from '../../../../core/models/supplier.model';
+import { Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
 import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -23,8 +23,8 @@ import { ButtonModule } from 'primeng/button';
   providers: [MessageService]
 })
 export class SupplierFormComponent implements OnInit {
-  @Input() supplier?: SupplierDTO;
-  @Output() formSubmit = new EventEmitter<SupplierDTO>();
+  @Input() supplier?: Supplier;
+  @Output() formSubmit = new EventEmitter<Supplier>();
   @Output() formCancel = new EventEmitter<void>();
 
   supplierForm: FormGroup;
