@@ -19,7 +19,7 @@
           </small>
         </div>
 
-        <!-- Data de Emissão (modificado para input date) -->
+        <!-- Data de Emissão -->
         <div class="p-field p-col-12 p-md-6">
           <label for="issueDate">Data de Emissão *</label>
           <input
@@ -34,32 +34,38 @@
           </small>
         </div>
 
-        <!-- Fornecedor (modificado para autocomplete) -->
+        <!-- Fornecedor (Input com lista suspensa customizada) -->
         <div class="p-field p-col-12 p-md-6">
-          <label for="supplierId">Fornecedor *</label>
-          <p-autoComplete
-            id="supplierId"
-            [suggestions]="filteredSuppliers"
-            (completeMethod)="filterSuppliers($event)"
-            field="companyName"
-            [dropdown]="true"
-            placeholder="Buscar fornecedor..."
-            (onSelect)="onSupplierSelect($event)"
-            [inputStyle]="{width: '100%'}"
-            [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('supplierId')?.invalid && invoiceForm.get('supplierId')?.touched}">
-            <ng-template let-supplier pTemplate="item">
-              <div class="supplier-item">
-                <div>{{ supplier.companyName }}</div>
-                <small>{{ supplier.cnpj }} | {{ supplier.supplierCode }}</small>
+          <label for="supplierSearch">Fornecedor *</label>
+          <div class="supplier-search-container">
+            <input
+              id="supplierSearch"
+              type="text"
+              pInputText
+              [(ngModel)]="searchQuery"
+              (input)="onSupplierSearchInput($event)"
+              [ngModelOptions]="{standalone: true}"
+              placeholder="Digite nome, CNPJ ou código"
+              [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('supplierId')?.invalid && invoiceForm.get('supplierId')?.touched}">
+
+            <div class="supplier-suggestions" *ngIf="showSuggestions && filteredSuppliers.length > 0">
+              <div *ngFor="let supplier of filteredSuppliers" 
+                  class="suggestion-item"
+                  (click)="selectSupplier(supplier)">
+                <div class="supplier-name">{{ supplier.companyName }}</div>
+                <div class="supplier-details">
+                  <span>{{ supplier.cnpj || 'CNPJ não informado' }}</span>
+                  <span> | Código: {{ supplier.supplierCode || 'N/A' }}</span>
+                </div>
               </div>
-            </ng-template>
-          </p-autoComplete>
+            </div>
+          </div>
           <small *ngIf="invoiceForm.get('supplierId')?.invalid && invoiceForm.get('supplierId')?.touched" class="p-error">
             Fornecedor é obrigatório
           </small>
         </div>
 
-        <!-- Endereço (mantido igual) -->
+        <!-- Endereço -->
         <div class="p-field p-col-12">
           <label for="address">Endereço *</label>
           <input 

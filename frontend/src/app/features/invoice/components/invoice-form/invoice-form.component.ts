@@ -8,8 +8,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { AutoCompleteModule, AutoCompleteSelectEvent } from 'primeng/autocomplete';
 import { Supplier } from '../../../../core/models/supplier.model';
 import { SupplierService } from '../../../../core/services/api/supplier.service';
 
@@ -21,12 +21,12 @@ import { SupplierService } from '../../../../core/services/api/supplier.service'
   imports: [
     CommonModule,
     ToastModule,
+    FormsModule,
     InputTextModule,
     ReactiveFormsModule,
     CalendarModule,
     DropdownModule,
-    ButtonModule,
-    AutoCompleteModule
+    ButtonModule
   ],
   providers: [MessageService]
 })
@@ -39,6 +39,9 @@ export class InvoiceFormComponent implements OnInit {
   filteredSuppliers: Supplier[] = [];
   currentDate = new Date();
   suppliers: Supplier[] = [];
+  searchQuery: string = '';
+  showSuggestions: boolean = false;
+  selectedSupplier: Supplier | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -77,6 +80,33 @@ export class InvoiceFormComponent implements OnInit {
     });
   }
 
+  onSupplierSearchInput(event: Event): void {
+    const query = (event.target as HTMLInputElement).value;
+    this.searchQuery = query;
+    this.showSuggestions = query.length > 0;
+    
+    if (!this.showSuggestions) {
+      this.filteredSuppliers = [];
+      return;
+    }
+    
+    const searchTerm = query.toLowerCase();
+    this.filteredSuppliers = this.suppliers.filter(supplier => 
+      supplier.companyName.toLowerCase().includes(searchTerm) || 
+      (supplier.cnpj && supplier.cnpj.includes(searchTerm)) ||
+      (supplier.supplierCode && supplier.supplierCode.toLowerCase().includes(searchTerm))
+    );
+  }
+
+  selectSupplier(supplier: Supplier): void {
+    this.selectedSupplier = supplier;
+    this.invoiceForm.patchValue({
+      supplierId: supplier.id
+    });
+    this.searchQuery = supplier.companyName;
+    this.showSuggestions = false;
+  }
+
   private pastDateValidator(control: any): { [key: string]: boolean } | null {
     if (!control.value) return null;
     
@@ -90,22 +120,6 @@ export class InvoiceFormComponent implements OnInit {
     return null;
   }
 
-  filterSuppliers(event: { query: string }): void {
-    const query = event.query.toLowerCase();
-    this.filteredSuppliers = this.suppliers.filter(supplier => 
-      supplier.companyName.toLowerCase().includes(query) || 
-      (supplier.cnpj && supplier.cnpj.toLowerCase().includes(query)) ||
-      (supplier.supplierCode && supplier.supplierCode.toLowerCase().includes(query))
-    );
-  }
-
-  onSupplierSelect(event: AutoCompleteSelectEvent): void {
-    const supplier = event.value as Supplier;
-    this.invoiceForm.patchValue({
-      supplierId: supplier.id
-    });
-  }
-
   private patchFormWithInvoiceData(): void {
     if (!this.invoice) return;
 
@@ -116,6 +130,11 @@ export class InvoiceFormComponent implements OnInit {
       supplierId: this.invoice.supplier?.id || null,
       address: this.invoice.address
     });
+
+    if (this.invoice.supplier) {
+      this.selectedSupplier = this.invoice.supplier;
+      this.searchQuery = this.invoice.supplier.companyName;
+    }
   }
 
   private formatDateForInput(date: Date | string): string {
