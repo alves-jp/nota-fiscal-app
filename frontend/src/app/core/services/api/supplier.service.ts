@@ -56,7 +56,6 @@ export class SupplierService {
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
     }
     
     return throwError(() => new Error(errorMessage));

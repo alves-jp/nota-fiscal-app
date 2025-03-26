@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SupplierService } from '../../../../core/services/api/supplier.service';
 import { MessageService } from 'primeng/api';
 import { of, throwError } from 'rxjs';
-import { SupplierDTO, Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
+import { Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
 
 describe('SupplierEditPageComponent', () => {
   let component: SupplierEditPageComponent;

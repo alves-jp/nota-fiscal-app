@@ -58,7 +58,7 @@ export class SupplierListComponent implements OnInit {
   }
 
   onEdit(supplier: Supplier): void {
-    console.log('Supplier object received:', supplier); // Verifique se o ID está presente
+    console.log('Supplier object received:', supplier);
     
     if (!supplier?.id) {
       console.error('Cannot edit: supplier ID is missing', supplier);
@@ -102,7 +102,6 @@ export class SupplierListComponent implements OnInit {
         this.loadSuppliers();
       },
       error: (error: Error) => {
-        // Aqui a mensagem do backend será propagada
         this.showError(error.message || 'Falha ao excluir fornecedor');
       }
     });

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SupplierCreatePageComponent } from './supplier-create-page.component';
-import { SupplierDTO, Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
+import { Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
 import { SupplierService } from '../../../../core/services/api/supplier.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
