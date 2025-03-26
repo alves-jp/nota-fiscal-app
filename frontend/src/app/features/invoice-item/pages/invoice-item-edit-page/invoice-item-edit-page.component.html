@@ -1,11 +1,18 @@
 <div class="p-grid">
-    <div class="p-col-12">
-      <h1> </h1>
-      <app-invoice-item-form 
-        *ngIf="invoiceItem"
-        [invoiceItem]="invoiceItem"
-        (formSubmit)="onItemUpdated($event)"
-        (formCancel)="onCancel()"
-      ></app-invoice-item-form>
+  <div class="p-col-12">
+    <h1> </h1>
+    <p-toast position="top-right"></p-toast>
+    
+    <app-invoice-item-form 
+      *ngIf="invoiceItem && !isLoading"
+      [invoiceId]="invoiceId"
+      [item]="invoiceItem"
+      (formSubmit)="onItemUpdated($event)"
+      (formCancel)="onCancel()"
+    ></app-invoice-item-form>
+
+    <div *ngIf="isLoading" class="loading-container">
+      <p-progressSpinner></p-progressSpinner>
     </div>
   </div>
+</div>

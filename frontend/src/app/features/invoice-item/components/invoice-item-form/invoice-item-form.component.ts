@@ -2,13 +2,16 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InvoiceItem, InvoiceItemDTO } from '../../../../core/models/invoice-item.model';
 import { Product } from '../../../../core/models/product.model';
+import { ProductService } from '../../../../core/services/api/product.service';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-invoice-item-form',
@@ -17,57 +20,63 @@ import { InputTextModule } from 'primeng/inputtext';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    InputNumberModule,
-    ButtonModule,
     ToastModule,
-    InputTextModule
+    FormsModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    DropdownModule,
+    ButtonModule,
+    InputNumberModule
   ],
   providers: [MessageService]
 })
 export class InvoiceItemFormComponent implements OnInit {
-  @Input() invoiceItem?: InvoiceItem;
   @Input() invoiceId!: number;
-  @Input() products: Product[] = [];
+  @Input() item?: InvoiceItem;
   @Output() formSubmit = new EventEmitter<InvoiceItemDTO>();
   @Output() formCancel = new EventEmitter<void>();
 
-  invoiceItemForm: FormGroup;
+  itemForm: FormGroup;
   filteredProducts: Product[] = [];
+  products: Product[] = [];
   searchQuery: string = '';
   showSuggestions: boolean = false;
   selectedProduct: Product | null = null;
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private productService: ProductService
   ) {
-    this.invoiceItemForm = this.fb.group({
+    this.itemForm = this.fb.group({
       id: [null],
-      product: [null, Validators.required],
-      unitPrice: [null, [Validators.required, Validators.min(0.01)]],
+      productId: [null, Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
-      total: [{value: 0, disabled: true}]
+      unitPrice: [0, [Validators.required, Validators.min(0.01)]]
     });
   }
 
   ngOnInit(): void {
-    if (this.invoiceItem) {
-      this.invoiceItemForm.patchValue({
-        id: this.invoiceItem.id,
-        product: this.invoiceItem.product,
-        unitPrice: this.invoiceItem.unitPrice,
-        quantity: this.invoiceItem.quantity,
-        total: this.invoiceItem.unitPrice * this.invoiceItem.quantity
-      });
-      this.selectedProduct = this.invoiceItem.product;
-      this.searchQuery = this.invoiceItem.product ? 
-        `${this.invoiceItem.product.productCode} - ${this.invoiceItem.product.description}` : '';
-    }
+    this.loadProducts();
     
-    this.invoiceItemForm.get('unitPrice')?.valueChanges.subscribe(() => this.updateTotal());
-    this.invoiceItemForm.get('quantity')?.valueChanges.subscribe(() => this.updateTotal());
+    if (this.item) {
+      this.patchFormWithItemData();
+    }
+  }
+
+  private loadProducts(): void {
+    this.productService.getAllProducts().subscribe({
+      next: (products) => {
+        this.products = products.filter(p => p.productStatus === 'ACTIVE');
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Não foi possível carregar os produtos'
+        });
+      }
+    });
   }
 
   onProductSearchInput(event: Event): void {
@@ -83,46 +92,76 @@ export class InvoiceItemFormComponent implements OnInit {
     const searchTerm = query.toLowerCase();
     this.filteredProducts = this.products.filter(product => 
       product.description.toLowerCase().includes(searchTerm) || 
-      (product.productCode && product.productCode.toLowerCase().includes(searchTerm)) ||
-      (product.productStatus && product.productStatus.toLowerCase().includes(searchTerm))
+      (product.productCode && product.productCode.toLowerCase().includes(searchTerm))
     );
   }
 
   selectProduct(product: Product): void {
     this.selectedProduct = product;
-    this.invoiceItemForm.patchValue({
-      product: product
+    this.itemForm.patchValue({
+      productId: product.id
     });
     this.searchQuery = `${product.productCode} - ${product.description}`;
     this.showSuggestions = false;
   }
 
-  updateTotal(): void {
-    const unitPrice = this.invoiceItemForm.get('unitPrice')?.value || 0;
-    const quantity = this.invoiceItemForm.get('quantity')?.value || 0;
-    this.invoiceItemForm.get('total')?.setValue(unitPrice * quantity, {emitEvent: false});
+  private patchFormWithItemData(): void {
+    if (!this.item) return;
+
+    this.itemForm.patchValue({
+      id: this.item.id,
+      productId: this.item.product.id,
+      quantity: this.item.quantity,
+      unitPrice: this.item.unitValue
+    });
+
+    if (this.item.product) {
+      this.selectedProduct = this.item.product;
+      this.searchQuery = `${this.item.product.productCode} - ${this.item.product.description}`;
+    }
   }
 
   onSubmit(): void {
-    if (this.invoiceItemForm.valid) {
-      const formValue = this.invoiceItemForm.value;
-      const itemData: InvoiceItemDTO = {
-        invoiceId: this.invoiceId,
-        productId: formValue.product.id,
-        unitPrice: formValue.unitPrice,
-        quantity: formValue.quantity
-      };
-      this.formSubmit.emit(itemData);
-    } else {
+    if (this.itemForm.invalid) {
       this.messageService.add({
         severity: 'error',
         summary: 'Erro',
-        detail: 'Preencha todos os campos obrigatórios corretamente'
+        detail: 'Por favor, preencha todos os campos obrigatórios corretamente'
       });
+      this.markAllAsTouched();
+      return;
     }
+
+    const formValue = this.itemForm.value;
+    const itemData: InvoiceItemDTO = {
+      id: this.invoiceId,
+      productId: formValue.productId,
+      quantity: formValue.quantity,
+      unitValue: formValue.unitPrice, // Mantém unitPrice do formulário
+      totalValue: this.calculateTotal()
+    };
+
+    console.log('Dados do item sendo enviados:', itemData);
+
+    this.formSubmit.emit(itemData);
+  }
+
+  private markAllAsTouched(): void {
+    Object.values(this.itemForm.controls).forEach(control => {
+      control.markAsTouched();
+    });
   }
 
   onCancel(): void {
     this.formCancel.emit();
+  }
+
+  calculateTotal(): number {
+    if (this.itemForm.valid) {
+      const quantity = this.itemForm.get('quantity')?.value || 0;
+      const unitPrice = this.itemForm.get('unitPrice')?.value || 0;
+      return quantity * unitPrice;
+    }
+    return 0;
   }
 }

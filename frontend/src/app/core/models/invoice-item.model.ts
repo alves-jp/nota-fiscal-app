@@ -5,15 +5,16 @@ export interface InvoiceItem {
   invoiceId?: number;
   product: Product;
   quantity: number;
-  unitPrice: number;
+  unitValue: number;
   totalPrice: number;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 export interface InvoiceItemDTO {
-  invoiceId: number;
+  id?: number;
   productId: number;
   quantity: number;
-  unitPrice: number;
+  unitValue: number;
+  totalValue: number;
 }

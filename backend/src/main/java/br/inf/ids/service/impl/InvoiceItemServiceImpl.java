@@ -58,6 +58,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         InvoiceItem invoiceItem = new InvoiceItem();
         invoiceItem.setInvoice(invoice);
         invoiceItem.setProduct(product);
+        invoiceItem.setId(invoiceItemDTO.getId());
         invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
         invoiceItem.setQuantity(invoiceItemDTO.getQuantity());
 
@@ -109,6 +110,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
             throw new EntityNotFoundException("Item não encontrado.");
         }
 
+        existingInvoiceItem.setId(invoiceItemDTO.getId());
         existingInvoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
         existingInvoiceItem.setQuantity(invoiceItemDTO.getQuantity());
         Invoice invoice = existingInvoiceItem.getInvoice();

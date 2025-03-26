@@ -16,17 +16,18 @@ export class InvoiceItemService {
 
   private toDTO(invoiceItem: InvoiceItem): InvoiceItemDTO {
     return {
-      invoiceId: invoiceItem.invoiceId!,
-      productId: invoiceItem.product.id,
-      quantity: invoiceItem.quantity,
-      unitPrice: invoiceItem.unitPrice
-    };
+  id: invoiceItem.invoiceId!,
+  productId: invoiceItem.product.id,
+  quantity: invoiceItem.quantity,
+  unitValue: invoiceItem.unitValue,
+  totalValue: invoiceItem.totalPrice
+};
   }
 
-createInvoiceItem(itemData: InvoiceItemDTO): Observable<InvoiceItem> {
-  return this.http.post<InvoiceItem>(this.apiUrl, itemData)
-    .pipe(catchError(this.handleError));
-}
+  createInvoiceItem(itemData: InvoiceItemDTO): Observable<InvoiceItem> {
+    return this.http.post<InvoiceItem>(this.apiUrl, itemData)
+      .pipe(catchError(this.handleError));
+  }
 
   getInvoiceItemById(id: number): Observable<InvoiceItem> {
     return this.http.get<InvoiceItem>(`${this.apiUrl}/${id}`)
@@ -61,7 +62,7 @@ createInvoiceItem(itemData: InvoiceItemDTO): Observable<InvoiceItem> {
   }
 
   calculateTotal(item: InvoiceItem): number {
-    return item.unitPrice * item.quantity;
+    return item.unitValue * item.quantity;
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -69,20 +70,21 @@ createInvoiceItem(itemData: InvoiceItemDTO): Observable<InvoiceItem> {
     
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Erro: ${error.error.message}`;
-
     } else {
-      if (error.error && error.error.message) {
-        errorMessage = error.error.message;
-
-      } else if (error.status === 400 || error.status === 404) {
-        try {
-          const errorBody = JSON.parse(error.error);
-          errorMessage = errorBody.message || errorMessage;
-          
-        } catch (e) {}
+      if (error.status === 0) {
+        errorMessage = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
+      } else if (error.status === 400) {
+        errorMessage = error.error?.message || 'Dados inválidos enviados ao servidor';
+      } else if (error.status === 404) {
+        errorMessage = error.error?.message || 'Recurso não encontrado';
+      } else if (error.status === 500) {
+        errorMessage = error.error?.message || 'Erro interno no servidor';
+      } else {
+        errorMessage = `Erro ${error.status}: ${error.message}`;
       }
     }
     
+    console.error('Erro detalhado:', error);
     return throwError(() => new Error(errorMessage));
   }
 }

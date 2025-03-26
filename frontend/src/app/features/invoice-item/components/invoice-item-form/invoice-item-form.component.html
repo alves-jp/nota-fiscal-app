@@ -1,9 +1,9 @@
 <div class="p-card">
   <div class="p-card-header">
-    <h2>{{ invoiceItem ? 'Editar Item' : 'Novo Item' }}</h2>
+    <h2>{{ item ? 'Editar Item' : 'Novo Item' }}</h2>
   </div>
   <div class="p-card-content">
-    <form [formGroup]="invoiceItemForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="itemForm" (ngSubmit)="onSubmit()">
       <div class="p-fluid p-formgrid p-grid">
         
         <!-- Produto -->
@@ -17,74 +17,60 @@
               [(ngModel)]="searchQuery"
               (input)="onProductSearchInput($event)"
               [ngModelOptions]="{standalone: true}"
-              placeholder="Digite descrição, código ou status"
-              [ngClass]="{'ng-invalid ng-dirty': invoiceItemForm.get('product')?.invalid && invoiceItemForm.get('product')?.touched}">
+              placeholder="Digite código ou descrição do produto"
+              [ngClass]="{'ng-invalid ng-dirty': itemForm.get('productId')?.invalid && itemForm.get('productId')?.touched}">
 
             <div class="product-suggestions" *ngIf="showSuggestions && filteredProducts.length > 0">
               <div *ngFor="let product of filteredProducts" 
                   class="suggestion-item"
                   (click)="selectProduct(product)">
-                <div class="product-name">{{ product.productCode }} - {{ product.description }}</div>
-                <div class="product-details">
-                  <span>Status: {{ product.productStatus === 'ACTIVE' ? 'Ativo' : 'Inativo' }}</span>
-                </div>
+                <div class="product-code">{{ product.productCode }}</div>
+                <div class="product-description">{{ product.description }}</div>
               </div>
             </div>
           </div>
-          <small *ngIf="invoiceItemForm.get('product')?.invalid && invoiceItemForm.get('product')?.touched" class="p-error">
-            Selecione um produto
-          </small>
-        </div>
-
-        <!-- Valor Unitário -->
-        <div class="p-field p-col-12 p-md-6">
-          <label for="unitPrice">Valor Unitário *</label>
-          <p-inputNumber
-            id="unitPrice"
-            mode="currency"
-            currency="BRL"
-            locale="pt-BR"
-            formControlName="unitPrice"
-            [min]="0.01"
-            [maxFractionDigits]="2"
-            inputStyleClass="p-inputtext"
-            styleClass="w-full"
-            [ngClass]="{'ng-invalid ng-dirty': invoiceItemForm.get('unitPrice')?.invalid && invoiceItemForm.get('unitPrice')?.touched}">
-          </p-inputNumber>
-          <small *ngIf="invoiceItemForm.get('unitPrice')?.invalid && invoiceItemForm.get('unitPrice')?.touched" class="p-error">
-            Valor inválido (mínimo: R$ 0,01)
+          <small *ngIf="itemForm.get('productId')?.invalid && itemForm.get('productId')?.touched" class="p-error">
+            Produto é obrigatório
           </small>
         </div>
 
         <!-- Quantidade -->
         <div class="p-field p-col-12 p-md-6">
           <label for="quantity">Quantidade *</label>
-          <p-inputNumber
-            id="quantity"
-            formControlName="quantity"
+          <p-inputNumber 
+            id="quantity" 
+            formControlName="quantity" 
+            mode="decimal" 
             [min]="1"
-            [max]="999"
-            inputStyleClass="p-inputtext"
-            styleClass="w-full"
-            [ngClass]="{'ng-invalid ng-dirty': invoiceItemForm.get('quantity')?.invalid && invoiceItemForm.get('quantity')?.touched}">
+            [ngClass]="{'ng-invalid ng-dirty': itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched}">
           </p-inputNumber>
-          <small *ngIf="invoiceItemForm.get('quantity')?.invalid && invoiceItemForm.get('quantity')?.touched" class="p-error">
-            Quantidade inválida (mínimo: 1)
+          <small *ngIf="itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched" class="p-error">
+            Quantidade inválida (mínimo 1)
           </small>
         </div>
 
-        <!-- Valor Total -->
-        <div class="p-field p-col-12">
-          <label>Valor Total</label>
-          <p-inputNumber
-            formControlName="total"
-            mode="currency"
-            currency="BRL"
-            locale="pt-BR"
-            inputStyleClass="p-inputtext"
-            styleClass="w-full"
-            [readonly]="true">
+        <!-- Preço Unitário -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="unitPrice">Preço Unitário *</label>
+          <p-inputNumber 
+            id="unitPrice" 
+            formControlName="unitPrice" 
+            mode="currency" 
+            currency="BRL" 
+            [min]="0.01"
+            [ngClass]="{'ng-invalid ng-dirty': itemForm.get('unitPrice')?.invalid && itemForm.get('unitPrice')?.touched}">
           </p-inputNumber>
+          <small *ngIf="itemForm.get('unitPrice')?.invalid && itemForm.get('unitPrice')?.touched" class="p-error">
+            Preço inválido (mínimo 0.01)
+          </small>
+        </div>
+
+        <!-- Total -->
+        <div class="p-field p-col-12">
+          <label>Total</label>
+          <div class="p-d-flex p-ai-center">
+            <span class="total-value">{{ calculateTotal() | currency:'BRL' }}</span>
+          </div>
         </div>
 
         <div class="form-actions p-col-12">
@@ -101,7 +87,7 @@
             type="submit" 
             label="Salvar" 
             icon="pi pi-check" 
-            [disabled]="invoiceItemForm.invalid">
+            [disabled]="itemForm.invalid">
           </button>
         </div>
       </div>

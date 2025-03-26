@@ -6,6 +6,7 @@ import { InvoiceItem, InvoiceItemDTO } from '../../../../core/models/invoice-ite
 import { MessageService } from 'primeng/api';
 import { InvoiceItemFormComponent } from '../../components/invoice-item-form/invoice-item-form.component';
 import { ToastModule } from 'primeng/toast';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-invoice-item-edit-page',
@@ -15,13 +16,15 @@ import { ToastModule } from 'primeng/toast';
   imports: [
     CommonModule, 
     InvoiceItemFormComponent,
-    ToastModule
+    ToastModule,
+    ProgressSpinnerModule
   ],
   providers: [MessageService]
 })
 export class InvoiceItemEditPageComponent implements OnInit {
   invoiceItem?: InvoiceItem;
   isLoading = false;
+  invoiceId!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +39,7 @@ export class InvoiceItemEditPageComponent implements OnInit {
 
   loadInvoiceItem(): void {
     const itemId = this.route.snapshot.paramMap.get('id');
+    this.invoiceId = Number(this.route.snapshot.paramMap.get('invoiceId'));
     
     if (itemId) {
       this.isLoading = true;
@@ -63,7 +67,10 @@ export class InvoiceItemEditPageComponent implements OnInit {
 
     this.isLoading = true;
     
-    this.invoiceItemService.updateInvoiceItem(this.invoiceItem.id, itemDTO).subscribe({
+    this.invoiceItemService.updateInvoiceItem(this.invoiceItem.id, {
+      ...itemDTO,
+      id: this.invoiceId
+    }).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -90,10 +97,6 @@ export class InvoiceItemEditPageComponent implements OnInit {
   }
 
   private navigateBackToList(): void {
-    if (this.invoiceItem?.invoiceId) {
-      this.router.navigate(['/notas-fiscais', this.invoiceItem.invoiceId]);
-    } else {
-      this.router.navigate(['/notas-fiscais']);
-    }
+    this.router.navigate(['/notas-fiscais', this.invoiceId]);
   }
 }
