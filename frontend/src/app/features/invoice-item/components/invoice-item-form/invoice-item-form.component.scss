@@ -38,10 +38,80 @@
       font-size: 0.95rem;
     }
 
-    /* Estilo unificado para todos os inputs - IDÊNTICO ao product-form */
+    /* Estilos para o campo de busca customizado */
+    .product-search-container {
+      position: relative;
+
+      input {
+        width: 100%;
+        background-color: #ffffff !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 6px;
+        padding: 0.65rem 1rem !important;
+        font-size: 1rem !important;
+        color: #374151;
+        transition: all 0.2s;
+
+        &:hover {
+          border-color: #3498db !important;
+        }
+
+        &:focus {
+          border-color: #3498db !important;
+          box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
+          outline: none;
+        }
+      }
+
+      .product-suggestions {
+        position: absolute;
+        width: 100%;
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        z-index: 1000;
+        margin-top: 0.25rem;
+
+        .suggestion-item {
+          padding: 0.75rem 1rem;
+          cursor: pointer;
+          transition: background-color 0.2s;
+          border-bottom: 1px solid #f3f4f6;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          &:hover {
+            background-color: #f8fafc;
+          }
+
+          .product-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.25rem;
+          }
+
+          .product-details {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #6b7280;
+
+            span:first-child {
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    /* Estilo unificado para todos os inputs */
     .p-inputtext,
-    .p-inputnumber .p-inputtext,
-    .p-dropdown {
+    .p-inputnumber .p-inputtext {
       width: 100%;
       height: 2.5rem;
       background-color: #ffffff !important;
@@ -81,20 +151,6 @@
         height: 100%;
         display: flex;
         align-items: center;
-      }
-    }
-
-    /* Estilo específico para o dropdown */
-    .p-dropdown {
-      .p-dropdown-label {
-        padding: 0.5rem 1rem;
-        height: 2.5rem;
-        display: flex;
-        align-items: center;
-      }
-      
-      .p-dropdown-trigger {
-        width: 2.5rem;
       }
     }
 

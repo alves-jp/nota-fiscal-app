@@ -5,10 +5,10 @@ import { Product } from '../../../../core/models/product.model';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-invoice-item-form',
@@ -19,10 +19,10 @@ import { ToastModule } from 'primeng/toast';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    DropdownModule,
     InputNumberModule,
     ButtonModule,
-    ToastModule
+    ToastModule,
+    InputTextModule
   ],
   providers: [MessageService]
 })
@@ -34,6 +34,10 @@ export class InvoiceItemFormComponent implements OnInit {
   @Output() formCancel = new EventEmitter<void>();
 
   invoiceItemForm: FormGroup;
+  filteredProducts: Product[] = [];
+  searchQuery: string = '';
+  showSuggestions: boolean = false;
+  selectedProduct: Product | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -57,10 +61,40 @@ export class InvoiceItemFormComponent implements OnInit {
         quantity: this.invoiceItem.quantity,
         total: this.invoiceItem.unitPrice * this.invoiceItem.quantity
       });
+      this.selectedProduct = this.invoiceItem.product;
+      this.searchQuery = this.invoiceItem.product ? 
+        `${this.invoiceItem.product.productCode} - ${this.invoiceItem.product.description}` : '';
     }
     
     this.invoiceItemForm.get('unitPrice')?.valueChanges.subscribe(() => this.updateTotal());
     this.invoiceItemForm.get('quantity')?.valueChanges.subscribe(() => this.updateTotal());
+  }
+
+  onProductSearchInput(event: Event): void {
+    const query = (event.target as HTMLInputElement).value;
+    this.searchQuery = query;
+    this.showSuggestions = query.length > 0;
+    
+    if (!this.showSuggestions) {
+      this.filteredProducts = [];
+      return;
+    }
+    
+    const searchTerm = query.toLowerCase();
+    this.filteredProducts = this.products.filter(product => 
+      product.description.toLowerCase().includes(searchTerm) || 
+      (product.productCode && product.productCode.toLowerCase().includes(searchTerm)) ||
+      (product.productStatus && product.productStatus.toLowerCase().includes(searchTerm))
+    );
+  }
+
+  selectProduct(product: Product): void {
+    this.selectedProduct = product;
+    this.invoiceItemForm.patchValue({
+      product: product
+    });
+    this.searchQuery = `${product.productCode} - ${product.description}`;
+    this.showSuggestions = false;
   }
 
   updateTotal(): void {

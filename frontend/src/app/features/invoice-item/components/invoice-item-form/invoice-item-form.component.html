@@ -8,36 +8,35 @@
         
         <!-- Produto -->
         <div class="p-field p-col-12">
-          <label for="product">Produto *</label>
-          <p-dropdown
-            id="product"
-            [options]="products"
-            optionLabel="description"
-            formControlName="product"
-            [showClear]="true"
-            [filter]="true"
-            filterBy="description,productCode"
-            placeholder="Selecione um produto"
-            [ngClass]="{'ng-invalid ng-dirty': invoiceItemForm.get('product')?.invalid && invoiceItemForm.get('product')?.touched}">
-            <ng-template pTemplate="selectedItem">
-              <div *ngIf="invoiceItemForm.get('product')?.value">
-                {{ invoiceItemForm.get('product')?.value.productCode }} - {{ invoiceItemForm.get('product')?.value.description }}
+          <label for="productSearch">Produto *</label>
+          <div class="product-search-container">
+            <input
+              id="productSearch"
+              type="text"
+              pInputText
+              [(ngModel)]="searchQuery"
+              (input)="onProductSearchInput($event)"
+              [ngModelOptions]="{standalone: true}"
+              placeholder="Digite descrição, código ou status"
+              [ngClass]="{'ng-invalid ng-dirty': invoiceItemForm.get('product')?.invalid && invoiceItemForm.get('product')?.touched}">
+
+            <div class="product-suggestions" *ngIf="showSuggestions && filteredProducts.length > 0">
+              <div *ngFor="let product of filteredProducts" 
+                  class="suggestion-item"
+                  (click)="selectProduct(product)">
+                <div class="product-name">{{ product.productCode }} - {{ product.description }}</div>
+                <div class="product-details">
+                  <span>Status: {{ product.productStatus === 'ACTIVE' ? 'Ativo' : 'Inativo' }}</span>
+                </div>
               </div>
-            </ng-template>
-            <ng-template let-product pTemplate="item">
-              <div>
-                <strong>{{ product.productCode }}</strong> - {{ product.description }}
-                <br>
-                <small>Status: {{ product.productStatus === 'ACTIVE' ? 'Ativo' : 'Inativo' }}</small>
-              </div>
-            </ng-template>
-          </p-dropdown>
+            </div>
+          </div>
           <small *ngIf="invoiceItemForm.get('product')?.invalid && invoiceItemForm.get('product')?.touched" class="p-error">
             Selecione um produto
           </small>
         </div>
 
-        <!-- Valor Unitário - Agora idêntico ao campo Código -->
+        <!-- Valor Unitário -->
         <div class="p-field p-col-12 p-md-6">
           <label for="unitPrice">Valor Unitário *</label>
           <p-inputNumber
@@ -57,7 +56,7 @@
           </small>
         </div>
 
-        <!-- Quantidade - Agora idêntica ao campo Código -->
+        <!-- Quantidade -->
         <div class="p-field p-col-12 p-md-6">
           <label for="quantity">Quantidade *</label>
           <p-inputNumber
@@ -74,7 +73,7 @@
           </small>
         </div>
 
-        <!-- Valor Total - Agora idêntico ao campo Código -->
+        <!-- Valor Total -->
         <div class="p-field p-col-12">
           <label>Valor Total</label>
           <p-inputNumber
