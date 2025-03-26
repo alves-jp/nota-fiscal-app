@@ -38,7 +38,7 @@
       font-size: 0.95rem;
     }
 
-    .p-inputtext, .p-dropdown {
+    .p-inputtext {
       width: 100%;
       background-color: #ffffff !important;
       border: 1px solid #d1d5db !important;
@@ -62,9 +62,42 @@
       }
     }
 
-    .p-dropdown {
-      .p-dropdown-label {
-        padding: 0.5rem !important;
+    /* BOTÕES DE STATUS PERSONALIZADOS */
+    .status-buttons {
+      display: inline-flex;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      overflow: hidden;
+      background: white;
+
+      .status-button {
+        padding: 0.5rem 1.5rem;
+        border: none;
+        background: transparent;
+        color: #374151;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        outline: none;
+
+        &:first-child {
+          border-right: 1px solid #d1d5db;
+        }
+
+        &.active {
+          background: #3498db;
+          color: white;
+        }
+
+        &:hover:not(.active) {
+          background: #f8f9fa;
+        }
+
+        &:focus {
+          box-shadow: none;
+        }
       }
     }
 
@@ -135,6 +168,15 @@
       
       .p-card-content {
         padding: 1.25rem;
+      }
+    }
+    
+    .status-buttons {
+      width: 100%;
+      
+      .status-button {
+        flex: 1;
+        padding: 0.5rem;
       }
     }
     

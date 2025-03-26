@@ -6,7 +6,6 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -19,7 +18,6 @@ import { ButtonModule } from 'primeng/button';
     ToastModule,
     InputTextModule,
     ReactiveFormsModule,
-    DropdownModule,
     ButtonModule
   ],
   providers: [MessageService]

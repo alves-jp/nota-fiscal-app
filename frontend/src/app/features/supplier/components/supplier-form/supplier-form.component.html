@@ -48,15 +48,24 @@
         </div>
 
         <!-- Status -->
-        <div class="p-field p-col-12 p-md-6">
+        <div class="p-field p-col-12">
           <label for="companyStatus">Status *</label>
-          <p-dropdown 
-            id="companyStatus"
-            [options]="statusOptions" 
-            formControlName="companyStatus"
-            placeholder="Selecione o status"
-            [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('companyStatus')?.invalid && supplierForm.get('companyStatus')?.touched}">
-          </p-dropdown>
+          <div class="status-buttons">
+            <button 
+              type="button"
+              class="status-button"
+              [class.active]="supplierForm.get('companyStatus')?.value === 'ACTIVE'"
+              (click)="supplierForm.get('companyStatus')?.setValue('ACTIVE')">
+              Ativo
+            </button>
+            <button 
+              type="button"
+              class="status-button"
+              [class.active]="supplierForm.get('companyStatus')?.value === 'INACTIVE'"
+              (click)="supplierForm.get('companyStatus')?.setValue('INACTIVE')">
+              Inativo
+            </button>
+          </div>
           <small *ngIf="supplierForm.get('companyStatus')?.invalid && supplierForm.get('companyStatus')?.touched" class="p-error">
             Status é obrigatório
           </small>
@@ -64,7 +73,7 @@
 
         <!-- Email -->
         <div class="p-field p-col-12 p-md-6">
-          <label for="supplierEmail">Email *</label>
+          <label for="supplierEmail">E-mail *</label>
           <input 
             id="supplierEmail" 
             type="email" 
@@ -72,7 +81,7 @@
             formControlName="supplierEmail"
             [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('supplierEmail')?.invalid && supplierForm.get('supplierEmail')?.touched}">
           <small *ngIf="supplierForm.get('supplierEmail')?.invalid && supplierForm.get('supplierEmail')?.touched" class="p-error">
-            Email é obrigatório e deve ser válido
+            O e-mail deve ser válido
           </small>
         </div>
 
@@ -86,7 +95,7 @@
             formControlName="supplierPhone"
             [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('supplierPhone')?.invalid && supplierForm.get('supplierPhone')?.touched}">
           <small *ngIf="supplierForm.get('supplierPhone')?.invalid && supplierForm.get('supplierPhone')?.touched" class="p-error">
-            Telefone é obrigatório
+            Forneça um número de telefone válido
           </small>
         </div>
 
