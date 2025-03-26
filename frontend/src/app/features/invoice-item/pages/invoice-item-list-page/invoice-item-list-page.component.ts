@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core'; // Adicione OnInit
+import { ActivatedRoute, Router } from '@angular/router'; // Adicione ActivatedRoute
 import { InvoiceItem } from '../../../../core/models/invoice-item.model';
 import { MessageService } from 'primeng/api';
 import { InvoiceItemListComponent } from '../../components/invoice-item-list/invoice-item-list.component';
@@ -18,13 +18,19 @@ import { ButtonModule } from 'primeng/button';
   ],
   providers: [MessageService]
 })
-export class InvoiceItemListPageComponent {
-  @Input() invoiceId!: number;
+export class InvoiceItemListPageComponent implements OnInit {
+  invoiceId!: number;
 
   constructor(
+    private route: ActivatedRoute, // Adicione isto
     private router: Router,
     private messageService: MessageService
   ) {}
+
+  // Adicione este método
+  ngOnInit(): void {
+    this.invoiceId = Number(this.route.snapshot.paramMap.get('invoiceId'));
+  }
 
   onEditItem(item: InvoiceItem): void {
     this.router.navigate(['/notas-fiscais', this.invoiceId, 'itens', 'editar', item.id]);
