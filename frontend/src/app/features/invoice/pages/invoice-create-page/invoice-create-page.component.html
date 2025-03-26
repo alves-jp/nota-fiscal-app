@@ -1,7 +1,9 @@
 <div class="invoice-create-container">
-    <p-toast position="top-right"></p-toast>
+  <p-toast position="top-right"></p-toast>
+  <p-card header="Nova Nota Fiscal" class="invoice-card">
     <app-invoice-form 
       (formSubmit)="handleFormSubmit($event)"
       (formCancel)="onCancel()">
     </app-invoice-form>
-  </div>
+  </p-card>
+</div>

@@ -19,41 +19,47 @@
           </small>
         </div>
 
-        <!-- Data de Emissão -->
+        <!-- Data de Emissão (modificado para input date) -->
         <div class="p-field p-col-12 p-md-6">
           <label for="issueDate">Data de Emissão *</label>
-          <p-calendar 
+          <input
             id="issueDate"
+            type="date"
+            pInputText
             formControlName="issueDate"
-            [showIcon]="true"
-            [minDate]="minDate"
-            [maxDate]="maxDate"
-            dateFormat="dd/mm/yy"
+            [max]="currentDate | date:'yyyy-MM-dd'"
             [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('issueDate')?.invalid && invoiceForm.get('issueDate')?.touched}">
-          </p-calendar>
           <small *ngIf="invoiceForm.get('issueDate')?.invalid && invoiceForm.get('issueDate')?.touched" class="p-error">
-            Data de emissão é obrigatória
+            Data inválida (deve ser hoje ou anterior)
           </small>
         </div>
 
-        <!-- Fornecedor -->
+        <!-- Fornecedor (modificado para autocomplete) -->
         <div class="p-field p-col-12 p-md-6">
           <label for="supplierId">Fornecedor *</label>
-          <p-dropdown 
+          <p-autoComplete
             id="supplierId"
-            [options]="suppliers" 
-            formControlName="supplierId"
-            optionLabel="companyName" 
-            optionValue="id"
-            placeholder="Selecione um fornecedor"
+            [suggestions]="filteredSuppliers"
+            (completeMethod)="filterSuppliers($event)"
+            field="companyName"
+            [dropdown]="true"
+            placeholder="Buscar fornecedor..."
+            (onSelect)="onSupplierSelect($event)"
+            [inputStyle]="{width: '100%'}"
             [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('supplierId')?.invalid && invoiceForm.get('supplierId')?.touched}">
-          </p-dropdown>
+            <ng-template let-supplier pTemplate="item">
+              <div class="supplier-item">
+                <div>{{ supplier.companyName }}</div>
+                <small>{{ supplier.cnpj }} | {{ supplier.supplierCode }}</small>
+              </div>
+            </ng-template>
+          </p-autoComplete>
           <small *ngIf="invoiceForm.get('supplierId')?.invalid && invoiceForm.get('supplierId')?.touched" class="p-error">
             Fornecedor é obrigatório
           </small>
         </div>
 
-        <!-- Endereço -->
+        <!-- Endereço (mantido igual) -->
         <div class="p-field p-col-12">
           <label for="address">Endereço *</label>
           <input 
