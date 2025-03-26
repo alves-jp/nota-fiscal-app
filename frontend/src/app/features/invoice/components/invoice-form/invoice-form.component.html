@@ -1,0 +1,91 @@
+<div class="p-card">
+  <div class="p-card-header">
+    <h2>{{ invoice ? 'Editar Nota Fiscal' : 'Nova Nota Fiscal' }}</h2>
+  </div>
+  <div class="p-card-content">
+    <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+      <div class="p-fluid p-formgrid p-grid">
+        <!-- Número da Nota Fiscal -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="invoiceNumber">Número da Nota *</label>
+          <input 
+            id="invoiceNumber" 
+            type="text" 
+            pInputText 
+            formControlName="invoiceNumber"
+            [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('invoiceNumber')?.invalid && invoiceForm.get('invoiceNumber')?.touched}">
+          <small *ngIf="invoiceForm.get('invoiceNumber')?.invalid && invoiceForm.get('invoiceNumber')?.touched" class="p-error">
+            Número da nota é obrigatório
+          </small>
+        </div>
+
+        <!-- Data de Emissão -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="issueDate">Data de Emissão *</label>
+          <p-calendar 
+            id="issueDate"
+            formControlName="issueDate"
+            [showIcon]="true"
+            [minDate]="minDate"
+            dateFormat="dd/mm/yy"
+            [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('issueDate')?.invalid && invoiceForm.get('issueDate')?.touched}">
+          </p-calendar>
+          <small *ngIf="invoiceForm.get('issueDate')?.invalid && invoiceForm.get('issueDate')?.touched" class="p-error">
+            Data de emissão é obrigatória
+          </small>
+        </div>
+
+        <!-- Fornecedor -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="supplierId">Fornecedor *</label>
+          <p-dropdown 
+            id="supplierId"
+            [options]="suppliers" 
+            formControlName="supplierId"
+            optionLabel="name" 
+            optionValue="id"
+            placeholder="Selecione um fornecedor"
+            [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('supplierId')?.invalid && invoiceForm.get('supplierId')?.touched}">
+          </p-dropdown>
+          <small *ngIf="invoiceForm.get('supplierId')?.invalid && invoiceForm.get('supplierId')?.touched" class="p-error">
+            Fornecedor é obrigatório
+          </small>
+        </div>
+
+        <!-- Endereço -->
+        <div class="p-field p-col-12">
+          <label for="address">Endereço *</label>
+          <input 
+            id="address" 
+            type="text" 
+            pInputText 
+            formControlName="address"
+            [ngClass]="{'ng-invalid ng-dirty': invoiceForm.get('address')?.invalid && invoiceForm.get('address')?.touched}">
+          <small *ngIf="invoiceForm.get('address')?.invalid && invoiceForm.get('address')?.touched" class="p-error">
+            Endereço é obrigatório
+          </small>
+        </div>
+
+        <div class="form-actions p-col-12">
+          <button 
+            pButton 
+            type="button" 
+            label="Cancelar" 
+            icon="pi pi-times" 
+            class="p-button-outlined p-button-secondary" 
+            (click)="onCancel()">
+          </button>
+          <button 
+            pButton 
+            type="submit" 
+            label="Salvar" 
+            icon="pi pi-check" 
+            [disabled]="invoiceForm.invalid">
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-toast position="top-right"></p-toast>

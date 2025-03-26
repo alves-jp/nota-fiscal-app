@@ -1,0 +1,23 @@
+<div class="invoice-list-container">
+    <p-toast position="top-right"></p-toast>
+    
+    <div class="card">
+      <div class="header">
+        <h1>Notas Fiscais</h1>
+        <button 
+          pButton 
+          label="Nova Nota Fiscal" 
+          icon="fa-regular fa-plus"
+          class="new-invoice-btn"
+          (click)="onNewInvoice()"
+        ></button>
+      </div>
+  
+      <div class="content">
+        <app-invoice-list 
+          (editInvoice)="onEditInvoice($event)"
+          (createSuccess)="handleInvoiceCreated($event)"
+        ></app-invoice-list>
+      </div>
+    </div>
+  </div>

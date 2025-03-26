@@ -1,0 +1,66 @@
+<div class="invoice-list-container">
+  <p-table 
+    [value]="invoices" 
+    [paginator]="true" 
+    [rows]="10"
+    [loading]="loading"
+    styleClass="p-datatable-gridlines"
+    [globalFilterFields]="['invoiceNumber','supplier.name']"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="invoiceNumber">Número <p-sortIcon field="invoiceNumber"></p-sortIcon></th>
+        <th pSortableColumn="issueDate">Data <p-sortIcon field="issueDate"></p-sortIcon></th>
+        <th pSortableColumn="supplier.name">Fornecedor <p-sortIcon field="supplier.name"></p-sortIcon></th>
+        <th pSortableColumn="totalValue">Valor Total <p-sortIcon field="totalValue"></p-sortIcon></th>
+        <th style="width: 120px">Ações</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-invoice>
+      <tr>
+        <td>{{ invoice.invoiceNumber }}</td>
+        <td>{{ formatDate(invoice.issueDate) }}</td>
+        <td>{{ invoice.supplier.name }}</td>
+        <td>{{ formatCurrency(invoice.totalValue) }}</td>
+        <td>
+          <div class="action-buttons">
+            <button 
+              pButton 
+              icon="fa-regular fa-pen-to-square" 
+              class="p-button-rounded p-button-text p-button-sm edit-btn"
+              (click)="onEdit(invoice)"
+              pTooltip="Editar" tooltipPosition="top"
+            ></button>
+            <button 
+              pButton 
+              icon="fa-regular fa-trash-can" 
+              class="p-button-rounded p-button-text p-button-sm delete-btn"
+              (click)="onDelete(invoice)"
+              pTooltip="Excluir" tooltipPosition="top"
+            ></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="text-center">
+          Nenhuma nota fiscal encontrada
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <dialog #confirmDialog class="custom-dialog">
+    <div class="dialog-content">
+      <h3>{{ dialogTitle }}</h3>
+      <p [innerHTML]="dialogMessage"></p>
+      <div class="dialog-buttons">
+        <button (click)="dialogConfirm(false)" class="cancel-btn">Não</button>
+        <button (click)="dialogConfirm(true)" class="confirm-btn">Sim, excluir</button>
+      </div>
+    </div>
+  </dialog>
+
+  <p-toast position="top-center"></p-toast>
+</div>

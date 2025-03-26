@@ -1,11 +1,30 @@
 import { Supplier } from './supplier.model';
 import { InvoiceItem } from './invoice-item.model';
 
-export interface Invoice {
+export interface InvoiceDTO {
   id?: number;
   invoiceNumber: string;
   issueDate: Date;
+  supplierId: number;
+  address: string;
+}
+
+export interface InvoiceResponseDTO {
+  id: number;
+  invoiceNumber: string;
+  issueDate: Date;
   supplier: Supplier;
+  address: string;
+  items: InvoiceItem[];
   totalValue: number;
-  items?: InvoiceItem[];
+}
+
+export interface Invoice {
+  id: number;
+  invoiceNumber: string;
+  issueDate: Date;
+  supplier: Supplier;
+  address: string;
+  items: InvoiceItem[];
+  totalValue: number;
 }
