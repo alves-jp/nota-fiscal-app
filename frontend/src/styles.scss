@@ -11,6 +11,16 @@
   --light-bg: #f8f9fa;
   --border-color: #e0e0e0;
   --button-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+  /* Toast notification colors */
+  --toast-success-bg: #48bb78;
+  --toast-success-text: #ffffff;
+  --toast-error-bg: #e53e3e;
+  --toast-error-text: #ffffff;
+  --toast-info-bg: #4299e1;
+  --toast-info-text: #ffffff;
+  --toast-warning-bg: #ed8936;
+  --toast-warning-text: #ffffff;
 }
 
 body {
@@ -23,6 +33,82 @@ body {
 
 .p-component {
   font-family: var(--font-family) !important;
+}
+
+/* Estilos globais para notificações Toast */
+.p-toast {
+  .p-toast-message {
+    border-radius: 6px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    margin: 0 0 1rem 0 !important;
+    
+    .p-toast-message-content {
+      padding: 1rem 1.25rem !important;
+      border-width: 0 !important;
+      
+      .p-toast-message-icon {
+        font-size: 1.5rem !important;
+      }
+      
+      .p-toast-message-text {
+        margin: 0 1rem !important;
+        font-size: 0.95rem !important;
+      }
+      
+      .p-toast-summary {
+        font-weight: 600 !important;
+        margin-bottom: 0.25rem !important;
+      }
+      
+      .p-toast-detail {
+        opacity: 0.9 !important;
+      }
+    }
+    
+    &.p-toast-message-success {
+      background: var(--toast-success-bg) !important;
+      border-color: var(--toast-success-bg) !important;
+      color: var(--toast-success-text) !important;
+      
+      .p-toast-message-icon, 
+      .p-toast-icon-close {
+        color: var(--toast-success-text) !important;
+      }
+    }
+    
+    &.p-toast-message-error {
+      background: var(--toast-error-bg) !important;
+      border-color: var(--toast-error-bg) !important;
+      color: var(--toast-error-text) !important;
+      
+      .p-toast-message-icon, 
+      .p-toast-icon-close {
+        color: var(--toast-error-text) !important;
+      }
+    }
+    
+    &.p-toast-message-info {
+      background: var(--toast-info-bg) !important;
+      border-color: var(--toast-info-bg) !important;
+      color: var(--toast-info-text) !important;
+      
+      .p-toast-message-icon, 
+      .p-toast-icon-close {
+        color: var(--toast-info-text) !important;
+      }
+    }
+    
+    &.p-toast-message-warn {
+      background: var(--toast-warning-bg) !important;
+      border-color: var(--toast-warning-bg) !important;
+      color: var(--toast-warning-text) !important;
+      
+      .p-toast-message-icon, 
+      .p-toast-icon-close {
+        color: var(--toast-warning-text) !important;
+      }
+    }
+  }
 }
 
 .differential-card {
