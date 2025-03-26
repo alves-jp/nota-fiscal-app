@@ -52,7 +52,6 @@ export class InvoiceItemCreatePageComponent implements OnInit {
     this.submitted = true;
     this.loading = true;
 
-    // Ensure invoiceId is included in the item data
     const completeItemData: InvoiceItemDTO = {
       ...itemData,
       invoiceId: this.invoiceId
@@ -67,7 +66,7 @@ export class InvoiceItemCreatePageComponent implements OnInit {
           life: 3000
         });
         setTimeout(() => 
-          this.router.navigate(['/notas-fiscais', this.invoiceId]), 
+          this.router.navigate(['/notas-fiscais', this.invoiceId, 'itens']), 
         1500);
       },
       error: (error) => {

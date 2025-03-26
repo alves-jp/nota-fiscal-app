@@ -5,13 +5,13 @@
       [rows]="10"
       [loading]="loading"
       styleClass="p-datatable-gridlines"
-      [globalFilterFields]="['product.productCode', 'product.description', 'unitPrice']"
+      [globalFilterFields]="['product.productCode', 'product.description', 'unitValue']"
     >
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="product.productCode">Código Produto <p-sortIcon field="product.productCode"></p-sortIcon></th>
           <th pSortableColumn="product.description">Descrição <p-sortIcon field="product.description"></p-sortIcon></th>
-          <th pSortableColumn="unitPrice">Valor Unitário <p-sortIcon field="unitPrice"></p-sortIcon></th>
+          <th pSortableColumn="unitValue">Valor Unitário <p-sortIcon field="unitValue"></p-sortIcon></th>
           <th pSortableColumn="quantity">Quantidade <p-sortIcon field="quantity"></p-sortIcon></th>
           <th>Valor Total</th>
           <th style="width: 120px">Ações</th>
@@ -21,9 +21,9 @@
         <tr>
           <td>{{ item.product.productCode }}</td>
           <td>{{ item.product.description }}</td>
-          <td>{{ item.unitPrice | currency:'BRL' }}</td>
+          <td>{{ item.unitValue | currency:'BRL' }}</td>
           <td>{{ item.quantity }}</td>
-          <td>{{ item.unitPrice * item.quantity | currency:'BRL' }}</td>
+          <td>{{ item.unitValue * item.quantity | currency:'BRL' }}</td>
           <td>
             <div class="action-buttons">
               <button 
