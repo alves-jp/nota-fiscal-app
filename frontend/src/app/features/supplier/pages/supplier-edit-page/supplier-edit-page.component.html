@@ -1,0 +1,11 @@
+<div class="p-grid">
+    <div class="p-col-12">
+      <h1> </h1>
+      <app-supplier-form 
+        *ngIf="supplier"
+        [supplier]="supplier"
+        (formSubmit)="onSupplierUpdated($event)"
+        (formCancel)="onCancel()"
+      ></app-supplier-form>
+    </div>
+</div>

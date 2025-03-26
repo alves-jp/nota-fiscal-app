@@ -1,0 +1,115 @@
+<div class="p-card">
+  <div class="p-card-header">
+    <h2>{{ supplier ? 'Editar Fornecedor' : 'Novo Fornecedor' }}</h2>
+  </div>
+  <div class="p-card-content">
+    <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+      <div class="p-fluid p-formgrid p-grid">
+        <!-- Código do Fornecedor -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="supplierCode">Código *</label>
+          <input 
+            id="supplierCode" 
+            type="text" 
+            pInputText 
+            formControlName="supplierCode"
+            [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('supplierCode')?.invalid && supplierForm.get('supplierCode')?.touched}">
+          <small *ngIf="supplierForm.get('supplierCode')?.invalid && supplierForm.get('supplierCode')?.touched" class="p-error">
+            Código é obrigatório
+          </small>
+        </div>
+
+        <!-- Razão Social -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="companyName">Razão Social *</label>
+          <input 
+            id="companyName" 
+            type="text" 
+            pInputText 
+            formControlName="companyName"
+            [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('companyName')?.invalid && supplierForm.get('companyName')?.touched}">
+          <small *ngIf="supplierForm.get('companyName')?.invalid && supplierForm.get('companyName')?.touched" class="p-error">
+            Razão social é obrigatória
+          </small>
+        </div>
+
+        <!-- CNPJ -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="cnpj">CNPJ *</label>
+          <input 
+            id="cnpj" 
+            type="text" 
+            pInputText 
+            formControlName="cnpj"
+            [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('cnpj')?.invalid && supplierForm.get('cnpj')?.touched}">
+          <small *ngIf="supplierForm.get('cnpj')?.invalid && supplierForm.get('cnpj')?.touched" class="p-error">
+            CNPJ é obrigatório
+          </small>
+        </div>
+
+        <!-- Status -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="companyStatus">Status *</label>
+          <p-dropdown 
+            id="companyStatus"
+            [options]="statusOptions" 
+            formControlName="companyStatus"
+            placeholder="Selecione o status"
+            [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('companyStatus')?.invalid && supplierForm.get('companyStatus')?.touched}">
+          </p-dropdown>
+          <small *ngIf="supplierForm.get('companyStatus')?.invalid && supplierForm.get('companyStatus')?.touched" class="p-error">
+            Status é obrigatório
+          </small>
+        </div>
+
+        <!-- Email -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="supplierEmail">Email *</label>
+          <input 
+            id="supplierEmail" 
+            type="email" 
+            pInputText 
+            formControlName="supplierEmail"
+            [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('supplierEmail')?.invalid && supplierForm.get('supplierEmail')?.touched}">
+          <small *ngIf="supplierForm.get('supplierEmail')?.invalid && supplierForm.get('supplierEmail')?.touched" class="p-error">
+            Email é obrigatório e deve ser válido
+          </small>
+        </div>
+
+        <!-- Telefone -->
+        <div class="p-field p-col-12 p-md-6">
+          <label for="supplierPhone">Telefone *</label>
+          <input 
+            id="supplierPhone" 
+            type="text" 
+            pInputText 
+            formControlName="supplierPhone"
+            [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('supplierPhone')?.invalid && supplierForm.get('supplierPhone')?.touched}">
+          <small *ngIf="supplierForm.get('supplierPhone')?.invalid && supplierForm.get('supplierPhone')?.touched" class="p-error">
+            Telefone é obrigatório
+          </small>
+        </div>
+
+        <div class="form-actions p-col-12">
+          <button 
+            pButton 
+            type="button" 
+            label="Cancelar" 
+            icon="pi pi-times" 
+            class="p-button-outlined p-button-secondary" 
+            (click)="onCancel()">
+          </button>
+          <button 
+            pButton 
+            type="submit" 
+            label="Salvar" 
+            icon="pi pi-check" 
+            [disabled]="supplierForm.invalid">
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-toast position="top-right"></p-toast>
