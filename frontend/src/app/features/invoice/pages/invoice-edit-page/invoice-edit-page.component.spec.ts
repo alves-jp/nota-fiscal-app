@@ -5,6 +5,7 @@ import { InvoiceService } from '../../../../core/services/api/invoice.service';
 import { MessageService } from 'primeng/api';
 import { of, throwError } from 'rxjs';
 import { InvoiceResponseDTO } from '../../../../core/models/invoice.model';
+import { CompanyStatus } from '../../../../core/models/supplier.model';
 
 describe('InvoiceEditPageComponent', () => {
   let component: InvoiceEditPageComponent;
@@ -18,7 +19,14 @@ describe('InvoiceEditPageComponent', () => {
     id: 1,
     invoiceNumber: 'NF-001',
     issueDate: new Date(),
-    supplier: { id: 1, name: 'Fornecedor 1' },
+    supplier: {
+      id: 1, companyName: 'Fornecedor 1',
+      supplierCode: '',
+      supplierEmail: '',
+      supplierPhone: '',
+      cnpj: '',
+      companyStatus: CompanyStatus.ACTIVE
+    },
     address: 'Rua Teste, 123',
     items: [],
     totalValue: 100.50

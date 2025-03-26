@@ -126,20 +126,17 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private InvoiceResponseDTO createInvoiceResponseDTO(Invoice invoice) {
         InvoiceResponseDTO responseDTO = new InvoiceResponseDTO();
-
         responseDTO.setId(invoice.getId());
         responseDTO.setInvoiceNumber(invoice.getInvoiceNumber());
         responseDTO.setIssueDate(invoice.getIssueDate());
         responseDTO.setSupplier(invoice.getSupplier());
         responseDTO.setAddress(invoice.getAddress());
         responseDTO.setItems(invoice.getItems());
-
         Double totalValue = calculateTotalValue(invoice);
         responseDTO.setTotalValue(totalValue);
-
         invoice.setTotalValue(totalValue);
-        invoiceRepository.persist(invoice);
 
+        invoiceRepository.persist(invoice);
         return responseDTO;
     }
 
@@ -154,8 +151,8 @@ public class InvoiceServiceImpl implements InvoiceService {
                     .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
                     .sum();
             invoice.setTotalValue(totalValue);
-
         }
+
         invoiceRepository.persist(invoice);
     }
 }

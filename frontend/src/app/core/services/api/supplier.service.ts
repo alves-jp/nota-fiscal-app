@@ -48,11 +48,14 @@ export class SupplierService {
     
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Erro: ${error.error.message}`;
+      
     } else {
       if (typeof error.error === 'string') {
         errorMessage = error.error;
+
       } else if (error.error?.message) {
         errorMessage = error.error.message;
+
       } else if (error.message) {
         errorMessage = error.message;
       }

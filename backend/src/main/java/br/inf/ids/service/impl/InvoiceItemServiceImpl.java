@@ -53,10 +53,9 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
         } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
             throw new InvalidDataException("A quantidade de produtos deve ser maior que zero.");
-
         }
-        InvoiceItem invoiceItem = new InvoiceItem();
 
+        InvoiceItem invoiceItem = new InvoiceItem();
         invoiceItem.setInvoice(invoice);
         invoiceItem.setProduct(product);
         invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
@@ -66,11 +65,11 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
         if (invoice.getItems() == null) {
             invoice.setItems(new ArrayList<>());
-
         }
-        invoice.getItems().add(invoiceItem);
-        invoiceService.updateTotalValue(invoice);
 
+        invoice.getItems().add(invoiceItem);
+
+        invoiceService.updateTotalValue(invoice);
         return invoiceItem;
     }
 
@@ -102,20 +101,19 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
         } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
             throw new InvalidDataException("A quantidade de produtos deve ser maior que zero.");
-
         }
+
         InvoiceItem existingInvoiceItem = invoiceItemRepository.findById(id);
 
         if (existingInvoiceItem == null) {
             throw new EntityNotFoundException("Item não encontrado.");
-
         }
+
         existingInvoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
         existingInvoiceItem.setQuantity(invoiceItemDTO.getQuantity());
-
         Invoice invoice = existingInvoiceItem.getInvoice();
-        invoiceService.updateTotalValue(invoice);
 
+        invoiceService.updateTotalValue(invoice);
         return existingInvoiceItem;
     }
 
@@ -126,6 +124,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
                 .orElseThrow(() -> new EntityNotFoundException("Item não encontrado."));
 
         Invoice invoice = invoiceItem.getInvoice();
+
         invoiceItemRepository.delete(invoiceItem);
 
         if (invoice != null) {

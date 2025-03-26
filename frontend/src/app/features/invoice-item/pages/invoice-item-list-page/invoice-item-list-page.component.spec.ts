@@ -30,7 +30,7 @@ describe('InvoiceItemListPageComponent', () => {
 
     fixture = TestBed.createComponent(InvoiceItemListPageComponent);
     component = fixture.componentInstance;
-    component.invoiceId = 1; // Definindo o invoiceId para testes
+    component.invoiceId = 1;
     router = TestBed.inject(Router);
     messageService = TestBed.inject(MessageService);
     fixture.detectChanges();

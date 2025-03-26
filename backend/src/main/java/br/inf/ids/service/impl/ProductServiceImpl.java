@@ -24,12 +24,11 @@ public class ProductServiceImpl implements ProductService {
         validateProductDTO(productDTO);
 
         Product product = new Product();
-
         product.setProductCode(productDTO.getProductCode());
         product.setDescription(productDTO.getDescription());
         product.setProductStatus(productDTO.getProductStatus());
-        productRepository.persist(product);
 
+        productRepository.persist(product);
         return convertToDTO(product);
     }
 
@@ -74,7 +73,6 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setProductStatus(productDTO.getProductStatus());
 
         productRepository.persist(existingProduct);
-
         return convertToDTO(existingProduct);
     }
 
@@ -86,8 +84,8 @@ public class ProductServiceImpl implements ProductService {
 
         if (productRepository.hasInvoiceItems(id)) {
             throw new BusinessException("Não é possível excluir um produto com movimentação.");
-
         }
+
         productRepository.delete(product);
     }
 

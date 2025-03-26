@@ -8,6 +8,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
+import { CompanyStatus } from '../../../../core/models/supplier.model';
 
 describe('InvoiceListComponent', () => {
   let component: InvoiceListComponent;
@@ -20,7 +21,14 @@ describe('InvoiceListComponent', () => {
       id: 1,
       invoiceNumber: 'NF-001',
       issueDate: new Date(),
-      supplier: { id: 1, name: 'Fornecedor 1' },
+      supplier: {
+        id: 1, companyName: 'Fornecedor 1',
+        supplierCode: '',
+        supplierEmail: '',
+        supplierPhone: '',
+        cnpj: '',
+        companyStatus: CompanyStatus.ACTIVE
+      },
       address: 'Rua Teste, 123',
       items: [],
       totalValue: 100.50
@@ -29,7 +37,14 @@ describe('InvoiceListComponent', () => {
       id: 2,
       invoiceNumber: 'NF-002',
       issueDate: new Date(),
-      supplier: { id: 2, name: 'Fornecedor 2' },
+      supplier: {
+        id: 2, companyName: 'Fornecedor 2',
+        supplierCode: '',
+        supplierEmail: '',
+        supplierPhone: '',
+        cnpj: '',
+        companyStatus: CompanyStatus.ACTIVE
+      },
       address: 'Rua Teste, 456',
       items: [],
       totalValue: 200.75

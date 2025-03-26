@@ -28,7 +28,6 @@ public class SupplierServiceImpl implements SupplierService {
         validateSupplierDTO(supplierDTO);
 
         Supplier supplier = new Supplier();
-
         supplier.setId(supplierDTO.getId());
         supplier.setSupplierCode(supplierDTO.getSupplierCode());
         supplier.setCompanyName(supplierDTO.getCompanyName());
@@ -39,10 +38,9 @@ public class SupplierServiceImpl implements SupplierService {
 
         if (supplierRepository.findByCnpj(supplier.getCnpj()) != null) {
             throw new BusinessException("Erro: Já existe um fornecedor com o CNPJ informado.");
-
         }
-        supplierRepository.persist(supplier);
 
+        supplierRepository.persist(supplier);
         return mapToDTO(supplier);
     }
 
@@ -84,8 +82,8 @@ public class SupplierServiceImpl implements SupplierService {
 
         if (supplierWithSameCnpj != null && !supplierWithSameCnpj.getId().equals(id)) {
             throw new BusinessException("Erro: Já existe um fornecedor com este CNPJ.");
-
         }
+
         existingSupplier.setId(supplierDTO.getId());
         existingSupplier.setSupplierCode(supplierDTO.getSupplierCode());
         existingSupplier.setCompanyName(supplierDTO.getCompanyName());
@@ -107,8 +105,8 @@ public class SupplierServiceImpl implements SupplierService {
 
         if (hasMovements) {
             throw new BusinessException("Erro: Não é possível excluir um fornecedor com movimentação.");
-
         }
+
         supplierRepository.delete(supplier);
     }
 
@@ -129,7 +127,6 @@ public class SupplierServiceImpl implements SupplierService {
 
     private SupplierDTO mapToDTO(Supplier supplier) {
         SupplierDTO supplierDTO = new SupplierDTO();
-
         supplierDTO.setId(supplier.getId());
         supplierDTO.setSupplierCode(supplier.getSupplierCode());
         supplierDTO.setCompanyName(supplier.getCompanyName());

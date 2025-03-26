@@ -72,12 +72,12 @@ export class InvoiceService {
 
   private formatDateForBackend(date: Date | string | null): string | null {
     if (!date) {
-      return null; // Backend vai usar `now()`
+      return null;
     }
     const parsedDate = new Date(date);
     return parsedDate.toISOString();
   }
-  
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocorreu um erro desconhecido';
     
@@ -86,12 +86,16 @@ export class InvoiceService {
     } else {
       if (error.status === 0) {
         errorMessage = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
+
       } else if (error.status === 400) {
         errorMessage = error.error?.message || 'Dados inválidos enviados ao servidor';
+
       } else if (error.status === 404) {
         errorMessage = error.error?.message || 'Recurso não encontrado';
+
       } else if (error.status === 500) {
         errorMessage = error.error?.message || 'Erro interno no servidor';
+
       } else {
         errorMessage = `Erro ${error.status}: ${error.message}`;
       }

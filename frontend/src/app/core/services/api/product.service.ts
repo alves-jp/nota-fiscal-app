@@ -56,13 +56,16 @@ export class ProductService {
     
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Erro: ${error.error.message}`;
+
     } else {
       if (error.error && error.error.message) {
         errorMessage = error.error.message;
+
       } else if (error.status === 400 || error.status === 404) {
         try {
           const errorBody = JSON.parse(error.error);
           errorMessage = errorBody.message || errorMessage;
+          
         } catch (e) {
         }
       }

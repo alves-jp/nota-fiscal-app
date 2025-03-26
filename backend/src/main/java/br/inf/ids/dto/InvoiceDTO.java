@@ -1,6 +1,5 @@
 package br.inf.ids.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.json.bind.annotation.JsonbDateFormat;
 
 import java.time.LocalDateTime;
