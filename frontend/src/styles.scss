@@ -147,3 +147,20 @@ body {
 .fa, .fas, .far, .fal, .fab {
   font-family: 'Font Awesome 6 Free' !important;
 }
+
+/* styles.scss */
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+dialog {
+  border: none !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  padding: 0;
+  max-width: 90vw;
+}
+
+dialog > div {
+  padding: 1.5rem;
+}

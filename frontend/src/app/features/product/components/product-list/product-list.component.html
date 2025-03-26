@@ -54,9 +54,16 @@
     </ng-template>
   </p-table>
 
-  <p-confirmDialog 
-    [style]="{width: '450px'}"
-    [baseZIndex]="10000"
-  ></p-confirmDialog>
+  <dialog #confirmDialog class="custom-dialog">
+    <div class="dialog-content">
+      <h3>{{ dialogTitle }}</h3>
+      <p [innerHTML]="dialogMessage"></p>
+      <div class="dialog-buttons">
+        <button (click)="dialogConfirm(false)" class="cancel-btn">Não</button>
+        <button (click)="dialogConfirm(true)" class="confirm-btn">Sim, excluir</button>
+      </div>
+    </div>
+  </dialog>
+
   <p-toast position="top-center"></p-toast>
 </div>

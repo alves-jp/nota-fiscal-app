@@ -1,11 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { ProductService } from '../../../../core/services/api/product.service';
 import { Product } from '../../../../core/models/product.model';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
 
@@ -26,15 +25,17 @@ interface StatusSeverityMap {
     CommonModule,
     TableModule,
     ButtonModule,
-    ConfirmDialogModule,
     ToastModule,
     TagModule
   ],
-  providers: [ConfirmationService, MessageService]
+  providers: [MessageService]
 })
 export class ProductListComponent implements OnInit {
+  @ViewChild('confirmDialog') confirmDialog!: ElementRef<HTMLDialogElement>;
   products: Product[] = [];
   loading = true;
+  dialogTitle = '';
+  dialogMessage = '';
   
   @Output() editProduct = new EventEmitter<Product>();
   @Output() createSuccess = new EventEmitter<{ message: string }>();
@@ -47,7 +48,6 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
 
@@ -77,26 +77,40 @@ export class ProductListComponent implements OnInit {
     this.editProduct.emit(product);
   }
 
-  onDelete(product: Product): void {
-    this.confirmationService.confirm({
-      message: `Deseja excluir o produto ${product.productCode}?`,
-      header: 'Confirmar Exclusão',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Sim',
-      rejectLabel: 'Não',
-      accept: () => this.deleteProduct(product.id)
+  async onDelete(product: Product): Promise<void> {
+    this.dialogTitle = 'Confirmar Exclusão';
+    this.dialogMessage = `Deseja excluir o produto <strong>${product.productCode}</strong>?`;
+    
+    const confirmed = await this.openDialog();
+    if (confirmed) this.deleteProduct(product.id);
+  }
+
+  private openDialog(): Promise<boolean> {
+    return new Promise((resolve) => {
+      const dialog = this.confirmDialog.nativeElement;
+      dialog.showModal();
+      
+      const handleClose = () => {
+        resolve(dialog.returnValue === 'true');
+        dialog.removeEventListener('close', handleClose);
+      };
+      
+      dialog.addEventListener('close', handleClose);
     });
+  }
+
+  dialogConfirm(result: boolean): void {
+    this.confirmDialog.nativeElement.close(result.toString());
   }
 
   private deleteProduct(id: number): void {
     this.productService.deleteProduct(id).subscribe({
       next: () => {
         this.loadProducts();
-        this.createSuccess.emit({ message: 'Produto excluído com sucesso' });
+        this.showSuccess('Produto excluído com sucesso');
       },
       error: (error: Error) => {
-        const errorMessage = error.message || 'Falha ao excluir produto';
-        this.showError(errorMessage);
+        this.showError(error.message || 'Falha ao excluir produto');
       }
     });
   }
