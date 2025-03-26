@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InvoiceItemFormComponent } from '../../components/invoice-item-form/invoice-item-form.component';
@@ -21,22 +21,44 @@ import { InvoiceItemService } from '../../../../core/services/api/invoice-item.s
   ],
   providers: [MessageService]
 })
-export class InvoiceItemCreatePageComponent {
-  @Input() invoiceId!: number;
+export class InvoiceItemCreatePageComponent implements OnInit {
+  invoiceId!: number;
   loading = false;
   submitted = false;
 
   constructor(
     private invoiceItemService: InvoiceItemService,
     private router: Router,
+    private route: ActivatedRoute,
     private messageService: MessageService
   ) {}
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.invoiceId = +params['invoiceId'];
+      if (!this.invoiceId) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'ID da nota fiscal não encontrado',
+          life: 5000
+        });
+        this.router.navigate(['/notas-fiscais']);
+      }
+    });
+  }
 
   handleFormSubmit(itemData: InvoiceItemDTO): void {
     this.submitted = true;
     this.loading = true;
 
-    this.invoiceItemService.createInvoiceItem(itemData).subscribe({
+    // Ensure invoiceId is included in the item data
+    const completeItemData: InvoiceItemDTO = {
+      ...itemData,
+      invoiceId: this.invoiceId
+    };
+
+    this.invoiceItemService.createInvoiceItem(completeItemData).subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
@@ -44,7 +66,9 @@ export class InvoiceItemCreatePageComponent {
           detail: 'Item adicionado com sucesso',
           life: 3000
         });
-        setTimeout(() => this.router.navigate(['/notas-fiscais', this.invoiceId]), 1500);
+        setTimeout(() => 
+          this.router.navigate(['/notas-fiscais', this.invoiceId]), 
+        1500);
       },
       error: (error) => {
         this.loading = false;

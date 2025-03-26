@@ -134,15 +134,15 @@ export class InvoiceItemFormComponent implements OnInit {
 
     const formValue = this.itemForm.value;
     const itemData: InvoiceItemDTO = {
-      id: this.invoiceId,
+      id: this.item?.id,
+      invoiceId: this.invoiceId,
       productId: formValue.productId,
       quantity: formValue.quantity,
-      unitValue: formValue.unitPrice, // Mantém unitPrice do formulário
+      unitValue: formValue.unitPrice,
       totalValue: this.calculateTotal()
     };
 
     console.log('Dados do item sendo enviados:', itemData);
-
     this.formSubmit.emit(itemData);
   }
 

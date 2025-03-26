@@ -58,7 +58,6 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         InvoiceItem invoiceItem = new InvoiceItem();
         invoiceItem.setInvoice(invoice);
         invoiceItem.setProduct(product);
-        invoiceItem.setId(invoiceItemDTO.getId());
         invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
         invoiceItem.setQuantity(invoiceItemDTO.getQuantity());
 

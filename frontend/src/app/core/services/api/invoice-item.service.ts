@@ -16,12 +16,13 @@ export class InvoiceItemService {
 
   private toDTO(invoiceItem: InvoiceItem): InvoiceItemDTO {
     return {
-  id: invoiceItem.invoiceId!,
-  productId: invoiceItem.product.id,
-  quantity: invoiceItem.quantity,
-  unitValue: invoiceItem.unitValue,
-  totalValue: invoiceItem.totalPrice
-};
+      id: invoiceItem.id,
+      invoiceId: invoiceItem.invoiceId,
+      productId: invoiceItem.product.id,
+      quantity: invoiceItem.quantity,
+      unitValue: invoiceItem.unitValue,
+      totalValue: invoiceItem.totalPrice
+    };
   }
 
   createInvoiceItem(itemData: InvoiceItemDTO): Observable<InvoiceItem> {

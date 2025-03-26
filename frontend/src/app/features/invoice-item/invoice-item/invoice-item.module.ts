@@ -20,7 +20,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
-
+ 
   ],
   imports: [
     CommonModule,
@@ -32,13 +32,11 @@ import { MessageService, ConfirmationService } from 'primeng/api';
     ButtonModule,
     InputTextModule,
     InputNumberModule,
-
     InvoiceItemListPageComponent,
     InvoiceItemCreatePageComponent,
     InvoiceItemEditPageComponent,
     InvoiceItemFormComponent,
     InvoiceItemListComponent,
-    
     DialogModule,
     DropdownModule,
     ToastModule,

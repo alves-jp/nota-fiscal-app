@@ -13,6 +13,7 @@ export interface InvoiceItem {
 
 export interface InvoiceItemDTO {
   id?: number;
+  invoiceId?: number;
   productId: number;
   quantity: number;
   unitValue: number;
