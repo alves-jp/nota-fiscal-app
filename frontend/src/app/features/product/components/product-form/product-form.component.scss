@@ -62,62 +62,41 @@
       }
     }
 
-    /* ESTILO PERSONALIZADO PARA OS BOTÕES DE STATUS */
-    .p-selectbutton {
-      display: flex;
-      gap: 0.5rem;
+    /* BOTÕES DE STATUS PERSONALIZADOS */
+    .status-buttons {
+      display: inline-flex;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      overflow: hidden;
+      background: white;
 
-      .p-button {
-        flex: 1;
-        padding: 0.75rem;
-        border: 2px solid !important;
-        background: transparent !important;
-        transition: all 0.3s;
+      .status-button {
+        padding: 0.5rem 1.5rem;
+        border: none;
+        background: transparent;
+        color: #374151;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        outline: none;
 
-        /* BOTÃO ATIVO */
-        &[aria-label="Ativo"] {
-          border-color: #28a745 !important;
-          color: #28a745 !important;
-
-          &:hover:not(.p-highlight) {
-            background: rgba(40, 167, 69, 0.1) !important;
-          }
-
-          &.p-highlight {
-            background: #28a745 !important;
-            color: white !important;
-            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.3);
-          }
+        &:first-child {
+          border-right: 1px solid #d1d5db;
         }
 
-        /* BOTÃO INATIVO */
-        &[aria-label="Inativo"] {
-          &:hover {
-            background: #f8f9fa !important;
-          }
-          &.p-highlight {
-            background: #dc3545 !important;
-            color: white !important;
-            border-color: #dc3545 !important;
-          }
+        &.active {
+          background: #3498db;
+          color: white;
         }
 
-        .status-btn {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.5rem;
-          font-weight: 600;
-
-          i {
-            font-size: 1.1rem;
-          }
+        &:hover:not(.active) {
+          background: #f8f9fa;
         }
-      }
 
-      &.ng-invalid.ng-dirty {
-        .p-button {
-          border-color: #e53e3e !important;
+        &:focus {
+          box-shadow: none;
         }
       }
     }
@@ -192,8 +171,13 @@
       }
     }
     
-    .p-selectbutton {
-      flex-direction: column;
+    .status-buttons {
+      width: 100%;
+      
+      .status-button {
+        flex: 1;
+        padding: 0.5rem;
+      }
     }
     
     .form-actions {

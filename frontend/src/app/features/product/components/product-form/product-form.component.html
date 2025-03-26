@@ -33,16 +33,28 @@
           </small>
         </div>
 
-        <!-- Status - Botões Estilizados -->
+        <!-- Status - Botões Customizados -->
         <div class="p-field p-col-12">
           <label for="status">Status *</label>
-          <p-selectButton
-            id="status"
-            formControlName="status"
-            [options]="statusOptions"
-            optionLabel="label"
-            [multiple]="false">
-          </p-selectButton>
+          <div class="status-buttons">
+            <button 
+              type="button"
+              class="status-button"
+              [class.active]="productForm.get('status')?.value === 'ACTIVE'"
+              (click)="productForm.get('status')?.setValue('ACTIVE')">
+              Ativo
+            </button>
+            <button 
+              type="button"
+              class="status-button"
+              [class.active]="productForm.get('status')?.value === 'INACTIVE'"
+              (click)="productForm.get('status')?.setValue('INACTIVE')">
+              Inativo
+            </button>
+          </div>
+          <small *ngIf="productForm.get('status')?.invalid && productForm.get('status')?.touched" class="p-error">
+            Selecione um status
+          </small>
         </div>
 
         <div class="form-actions p-col-12">
