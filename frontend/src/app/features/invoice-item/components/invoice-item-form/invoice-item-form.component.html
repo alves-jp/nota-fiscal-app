@@ -1,0 +1,106 @@
+<div class="p-card">
+    <div class="p-card-header">
+      <h2>{{ invoiceItem ? 'Editar Item' : 'Novo Item' }}</h2>
+    </div>
+    <div class="p-card-content">
+      <form [formGroup]="invoiceItemForm" (ngSubmit)="onSubmit()">
+        <div class="p-fluid p-formgrid p-grid">
+          <!-- Produto -->
+          <div class="p-field p-col-12 p-md-6">
+            <label for="product">Produto *</label>
+            <p-dropdown
+              id="product"
+              [options]="products"
+              optionLabel="description"
+              formControlName="product"
+              [showClear]="true"
+              [filter]="true"
+              filterBy="description,productCode"
+              placeholder="Selecione um produto"
+              [ngClass]="{'ng-invalid ng-dirty': invoiceItemForm.get('product')?.invalid && invoiceItemForm.get('product')?.touched}">
+              <ng-template pTemplate="selectedItem">
+                <div *ngIf="invoiceItemForm.get('product')?.value">
+                  {{ invoiceItemForm.get('product')?.value.productCode }} - {{ invoiceItemForm.get('product')?.value.description }}
+                </div>
+              </ng-template>
+              <ng-template let-product pTemplate="item">
+                <div>
+                  <strong>{{ product.productCode }}</strong> - {{ product.description }}
+                  <br>
+                  <small>Status: {{ product.productStatus === 'ACTIVE' ? 'Ativo' : 'Inativo' }}</small>
+                </div>
+              </ng-template>
+            </p-dropdown>
+            <small *ngIf="invoiceItemForm.get('product')?.invalid && invoiceItemForm.get('product')?.touched" class="p-error">
+              Selecione um produto
+            </small>
+          </div>
+  
+          <!-- Valor Unitário -->
+          <div class="p-field p-col-12 p-md-3">
+            <label for="unitPrice">Valor Unitário *</label>
+            <p-inputNumber
+              id="unitPrice"
+              mode="currency"
+              currency="BRL"
+              locale="pt-BR"
+              formControlName="unitPrice"
+              [min]="0.01"
+              [maxFractionDigits]="2"
+              [ngClass]="{'ng-invalid ng-dirty': invoiceItemForm.get('unitPrice')?.invalid && invoiceItemForm.get('unitPrice')?.touched}">
+            </p-inputNumber>
+            <small *ngIf="invoiceItemForm.get('unitPrice')?.invalid && invoiceItemForm.get('unitPrice')?.touched" class="p-error">
+              Valor inválido (mínimo: R$ 0,01)
+            </small>
+          </div>
+  
+          <!-- Quantidade -->
+          <div class="p-field p-col-12 p-md-3">
+            <label for="quantity">Quantidade *</label>
+            <p-inputNumber
+              id="quantity"
+              formControlName="quantity"
+              [min]="1"
+              [max]="999"
+              [ngClass]="{'ng-invalid ng-dirty': invoiceItemForm.get('quantity')?.invalid && invoiceItemForm.get('quantity')?.touched}">
+            </p-inputNumber>
+            <small *ngIf="invoiceItemForm.get('quantity')?.invalid && invoiceItemForm.get('quantity')?.touched" class="p-error">
+              Quantidade inválida (mínimo: 1)
+            </small>
+          </div>
+  
+          <!-- Valor Total (readonly) -->
+          <div class="p-field p-col-12">
+            <label>Valor Total</label>
+            <p-inputNumber
+            [ngModel]="calculateTotal()"
+            mode="currency"
+            currency="BRL"
+            locale="pt-BR"
+            [readonly]="true">
+          </p-inputNumber>
+          </div>
+  
+          <div class="form-actions p-col-12">
+            <button 
+              pButton 
+              type="button" 
+              label="Cancelar" 
+              icon="pi pi-times" 
+              class="p-button-outlined p-button-secondary" 
+              (click)="onCancel()">
+            </button>
+            <button 
+              pButton 
+              type="submit" 
+              label="Salvar" 
+              icon="pi pi-check" 
+              [disabled]="invoiceItemForm.invalid">
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <p-toast position="top-right"></p-toast>

@@ -1,0 +1,153 @@
+.invoice-item-list-container {
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--secondary-color);
+  
+    .p-datatable {
+      margin-top: 1rem;
+      
+      .p-datatable-thead > tr > th {
+        background-color: var(--primary-color);
+        font-weight: 600;
+        color: white;
+        border: none;
+      }
+  
+      .p-datatable-tbody > tr {
+        transition: background-color 0.2s;
+        
+        &:hover {
+          background-color: rgba(52, 152, 219, 0.1);
+        }
+      }
+    }
+  
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+  
+      .edit-btn {
+        color: var(--secondary-color) !important;
+        
+        &:hover {
+          background-color: rgba(52, 152, 219, 0.1) !important;
+          transform: scale(1.1);
+        }
+      }
+      
+      .delete-btn {
+        color: var(--accent-color) !important;
+        
+        &:hover {
+          background-color: rgba(239, 68, 68, 0.1) !important;
+          transform: scale(1.1);
+        }
+      }
+      
+      .fa-solid, .fa-regular {
+        font-size: 0.9rem;
+      }
+    }
+  
+    .text-center {
+      text-align: center;
+      padding: 1rem;
+      color: #64748b;
+    }
+  }
+  
+  /* Diálogo Customizado */
+  .custom-dialog {
+    border: none;
+    border-radius: 8px;
+    padding: 0;
+    width: min(450px, 90vw);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.3s ease-out;
+  
+    &::backdrop {
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(2px);
+    }
+  
+    .dialog-content {
+      padding: 1.5rem;
+  
+      h3 {
+        color: var(--primary-color);
+        margin-top: 0;
+        font-size: 1.25rem;
+      }
+  
+      p {
+        color: var(--text-color);
+        margin: 1rem 0 1.5rem;
+        line-height: 1.5;
+      }
+    }
+  
+    .dialog-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+  
+      button {
+        padding: 0.5rem 1.25rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s;
+        font-family: var(--font-family);
+  
+        &.cancel-btn {
+          background: white;
+          border: 1px solid var(--border-color);
+          color: var(--text-color);
+  
+          &:hover {
+            background: #f8f9fa;
+            transform: translateY(-1px);
+          }
+        }
+  
+        &.confirm-btn {
+          background: var(--accent-color);
+          color: white;
+          border: none;
+  
+          &:hover {
+            background: #c0392b;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+          }
+        }
+      }
+    }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .invoice-item-list-container {
+      padding: 1rem;
+      
+      .p-datatable {
+        font-size: 0.875rem;
+        
+        .p-button {
+          width: 2rem;
+          height: 2rem;
+          
+          .pi {
+            font-size: 0.875rem;
+          }
+        }
+      }
+    }
+  }

@@ -1,0 +1,24 @@
+<div class="invoice-item-list-container">
+    <p-toast position="top-right"></p-toast>
+    
+    <div class="card">
+      <div class="header">
+        <h1>Itens da Nota Fiscal #{{invoiceId}}</h1>
+        <button 
+          pButton 
+          label="Novo Item" 
+          icon="fa-regular fa-plus"
+          class="new-item-btn"
+          (click)="onNewItem()"
+        ></button>
+      </div>
+  
+      <div class="content">
+        <app-invoice-item-list 
+          [invoiceId]="invoiceId"
+          (editItem)="onEditItem($event)"
+          (createSuccess)="handleItemCreated($event)"
+        ></app-invoice-item-list>
+      </div>
+    </div>
+  </div>

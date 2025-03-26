@@ -7,11 +7,21 @@ export const routes: Routes = [
   },
   { 
     path: 'notas-fiscais', 
-    loadChildren: () => import('./features/invoice/invoice/invoice.module').then(m => m.InvoiceModule)
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./features/invoice/invoice/invoice.module').then(m => m.InvoiceModule)
+      },
+      {
+        path: ':invoiceId/itens',
+        loadChildren: () => import('./features/invoice-item/invoice-item/invoice-item.module').then(m => m.InvoiceItemModule)
+      }
+    ]
   },
   { 
     path: 'fornecedores', 
     loadChildren: () => import('./features/supplier/supplier/supplier.module').then(m => m.SupplierModule)
   },
-  { path: '', redirectTo: '/produtos', pathMatch: 'full' }
+  { path: '', redirectTo: '/produtos', pathMatch: 'full' },
+  { path: '**', redirectTo: '/produtos' }
 ];

@@ -1,0 +1,8 @@
+<div class="invoice-item-create-container">
+    <p-toast position="top-right"></p-toast>
+    <app-invoice-item-form 
+      [invoiceId]="invoiceId"
+      (formSubmit)="handleFormSubmit($event)"
+      (formCancel)="onCancel()">
+    </app-invoice-item-form>
+  </div>
