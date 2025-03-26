@@ -12,6 +12,8 @@ import br.inf.ids.service.InvoiceService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,15 +30,16 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Transactional
     public Invoice createInvoice(InvoiceDTO invoiceDTO) throws InvalidDataException {
         validateInvoiceDTO(invoiceDTO);
-
         Supplier supplier = supplierRepository.findById(invoiceDTO.getSupplierId());
 
-        if (supplier == null) {
+        if (invoiceDTO.getIssueDate() == null) {
+            invoiceDTO.setIssueDate(LocalDateTime.now());
+
+        } if (supplier == null) {
             throw new InvalidDataException("Fornecedor com ID " + invoiceDTO.getSupplierId() + " não encontrado.");
-
         }
-        Invoice invoice = new Invoice();
 
+        Invoice invoice = new Invoice();
         invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
         invoice.setIssueDate(invoiceDTO.getIssueDate());
         invoice.setAddress(invoiceDTO.getAddress());
@@ -48,8 +51,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         } else {
             invoice.setTotalValue(0.0);
-
         }
+
         invoiceRepository.persist(invoice);
         return invoice;
     }
@@ -115,9 +118,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     private void validateInvoiceDTO(InvoiceDTO invoiceDTO) throws InvalidDataException {
         if (invoiceDTO.getInvoiceNumber() == null || invoiceDTO.getInvoiceNumber().isBlank()) {
             throw new InvalidDataException("O número da nota fiscal é obrigatório.");
-
-        } if (invoiceDTO.getIssueDate() == null) {
-            throw new InvalidDataException("A data de emissão é obrigatória.");
 
         } if (invoiceDTO.getSupplierId() == null) {
             throw new InvalidDataException("O fornecedor é obrigatório.");

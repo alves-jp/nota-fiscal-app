@@ -2,6 +2,7 @@
   <p-toast position="top-right"></p-toast>
   <p-card header=" " class="invoice-card">
     <app-invoice-form 
+      [loading]="loading"
       (formSubmit)="handleFormSubmit($event)"
       (formCancel)="onCancel()">
     </app-invoice-form>

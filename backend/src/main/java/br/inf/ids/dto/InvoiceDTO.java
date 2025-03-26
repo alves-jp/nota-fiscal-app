@@ -1,12 +1,18 @@
 package br.inf.ids.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.json.bind.annotation.JsonbDateFormat;
+
 import java.time.LocalDateTime;
 
 public class InvoiceDTO {
 
     private Long id;
     private String invoiceNumber;
+
+    @JsonbDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     private LocalDateTime issueDate;
+
     private Long supplierId;
     private String address;
 

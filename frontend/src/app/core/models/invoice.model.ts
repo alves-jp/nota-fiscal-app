@@ -4,7 +4,7 @@ import { InvoiceItem } from './invoice-item.model';
 export interface InvoiceDTO {
   id?: number;
   invoiceNumber: string;
-  issueDate: Date;
+  issueDate: Date | null;
   supplierId: number;
   address: string;
 }

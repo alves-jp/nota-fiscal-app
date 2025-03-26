@@ -37,6 +37,8 @@ export class InvoiceCreatePageComponent {
     this.submitted = true;
     this.loading = true;
 
+    console.log('Dados sendo enviados:', invoice);
+
     this.invoiceService.createInvoice(invoice).subscribe({
       next: () => {
         this.messageService.add({
@@ -48,16 +50,30 @@ export class InvoiceCreatePageComponent {
         setTimeout(() => this.router.navigate(['/notas-fiscais']), 1500);
       },
       error: (error) => {
+        console.error('Erro ao criar nota fiscal:', error);
         this.loading = false;
-        const errorMessage = error.error?.message || 'Erro ao criar nota fiscal';
+        const errorMessage = this.getErrorMessage(error);
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
           detail: errorMessage,
           life: 5000
         });
+      },
+      complete: () => {
+        this.loading = false;
       }
     });
+  }
+
+  private getErrorMessage(error: any): string {
+    if (error.error?.message) {
+      return error.error.message;
+    }
+    if (error.message) {
+      return error.message;
+    }
+    return 'Erro ao criar nota fiscal. Verifique os dados e tente novamente.';
   }
 
   onCancel(): void {

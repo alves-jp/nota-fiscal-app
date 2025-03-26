@@ -32,6 +32,7 @@ import { SupplierService } from '../../../../core/services/api/supplier.service'
 })
 export class InvoiceFormComponent implements OnInit {
   @Input() invoice?: InvoiceResponseDTO;
+  @Input() loading: boolean = false;
   @Output() formSubmit = new EventEmitter<InvoiceDTO>();
   @Output() formCancel = new EventEmitter<void>();
 
@@ -142,9 +143,24 @@ export class InvoiceFormComponent implements OnInit {
     return d.toISOString().split('T')[0];
   }
 
+  private prepareIssueDate(dateString: string): Date {
+    const date = new Date(dateString);
+    const utcDate = new Date(Date.UTC(
+      date.getFullYear(), 
+      date.getMonth(), 
+      date.getDate()
+    ));
+    return utcDate;
+  }
+
   onSubmit(): void {
     if (this.invoiceForm.invalid) {
-      this.handleInvalidForm();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Por favor, preencha todos os campos obrigatórios corretamente'
+      });
+      this.markAllAsTouched();
       return;
     }
 
@@ -156,23 +172,9 @@ export class InvoiceFormComponent implements OnInit {
       supplierId: formValue.supplierId,
       address: formValue.address
     };
+
+    console.log('Dados da nota fiscal antes do envio:', invoiceData);
     this.formSubmit.emit(invoiceData);
-  }
-
-  private prepareIssueDate(dateString: string): Date {
-    const date = new Date(dateString);
-    const now = new Date();
-    date.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
-    return date;
-  }
-
-  private handleInvalidForm(): void {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Erro',
-      detail: 'Preencha todos os campos obrigatórios'
-    });
-    this.markAllAsTouched();
   }
 
   private markAllAsTouched(): void {
