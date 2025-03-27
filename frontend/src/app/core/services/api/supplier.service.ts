@@ -48,7 +48,6 @@ export class SupplierService {
     
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Erro: ${error.error.message}`;
-      
     } else {
       if (typeof error.error === 'string') {
         errorMessage = error.error;
@@ -58,6 +57,10 @@ export class SupplierService {
 
       } else if (error.message) {
         errorMessage = error.message;
+        
+      }
+      if (error.status === 400 && error.error) {
+        errorMessage = error.error;
       }
     }
     

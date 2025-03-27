@@ -9,14 +9,17 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
 
 ## Imagens
 ![Dashboard](https://github.com/alves-jp/nota-fiscal-app/blob/main/media/dashboard.png?raw=true)
+
 ![Painel](https://github.com/alves-jp/nota-fiscal-app/blob/main/media/painel-notas-fiscais.png?raw=true)
+
 ![Arquitetura](https://github.com/alves-jp/nota-fiscal-app/blob/main/media/diagrama-backend.png?raw=true)
 
 ## Como Executar o Projeto
 ### **Pré-requisitos**
-- Node.js 18+ (frontend)
-- Angular CLI (`npm install -g @angular/cli`)
-- Java 17+ (backend)
+- Node.js 18+ (frontend) (rodando em `localhost:4200`)
+- Angular CLI + 19 (`npm install -g @angular/cli`)
+- PrimeNG +19
+- Java 17+ (backend) (rodando em `localhost:8080`)
 - Maven
 - PostgreSQL (rodando em `localhost:5432`)
 
@@ -26,39 +29,50 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
 
 2. **Edite application.properties para configurar o banco de dados**:
    - Edite as credenciais em `backend/src/main/resources/application.properties` se necessário.
-
+```
     quarkus.datasource.username=
     quarkus.datasource.password=
     quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5432/IDS_TESTE
+```
 
 ### **Back-end (Quarkus)**
 1. **Inicie o servidor** (modo desenvolvimento):
-   ```bash
+   ```
+   bash
    cd backend
    ./mvnw quarkus:dev
+   ```
 
-Acesse a API em: http://localhost:8080/
+**Acesse a API em:** `http://localhost:8080/`
 
 2. **Build (produção)**:
+   ```
     ./mvnw package
     java -jar target/quarkus-app/quarkus-run.jar
+   ```
 
-3. **Documentação**:
-    Documentação Swagger: http://localhost:8080/q/swagger-ui/
+### **Documentação**:
+    **Documentação Swagger:** `http://localhost:8080/q/swagger-ui/`
 
 
 ### **Front-end (Angular)**
 1. **Instale as dependências:**:
+   ```
    cd frontend
    npm install
+   ```
 
-2. **Inicie o servidor de desenvolvimento:**:
+3. **Inicie o servidor de desenvolvimento:**:
+   ```
    ng serve
+   ```
 
-Acesse: http://localhost:4200
+**Acesse:** `http://localhost:4200`
 
 3. **Build (produção)**:
-    ng build --configuration production
+    ```
+   ng build --configuration production
+    ```
 
 ## Exemplo de resposta
 `curl -X GET "http://localhost:8080/notas-fiscais`
@@ -98,5 +112,6 @@ Acesse: http://localhost:4200
 ```
 
 ## Links Úteis
-[Angular CLI Documentation](https://angular.dev/tools/cli)
-[Quarkus Guides](https://quarkus.io/guides/)
+- [Angular CLI Documentation](https://angular.dev/tools/cli)
+  
+- [Quarkus Guides](https://quarkus.io/guides/)

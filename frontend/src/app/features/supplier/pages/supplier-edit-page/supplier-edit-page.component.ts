@@ -2,16 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SupplierService } from '../../../../core/services/api/supplier.service';
-import {  Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
+import { Supplier } from '../../../../core/models/supplier.model';
 import { MessageService } from 'primeng/api';
 import { SupplierFormComponent } from '../../components/supplier-form/supplier-form.component';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-supplier-edit-page',
   templateUrl: './supplier-edit-page.component.html',
   styleUrls: ['./supplier-edit-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, SupplierFormComponent]
+  imports: [CommonModule, SupplierFormComponent, ToastModule],
+  providers: [MessageService]
 })
 export class SupplierEditPageComponent implements OnInit {
   supplier?: Supplier;
@@ -40,11 +42,7 @@ export class SupplierEditPageComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.messageService.add({
-            severity: 'error', 
-            summary: 'Erro', 
-            detail: 'Fornecedor não encontrado'
-          });
+          this.showError('Fornecedor não encontrado');
           this.router.navigate(['/fornecedores']);
         }
       });
@@ -57,25 +55,43 @@ export class SupplierEditPageComponent implements OnInit {
     this.isLoading = true;
     this.supplierService.updateSupplier(this.supplier.id, updatedSupplier).subscribe({
       next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sucesso',
-          detail: 'Fornecedor atualizado com sucesso'
-        });
-        this.router.navigate(['/fornecedores']);
+        this.showSuccess('Fornecedor atualizado com sucesso');
+        setTimeout(() => this.router.navigate(['/fornecedores']), 1500);
       },
       error: (error) => {
         this.isLoading = false;
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro',
-          detail: error.message || 'Falha ao atualizar fornecedor'
-        });
+        const message = this.getErrorMessage(error);
+        this.showError(message);
       }
     });
   }
 
   onCancel(): void {
     this.router.navigate(['/fornecedores']);
+  }
+
+  private getErrorMessage(error: any): string {
+    return error.error?.message || 
+           error.error ||
+           error.message || 
+           'Falha ao atualizar fornecedor';
+  }
+
+  private showSuccess(message: string): void {
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sucesso',
+      detail: message,
+      life: 3000
+    });
+  }
+
+  private showError(message: string): void {
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Erro',
+      detail: message,
+      life: 5000
+    });
   }
 }

@@ -49,7 +49,7 @@ export class SupplierCreatePageComponent {
       },
       error: (error) => {
         this.loading = false;
-        const errorMessage = error.error?.message || 'Erro ao criar fornecedor';
+        const errorMessage = error.message || 'Erro ao criar fornecedor';
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',
