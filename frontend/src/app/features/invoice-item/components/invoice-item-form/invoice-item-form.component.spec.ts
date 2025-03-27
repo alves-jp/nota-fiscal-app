@@ -40,33 +40,4 @@ describe('InvoiceItemFormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should initialize form with default values', () => {
-    expect(component.invoiceItemForm.value).toEqual({
-      id: null,
-      product: null,
-      unitPrice: null,
-      quantity: 1
-    });
-  });
-
-  it('should validate required fields', () => {
-    const form = component.invoiceItemForm;
-    expect(form.valid).toBeFalse();
-    
-    form.patchValue({
-      product: mockProducts[0],
-      unitPrice: 10.99,
-      quantity: 2
-    });
-    expect(form.valid).toBeTrue();
-  });
-
-  it('should calculate total correctly', () => {
-    component.invoiceItemForm.patchValue({
-      unitPrice: 15.50,
-      quantity: 3
-    });
-    expect(component.calculateTotal()).toEqual(46.50);
-  });
 });

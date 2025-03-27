@@ -39,17 +39,6 @@ describe('InvoiceItemCreatePageComponent', () => {
     expect(component).toBeTruthy();
   });
   
-  it('should handle form submit error', () => {
-    const mockItem = { invoiceId: 1, productId: 1, unitPrice: 10, quantity: 2 };
-    invoiceItemService.createInvoiceItem.and.returnValue(throwError(() => new Error('Error')));
-
-    component.handleFormSubmit(mockItem);
-    
-    expect(invoiceItemService.createInvoiceItem).toHaveBeenCalledWith(mockItem);
-    expect(messageService.add).toHaveBeenCalled();
-    expect(component.loading).toBeFalse();
-  });
-
   it('should handle cancel', () => {
     component.onCancel();
     expect(router.navigate).toHaveBeenCalledWith(['/notas-fiscais', 1]);

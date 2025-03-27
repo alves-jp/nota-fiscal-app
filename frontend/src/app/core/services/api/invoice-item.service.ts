@@ -74,10 +74,13 @@ export class InvoiceItemService {
     } else {
       if (error.status === 0) {
         errorMessage = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
+
       } else if (error.status === 400) {
         errorMessage = error.error?.message || 'Dados inválidos enviados ao servidor';
+
       } else if (error.status === 404) {
         errorMessage = error.error?.message || 'Recurso não encontrado';
+        
       } else if (error.status === 500) {
         errorMessage = error.error?.message || 'Erro interno no servidor';
       } else {

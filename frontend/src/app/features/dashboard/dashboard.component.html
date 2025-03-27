@@ -1,0 +1,41 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <img src="/assets/logo-ids.png" alt="IDS Logo" class="header-logo">
+    <button class="back-button" (click)="goToIDSWebsite()">
+      Voltar para o site
+    </button>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="main-content">
+      <h1>BEM-VINDO(A) AO PAINEL DE GESTÃO DE NOTAS FISCAIS!</h1>
+      
+      <div class="cards-container">
+        <div class="dashboard-card" (click)="navigateTo('produtos')">
+          <h2>Cadastro de Produtos</h2>
+        </div>
+        
+        <div class="dashboard-card" (click)="navigateTo('fornecedores')">
+          <h2>Cadastro de Fornecedores</h2>
+        </div>
+        
+        <div class="dashboard-card" (click)="navigateTo('notas-fiscais')">
+          <h2>Entrada de Nota Fiscal</h2>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="separator"></div>
+
+  <footer class="dashboard-footer">
+    <img src="/assets/logo-ids.png" alt="IDS Logo" class="footer-logo">
+    <div class="footer-info">
+      <h3>Fale com a IDS</h3>
+      <p>> (46) 3225-8383</p>
+      <h1> </h1>
+      <p>> Avenida Brasil, 922 SL01</p>
+      <p>Centro – Pato Branco, PR</p>
+    </div>
+  </footer>
+</div>

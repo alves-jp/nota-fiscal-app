@@ -19,7 +19,7 @@ describe('InvoiceItemEditPageComponent', () => {
     id: 1,
     invoiceId: 1,
     product: { id: 1, productCode: 'P001', description: 'Produto 1', productStatus: 'ACTIVE' } as Product,
-    unitPrice: 10.99,
+    unitValue: 10.99,
     quantity: 2,
     totalPrice: 21.98
   };
