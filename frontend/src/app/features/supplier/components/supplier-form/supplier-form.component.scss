@@ -38,7 +38,7 @@
       font-size: 0.95rem;
     }
 
-    .p-inputtext {
+    .p-inputtext, .p-dropdown, .p-calendar {
       width: 100%;
       background-color: #ffffff !important;
       border: 1px solid #d1d5db !important;
@@ -62,7 +62,36 @@
       }
     }
 
-    /* BOTÕES */
+    /* Estilos específicos para o calendário */
+    .p-calendar {
+      display: block;
+      
+      .p-inputtext {
+        padding-right: 2.5rem !important;
+      }
+      
+      .p-datepicker-trigger {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 2.5rem;
+        background: transparent;
+        border: none;
+        color: #6b7280;
+        border-left: 1px solid #d1d5db;
+        border-radius: 0 6px 6px 0;
+        cursor: pointer;
+        transition: all 0.2s;
+        
+        &:hover {
+          background: #f3f4f6;
+          color: #3498db;
+        }
+      }
+    }
+
+    /* BOTÕES DE STATUS */
     .status-buttons {
       display: inline-flex;
       border: 1px solid #d1d5db;

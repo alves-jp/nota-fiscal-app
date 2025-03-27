@@ -84,11 +84,11 @@ public class SupplierDTO {
         this.companyStatus = companyStatus;
     }
 
-    public LocalDate getcompanyDeactivationDate() {
+    public LocalDate getCompanyDeactivationDate() {
         return companyDeactivationDate;
     }
 
-    public void setcompanyDeactivationDate(LocalDate companyDeactivationDate) {
+    public void setCompanyDeactivationDate(LocalDate companyDeactivationDate) {
         this.companyDeactivationDate = companyDeactivationDate;
     }
 }

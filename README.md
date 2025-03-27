@@ -43,36 +43,37 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
    ./mvnw quarkus:dev
    ```
 
-**Acesse a API em:** `http://localhost:8080/`
+2. **Acesse a API em:**
+   `http://localhost:8080/`
 
-2. **Build (produção)**:
+3. **Build (produção)**:
    ```
-    ./mvnw package
+   ./mvnw package
     java -jar target/quarkus-app/quarkus-run.jar
    ```
 
-### **Documentação**:
-    **Documentação Swagger:** `http://localhost:8080/q/swagger-ui/`
-
-
 ### **Front-end (Angular)**
-1. **Instale as dependências:**:
+1. **Instale as dependências:**
    ```
    cd frontend
    npm install
    ```
 
-3. **Inicie o servidor de desenvolvimento:**:
+3. **Inicie o servidor de desenvolvimento:**
    ```
    ng serve
    ```
 
-**Acesse:** `http://localhost:4200`
+4. **Acesse o endereço da aplicação:**
+   `http://localhost:4200`
 
-3. **Build (produção)**:
+5. **Build (produção)**:
     ```
    ng build --configuration production
     ```
+    
+## **Documentação**
+- Documentação Swagger: `http://localhost:8080/q/swagger-ui/`
 
 ## Exemplo de resposta
 `curl -X GET "http://localhost:8080/notas-fiscais`

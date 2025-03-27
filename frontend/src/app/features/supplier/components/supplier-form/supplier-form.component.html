@@ -64,6 +64,22 @@
           </small>
         </div>
 
+        <!-- Data de Desativação (mostrar apenas quando status for INACTIVE) -->
+        <div class="p-field p-col-12 p-md-6" *ngIf="supplierForm.get('companyStatus')?.value === 'INACTIVE'">
+          <label for="companyDeactivationDate">Data de Desativação *</label>
+          <input
+            id="companyDeactivationDate"
+            type="date"
+            pInputText
+            formControlName="companyDeactivationDate"
+            [max]="minDate | date:'yyyy-MM-dd'"
+            [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('companyDeactivationDate')?.invalid && supplierForm.get('companyDeactivationDate')?.touched}">
+          <small *ngIf="supplierForm.get('companyDeactivationDate')?.invalid && supplierForm.get('companyDeactivationDate')?.touched"
+            class="p-error">
+            Data de desativação é obrigatória quando o status é INACTIVE
+          </small>
+        </div>
+
         <!-- Email -->
         <div class="p-field p-col-12 p-md-6">
           <label for="supplierEmail">E-mail *</label>

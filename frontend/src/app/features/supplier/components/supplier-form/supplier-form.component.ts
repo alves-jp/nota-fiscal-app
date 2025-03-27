@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { Supplier, CompanyStatus } from '../../../../core/models/supplier.model';
 import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
@@ -7,6 +7,7 @@ import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-supplier-form',
@@ -18,7 +19,8 @@ import { ButtonModule } from 'primeng/button';
     ToastModule,
     InputTextModule,
     ReactiveFormsModule,
-    ButtonModule
+    ButtonModule,
+    CalendarModule
   ],
   providers: [MessageService]
 })
@@ -29,6 +31,7 @@ export class SupplierFormComponent implements OnInit {
 
   supplierForm: FormGroup;
   statusOptions = Object.values(CompanyStatus);
+  minDate = new Date();
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +44,12 @@ export class SupplierFormComponent implements OnInit {
       supplierEmail: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
       supplierPhone: ['', [Validators.required, Validators.maxLength(20)]],
       cnpj: ['', [Validators.required, Validators.maxLength(18)]],
-      companyStatus: [CompanyStatus.ACTIVE, Validators.required]
+      companyStatus: [CompanyStatus.ACTIVE, Validators.required],
+      companyDeactivationDate: [null]
+    });
+
+    this.supplierForm.get('companyStatus')?.valueChanges.subscribe(status => {
+      this.updateDeactivationDateValidator(status);
     });
   }
 
@@ -54,9 +62,23 @@ export class SupplierFormComponent implements OnInit {
         supplierEmail: this.supplier.supplierEmail,
         supplierPhone: this.supplier.supplierPhone,
         cnpj: this.supplier.cnpj,
-        companyStatus: this.supplier.companyStatus
+        companyStatus: this.supplier.companyStatus,
+        companyDeactivationDate: this.supplier.companyDeactivationDate
       });
     }
+  }
+
+  private updateDeactivationDateValidator(status: CompanyStatus): void {
+    const deactivationDateControl = this.supplierForm.get('companyDeactivationDate');
+    
+    if (status === CompanyStatus.INACTIVE) {
+      deactivationDateControl?.setValidators([Validators.required]);
+    } else {
+      deactivationDateControl?.clearValidators();
+      deactivationDateControl?.setValue(null);
+    }
+    
+    deactivationDateControl?.updateValueAndValidity();
   }
 
   onSubmit(): void {

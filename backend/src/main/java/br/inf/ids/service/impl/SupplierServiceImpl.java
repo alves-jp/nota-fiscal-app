@@ -4,6 +4,7 @@ import br.inf.ids.dto.SupplierDTO;
 import br.inf.ids.exception.BusinessException;
 import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Supplier;
+import br.inf.ids.model.enums.CompanyStatus;
 import br.inf.ids.repository.InvoiceRepository;
 import br.inf.ids.repository.SupplierRepository;
 import br.inf.ids.service.SupplierService;
@@ -35,6 +36,7 @@ public class SupplierServiceImpl implements SupplierService {
         supplier.setsupplierPhone(supplierDTO.getsupplierPhone());
         supplier.setCnpj(supplierDTO.getCnpj());
         supplier.setCompanyStatus(supplierDTO.getCompanyStatus());
+        supplier.setcompanyDeactivationDate(supplierDTO.getCompanyDeactivationDate());
 
         if (supplierRepository.findByCnpj(supplier.getCnpj()) != null) {
             throw new BusinessException("Erro: Já existe um fornecedor com o CNPJ informado.");
@@ -70,8 +72,8 @@ public class SupplierServiceImpl implements SupplierService {
                 .collect(Collectors.toList());
     }
 
-    @Override
     @Transactional
+    @Override
     public SupplierDTO updateSupplier(Long id, SupplierDTO supplierDTO) {
         validateSupplierDTO(supplierDTO);
 
@@ -91,6 +93,7 @@ public class SupplierServiceImpl implements SupplierService {
         existingSupplier.setsupplierPhone(supplierDTO.getsupplierPhone());
         existingSupplier.setCnpj(supplierDTO.getCnpj());
         existingSupplier.setCompanyStatus(supplierDTO.getCompanyStatus());
+        existingSupplier.setcompanyDeactivationDate(supplierDTO.getCompanyDeactivationDate());
 
         return mapToDTO(existingSupplier);
     }
@@ -122,6 +125,10 @@ public class SupplierServiceImpl implements SupplierService {
 
         } if (supplierDTO.getSupplierCode() == null) {
             throw new BusinessException("O código do fornecedor é obrigatório.");
+
+        } if (supplierDTO.getCompanyStatus() == CompanyStatus.INACTIVE &&
+                supplierDTO.getCompanyDeactivationDate() == null) {
+            throw new BusinessException("A data de desativação é obrigatória quando o status é INACTIVE.");
         }
     }
 
@@ -134,6 +141,7 @@ public class SupplierServiceImpl implements SupplierService {
         supplierDTO.setsupplierPhone(supplier.getsupplierPhone());
         supplierDTO.setCnpj(supplier.getCnpj());
         supplierDTO.setCompanyStatus(supplier.getCompanyStatus());
+        supplierDTO.setCompanyDeactivationDate(supplier.getcompanyDeactivationDate());
 
         return supplierDTO;
     }
