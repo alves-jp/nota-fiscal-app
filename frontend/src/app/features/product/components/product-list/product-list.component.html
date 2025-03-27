@@ -21,7 +21,7 @@
         <td>{{ product.description }}</td>
         <td>
           <p-tag 
-            [value]="product.productStatus" 
+            [value]="formatStatus(product.productStatus)" 
             [severity]="getSeverity(product.productStatus)"
           ></p-tag>
         </td>

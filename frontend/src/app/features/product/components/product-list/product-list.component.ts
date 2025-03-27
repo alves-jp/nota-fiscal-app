@@ -132,4 +132,12 @@ export class ProductListComponent implements OnInit {
       life: 5000
     });
   }
+
+  formatStatus(status: Product['productStatus']): string {
+    switch(status) {
+      case 'ACTIVE': return 'Ativo';
+      case 'INACTIVE': return 'Inativo';
+      default: return status;
+    }
+  }
 }
