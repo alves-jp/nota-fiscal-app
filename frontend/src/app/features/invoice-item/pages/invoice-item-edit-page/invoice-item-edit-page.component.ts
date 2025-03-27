@@ -97,6 +97,6 @@ export class InvoiceItemEditPageComponent implements OnInit {
   }
 
   private navigateBackToList(): void {
-    this.router.navigate(['/notas-fiscais', this.invoiceId]);
+    this.router.navigate(['/notas-fiscais', this.invoiceId, 'itens']);
   }
 }
