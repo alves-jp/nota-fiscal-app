@@ -46,6 +46,15 @@
     gap: 0.5rem;
     justify-content: center;
 
+    .view-btn {
+      color: var(--primary-color) !important;
+      
+      &:hover {
+        background-color: rgba(41, 128, 185, 0.1) !important;
+        transform: scale(1.1);
+      }
+    }
+
     .edit-btn {
       color: var(--secondary-color) !important;
       

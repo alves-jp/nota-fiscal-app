@@ -34,6 +34,13 @@
         <td>
           <div class="action-buttons">
             <button 
+            pButton 
+            icon="fa-solid fa-list-check"
+            class="p-button-rounded p-button-text p-button-sm view-btn"
+            (click)="onViewItems(invoice)"
+            pTooltip="Ver itens" tooltipPosition="top"
+          ></button>
+            <button 
               pButton 
               icon="fa-regular fa-pen-to-square" 
               class="p-button-rounded p-button-text p-button-sm edit-btn"

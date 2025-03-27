@@ -7,6 +7,7 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { TagModule } from 'primeng/tag';
+import { Router } from '@angular/router';
 
 type PrimeSeverity = 'success' | 'secondary' | 'info' | 'warn' | 'danger' | 'contrast';
 
@@ -36,7 +37,8 @@ export class InvoiceListComponent implements OnInit {
 
   constructor(
     private invoiceService: InvoiceService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +61,10 @@ export class InvoiceListComponent implements OnInit {
 
   onEdit(invoice: InvoiceResponseDTO): void {
     this.editInvoice.emit(invoice);
+  }
+
+  onViewItems(invoice: InvoiceResponseDTO): void {
+    this.router.navigate([`/notas-fiscais/${invoice.id}/itens`]);
   }
 
   async onDelete(invoice: InvoiceResponseDTO): Promise<void> {
