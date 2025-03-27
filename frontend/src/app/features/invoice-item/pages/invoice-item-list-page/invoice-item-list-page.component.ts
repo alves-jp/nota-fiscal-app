@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core'; // Adicione OnInit
-import { ActivatedRoute, Router } from '@angular/router'; // Adicione ActivatedRoute
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { InvoiceItem } from '../../../../core/models/invoice-item.model';
 import { MessageService } from 'primeng/api';
 import { InvoiceItemListComponent } from '../../components/invoice-item-list/invoice-item-list.component';
@@ -22,12 +22,11 @@ export class InvoiceItemListPageComponent implements OnInit {
   invoiceId!: number;
 
   constructor(
-    private route: ActivatedRoute, // Adicione isto
+    private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService
   ) {}
 
-  // Adicione este método
   ngOnInit(): void {
     this.invoiceId = Number(this.route.snapshot.paramMap.get('invoiceId'));
   }
@@ -38,6 +37,10 @@ export class InvoiceItemListPageComponent implements OnInit {
 
   onNewItem(): void {
     this.router.navigate(['/notas-fiscais', this.invoiceId, 'itens', 'novo']);
+  }
+
+  onBackToDashboard(): void {
+    this.router.navigate(['/notas-fiscais']);
   }
 
   handleItemCreated(event: { message: string }): void {

@@ -42,6 +42,10 @@ export class SupplierListPageComponent {
     this.router.navigate(['/fornecedores/novo']);
   }
 
+  onBackToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
   handleSupplierCreated(event: { message: string }): void {
     this.messageService.add({
       severity: 'success',

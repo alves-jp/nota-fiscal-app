@@ -72,6 +72,33 @@
         font-size: 0.9rem;
       }
     }
+
+    .back-button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    
+      .back-btn {
+        background-color: white !important;
+        color: var(--secondary-color) !important;
+        border: 2px solid var(--secondary-color) !important;
+        border-radius: 6px !important;
+        padding: 0.5rem 2rem !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+    
+        &:hover {
+          background-color: var(--secondary-color) !important;
+          color: white !important;
+          transform: translateY(-2px);
+          box-shadow: var(--button-hover-shadow);
+        }
+    
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
   }
   
   @media (max-width: 768px) {

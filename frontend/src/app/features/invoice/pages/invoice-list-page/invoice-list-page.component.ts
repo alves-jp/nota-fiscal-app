@@ -31,6 +31,10 @@ export class InvoiceListPageComponent {
     this.router.navigate(['/notas-fiscais/novo']);
   }
 
+  onBackToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
   handleInvoiceCreated(event: { message: string }): void {
     this.messageService.add({
       severity: 'success',

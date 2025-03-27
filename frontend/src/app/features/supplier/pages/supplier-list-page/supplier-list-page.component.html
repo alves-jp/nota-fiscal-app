@@ -1,23 +1,32 @@
 <div class="supplier-list-container">
-    <p-toast position="top-right"></p-toast>
-    
-    <div class="card">
-      <div class="header">
-        <h1>Fornecedores</h1>
-        <button 
-          pButton 
-          label="Novo Fornecedor" 
-          icon="fa-regular fa-plus"
-          class="new-supplier-btn"
-          (click)="onNewSupplier()"
-        ></button>
-      </div>
+  <p-toast position="top-right"></p-toast>
   
-      <div class="content">
-        <app-supplier-list 
-          (editSupplier)="onEditSupplier($event)"
-          (createSuccess)="handleSupplierCreated($event)"
-        ></app-supplier-list>
-      </div>
+  <div class="card">
+    <div class="header">
+      <h1>Fornecedores</h1>
+      <button 
+        pButton 
+        label="Novo Fornecedor" 
+        icon="fa-regular fa-plus"
+        class="new-supplier-btn"
+        (click)="onNewSupplier()"
+      ></button>
     </div>
+
+    <div class="content">
+      <app-supplier-list 
+        (editSupplier)="onEditSupplier($event)"
+        (createSuccess)="handleSupplierCreated($event)"
+      ></app-supplier-list>
+    </div>
+  </div>
+
+  <div class="back-button-container">
+    <button 
+      pButton 
+      label="Voltar" 
+      class="back-btn"
+      (click)="onBackToDashboard()"
+    ></button>
+  </div>
 </div>

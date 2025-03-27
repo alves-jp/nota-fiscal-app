@@ -31,6 +31,10 @@ export class ProductListPageComponent {
     this.router.navigate(['/produtos/novo']);
   }
 
+  onBackToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
   handleProductCreated(event: { message: string }): void {
     this.messageService.add({
       severity: 'success',
