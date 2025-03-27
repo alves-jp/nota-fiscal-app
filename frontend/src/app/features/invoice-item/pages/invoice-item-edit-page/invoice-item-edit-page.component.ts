@@ -69,7 +69,7 @@ export class InvoiceItemEditPageComponent implements OnInit {
     
     this.invoiceItemService.updateInvoiceItem(this.invoiceItem.id, {
       ...itemDTO,
-      id: this.invoiceId
+      invoiceId: this.invoiceId
     }).subscribe({
       next: () => {
         this.messageService.add({
