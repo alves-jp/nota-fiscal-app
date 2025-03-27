@@ -12,6 +12,7 @@
         <th pSortableColumn="invoiceNumber">Número <p-sortIcon field="invoiceNumber"></p-sortIcon></th>
         <th pSortableColumn="issueDate">Data <p-sortIcon field="issueDate"></p-sortIcon></th>
         <th pSortableColumn="supplier.companyName">Fornecedor <p-sortIcon field="supplier.companyName"></p-sortIcon></th>
+        <th>Endereço</th>
         <th>Itens</th>
         <th pSortableColumn="totalValue">Valor Total <p-sortIcon field="totalValue"></p-sortIcon></th>
         <th style="width: 120px">Ações</th>
@@ -20,11 +21,19 @@
     <ng-template pTemplate="body" let-invoice>
       <tr>
         <td>{{ invoice.invoiceNumber }}</td>
-        <td>{{ formatDate(invoice.issueDate) }}</td>
+        <td>
+          <div>{{ formatDate(invoice.issueDate) }}</div>
+          <small class="invoice-time">{{ formatTime(invoice.issueDate) }}</small>
+        </td>
         <td>
           <div class="supplier-info">
             <span>{{ invoice.supplier.companyName }}</span>
             <small class="supplier-code">{{ invoice.supplier.supplierCode }}</small>
+          </div>
+        </td>
+        <td>
+          <div class="supplier-info">
+            <span>{{ formatAddress(invoice) }}</span>
           </div>
         </td>
         <td>
@@ -60,7 +69,7 @@
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="6" class="text-center">
+        <td colspan="7" class="text-center">
           Nenhuma nota fiscal encontrada
         </td>
       </tr>

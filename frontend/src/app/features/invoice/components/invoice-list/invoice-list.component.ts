@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { InvoiceService } from '../../../../core/services/api/invoice.service';
-import { InvoiceResponseDTO } from '../../../../core/models/invoice.model';
+import { Invoice, InvoiceResponseDTO } from '../../../../core/models/invoice.model';
 import { MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -125,6 +125,18 @@ export class InvoiceListComponent implements OnInit {
 
   formatDate(date: Date): string {
     return new Date(date).toLocaleDateString('pt-BR');
+  }
+
+  formatTime(date: Date): string {
+    return new Date(date).toLocaleTimeString('pt-BR', { 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit' 
+    });
+  }
+
+  formatAddress(invoice: Invoice): string {
+    return invoice.address || 'Endereço não disponível';
   }
 
   formatCurrency(value: number): string {
