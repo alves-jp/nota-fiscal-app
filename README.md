@@ -19,7 +19,8 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
 - Node.js 18+ (frontend) (rodando em `localhost:4200`)
 - Angular CLI 19+ (`npm install -g @angular/cli`)
 - PrimeNG 19+
-- Java 17+ (backend) (rodando em `localhost:8080`)
+- Java 21 (backend) (rodando em `localhost:8080`)
+- Quarkus 3.19.4
 - Maven
 - PostgreSQL (rodando em `localhost:5432`)
 
