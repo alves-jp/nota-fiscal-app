@@ -17,8 +17,8 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
 ## Como Executar o Projeto
 ### **Pré-requisitos**
 - Node.js 18+ (frontend) (rodando em `localhost:4200`)
-- Angular CLI + 19 (`npm install -g @angular/cli`)
-- PrimeNG +19
+- Angular CLI 19+ (`npm install -g @angular/cli`)
+- PrimeNG 19+
 - Java 17+ (backend) (rodando em `localhost:8080`)
 - Maven
 - PostgreSQL (rodando em `localhost:5432`)
@@ -28,7 +28,7 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
    - Crie um banco chamado `IDS_TESTE` no PostgreSQL.
 
 2. **Edite application.properties para configurar o banco de dados**:
-   - Edite as credenciais em `backend/src/main/resources/application.properties` se necessário.
+   - Edite as credenciais em `backend/src/main/resources/application.properties`.
 ```
     quarkus.datasource.username=
     quarkus.datasource.password=
@@ -46,7 +46,7 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
 2. **Acesse a API em:**
    `http://localhost:8080/`
 
-3. **Build (produção)**:
+3. **Build (produção, caso queira)**:
    ```
    ./mvnw package
     java -jar target/quarkus-app/quarkus-run.jar
@@ -64,10 +64,10 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
    ng serve
    ```
 
-4. **Acesse o endereço da aplicação:**
+4. **Acesse o endereço da aplicação em:**
    `http://localhost:4200`
 
-5. **Build (produção)**:
+5. **Build (produção, caso queira)**:
     ```
    ng build --configuration production
     ```
@@ -76,7 +76,7 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
 - Documentação Swagger: `http://localhost:8080/q/swagger-ui/`
 
 ## Exemplo de resposta
-`curl -X GET "http://localhost:8080/notas-fiscais`
+`curl -X GET "http://localhost:8080/notas-fiscais"`
 
 ```json
 [
