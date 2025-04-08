@@ -12,7 +12,7 @@ Sistema completo para cadastro, gerenciamento e consulta de notas fiscais, compo
 
 ![Painel](https://github.com/alves-jp/nota-fiscal-app/blob/main/media/painel-notas-fiscais.png?raw=true)
 
-![Arquitetura](https://github.com/alves-jp/nota-fiscal-app/blob/main/media/diagrama-backend.png?raw=true)
+![Arquitetura](https://raw.githubusercontent.com/alves-jp/nota-fiscal-app/refs/heads/main/media/diagrama-backend.png)
 
 ## Como Executar o Projeto
 ### **Pré-requisitos**
