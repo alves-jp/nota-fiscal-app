@@ -12,7 +12,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +73,7 @@ public class DataInitializer {
             invoice1.setAddress("Av. Brasil, 123");
             invoiceRepository.persist(invoice1);
 
+
             InvoiceItem item1 = new InvoiceItem();
             item1.setInvoice(invoice1);
             item1.setProduct(product1);
@@ -81,16 +81,13 @@ public class DataInitializer {
             item1.setQuantity(3);
             invoiceItemRepository.persist(item1);
 
-
             List<InvoiceItem> items = new ArrayList<>();
             items.add(item1);
             invoice1.setItems(items);
-
             Double totalValue = invoice1.getItems().stream()
                     .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
                     .sum();
             invoice1.setTotalValue(totalValue);
-
             invoiceRepository.persist(invoice1);
         }
     }

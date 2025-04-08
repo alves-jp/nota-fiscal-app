@@ -21,7 +21,7 @@ export class InvoiceItemService {
       productId: invoiceItem.product.id,
       quantity: invoiceItem.quantity,
       unitValue: invoiceItem.unitValue,
-      totalValue: invoiceItem.totalPrice
+      totalValue: invoiceItem.totalValue
     };
   }
 
@@ -71,6 +71,7 @@ export class InvoiceItemService {
     
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Erro: ${error.error.message}`;
+      
     } else {
       if (error.status === 0) {
         errorMessage = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
@@ -83,12 +84,12 @@ export class InvoiceItemService {
         
       } else if (error.status === 500) {
         errorMessage = error.error?.message || 'Erro interno no servidor';
+
       } else {
         errorMessage = `Erro ${error.status}: ${error.message}`;
       }
     }
-    
-    console.error('Erro detalhado:', error);
+
     return throwError(() => new Error(errorMessage));
   }
 }

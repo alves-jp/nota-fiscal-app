@@ -58,10 +58,8 @@ export class SupplierListComponent implements OnInit {
   }
 
   onEdit(supplier: Supplier): void {
-    console.log('Supplier object received:', supplier);
-    
+
     if (!supplier?.id) {
-      console.error('Cannot edit: supplier ID is missing', supplier);
       this.showError('Fornecedor inválido: ID não encontrado');
       return;
     }
@@ -129,7 +127,7 @@ export class SupplierListComponent implements OnInit {
     switch(status) {
       case CompanyStatus.ACTIVE: return 'Ativo';
       case CompanyStatus.SUSPENDED: return 'Suspenso';
-      case CompanyStatus.INACTIVE: return 'Inativo';
+      case CompanyStatus.INACTIVE: return 'Baixado';
       default: return status;
     }
   }

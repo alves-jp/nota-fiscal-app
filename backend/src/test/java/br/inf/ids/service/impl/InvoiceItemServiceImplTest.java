@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import java.math.BigDecimal;
 import java.util.Optional;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,7 +52,7 @@ public class InvoiceItemServiceImplTest {
         invoiceItemDTO = new InvoiceItemDTO();
         invoiceItemDTO.setInvoiceId(1L);
         invoiceItemDTO.setProductId(1L);
-        invoiceItemDTO.setUnitValue(100.0);
+        invoiceItemDTO.setUnitValue(100.00);
         invoiceItemDTO.setQuantity(2);
     }
 
@@ -62,7 +61,6 @@ public class InvoiceItemServiceImplTest {
         when(invoiceRepository.findById(invoiceItemDTO.getInvoiceId())).thenReturn(invoice);
         when(productRepository.findById(invoiceItemDTO.getProductId())).thenReturn(product);
         doNothing().when(invoiceItemRepository).persist(any(InvoiceItem.class));
-
         InvoiceItem result = invoiceItemService.createInvoiceItem(invoiceItemDTO);
 
         assertNotNull(result);
@@ -104,22 +102,19 @@ public class InvoiceItemServiceImplTest {
     public void testUpdateInvoiceItem_Success() throws InvalidDataException, EntityNotFoundException {
         InvoiceItem existingInvoiceItem = new InvoiceItem();
         existingInvoiceItem.setId(1L);
-        existingInvoiceItem.setUnitValue(50.0);
+        existingInvoiceItem.setUnitValue(50.00);
         existingInvoiceItem.setQuantity(1);
         existingInvoiceItem.setInvoice(invoice);
         existingInvoiceItem.setProduct(product);
-
         when(invoiceItemRepository.findById(1L)).thenReturn(existingInvoiceItem);
-
         doNothing().when(invoiceService).updateTotalValue(invoice);
 
-        invoiceItemDTO.setUnitValue(120.0);
+        invoiceItemDTO.setUnitValue(120.00);
         invoiceItemDTO.setQuantity(3);
-
         InvoiceItem result = invoiceItemService.updateInvoiceItem(1L, invoiceItemDTO);
 
         assertNotNull(result);
-        assertEquals(120.0, result.getUnitValue(), 0.01);
+        assertEquals(120.00, result.getUnitValue(), 0.01);
         assertEquals(3, result.getQuantity());
     }
 
@@ -129,7 +124,6 @@ public class InvoiceItemServiceImplTest {
         existingInvoiceItem.setId(1L);
         existingInvoiceItem.setInvoice(invoice);
         invoice.getItems().add(existingInvoiceItem);
-
         when(invoiceItemRepository.findByIdOptional(1L)).thenReturn(Optional.of(existingInvoiceItem));
         doNothing().when(invoiceItemRepository).delete(existingInvoiceItem);
 

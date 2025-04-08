@@ -6,9 +6,7 @@ export interface InvoiceItem {
   product: Product;
   quantity: number;
   unitValue: number;
-  totalPrice: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  totalValue: number;
 }
 
 export interface InvoiceItemDTO {

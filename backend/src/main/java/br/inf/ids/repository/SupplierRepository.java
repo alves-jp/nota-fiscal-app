@@ -1,7 +1,6 @@
 package br.inf.ids.repository;
 
 import br.inf.ids.model.Supplier;
-import br.inf.ids.model.enums.CompanyStatus;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;

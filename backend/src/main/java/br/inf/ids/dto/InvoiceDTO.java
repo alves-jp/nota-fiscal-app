@@ -1,7 +1,6 @@
 package br.inf.ids.dto;
 
 import jakarta.json.bind.annotation.JsonbDateFormat;
-
 import java.time.LocalDateTime;
 
 public class InvoiceDTO {

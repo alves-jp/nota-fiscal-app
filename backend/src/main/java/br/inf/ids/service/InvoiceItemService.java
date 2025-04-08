@@ -4,7 +4,6 @@ import br.inf.ids.dto.InvoiceItemDTO;
 import br.inf.ids.exception.InvalidDataException;
 import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.InvoiceItem;
-
 import java.util.List;
 import java.util.Optional;
 

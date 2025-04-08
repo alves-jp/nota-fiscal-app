@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -66,7 +64,6 @@ class InvoiceControllerTest {
         InvoiceResponseDTO responseDTO = new InvoiceResponseDTO();
         responseDTO.setId(invoiceId);
         responseDTO.setInvoiceNumber("NF-001");
-
         when(invoiceService.getInvoiceById(invoiceId)).thenReturn(responseDTO);
 
         Response response = invoiceController.getInvoiceById(invoiceId);
@@ -135,7 +132,6 @@ class InvoiceControllerTest {
         Invoice updatedInvoice = new Invoice();
         updatedInvoice.setId(invoiceId);
         updatedInvoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
-
         when(invoiceService.updateInvoice(invoiceId, invoiceDTO)).thenReturn(updatedInvoice);
 
         Response response = invoiceController.updateInvoice(invoiceId, invoiceDTO);
@@ -149,7 +145,6 @@ class InvoiceControllerTest {
     void testUpdateInvoice_InvalidData() {
         Long invoiceId = 1L;
         InvoiceDTO invoiceDTO = createSampleInvoiceDTO();
-
         when(invoiceService.updateInvoice(invoiceId, invoiceDTO))
                 .thenThrow(new InvalidDataException("Nota fiscal inválida"));
 

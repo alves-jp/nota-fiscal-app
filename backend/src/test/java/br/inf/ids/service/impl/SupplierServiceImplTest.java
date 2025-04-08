@@ -18,7 +18,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-
 import java.util.Optional;
 
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -42,7 +41,7 @@ public class SupplierServiceImplTest {
         supplierDTO = new SupplierDTO();
         supplierDTO.setSupplierCode("F-12345");
         supplierDTO.setCompanyName("Fornecedora Teste");
-        supplierDTO.setsupplierEmail("test@company.com");
+        supplierDTO.setsupplierEmail("teste@mail.com");
         supplierDTO.setsupplierPhone("123456789");
         supplierDTO.setCnpj("12345678000195");
         supplierDTO.setCompanyStatus(CompanyStatus.valueOf("ACTIVE"));
@@ -82,8 +81,8 @@ public class SupplierServiceImplTest {
         existingSupplier.setCnpj("12345678000195");
         existingSupplier.setCompanyStatus(CompanyStatus.ACTIVE);
         when(supplierRepository.findByIdOptional(1L)).thenReturn(Optional.of(existingSupplier));
-
         doNothing().when(supplierRepository).persist(any(Supplier.class));
+
         supplierDTO.setSupplierCode("S54321");
         supplierDTO.setCompanyName("Fornecedora Nova");
         supplierDTO.setsupplierEmail("fornecedora.nova@mail.com");

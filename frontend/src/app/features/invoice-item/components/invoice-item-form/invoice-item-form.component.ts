@@ -101,6 +101,7 @@ export class InvoiceItemFormComponent implements OnInit {
     this.itemForm.patchValue({
       productId: product.id
     });
+    
     this.searchQuery = `${product.productCode} - ${product.description}`;
     this.showSuggestions = false;
   }
@@ -128,6 +129,7 @@ export class InvoiceItemFormComponent implements OnInit {
         summary: 'Erro',
         detail: 'Por favor, preencha todos os campos obrigatórios corretamente'
       });
+
       this.markAllAsTouched();
       return;
     }
@@ -142,7 +144,6 @@ export class InvoiceItemFormComponent implements OnInit {
       totalValue: this.calculateTotal()
     };
 
-    console.log('Dados do item sendo enviados:', itemData);
     this.formSubmit.emit(itemData);
   }
 
@@ -160,6 +161,7 @@ export class InvoiceItemFormComponent implements OnInit {
     if (this.itemForm.valid) {
       const quantity = this.itemForm.get('quantity')?.value || 0;
       const unitPrice = this.itemForm.get('unitPrice')?.value || 0;
+
       return quantity * unitPrice;
     }
     return 0;

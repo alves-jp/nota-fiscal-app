@@ -27,8 +27,8 @@ public class ProductServiceImpl implements ProductService {
         product.setProductCode(productDTO.getProductCode());
         product.setDescription(productDTO.getDescription());
         product.setProductStatus(productDTO.getProductStatus());
-
         productRepository.persist(product);
+
         return convertToDTO(product);
     }
 
@@ -71,8 +71,8 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setProductCode(productDTO.getProductCode());
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setProductStatus(productDTO.getProductStatus());
-
         productRepository.persist(existingProduct);
+
         return convertToDTO(existingProduct);
     }
 

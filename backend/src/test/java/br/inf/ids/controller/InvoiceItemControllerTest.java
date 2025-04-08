@@ -35,7 +35,6 @@ class InvoiceItemControllerTest {
         InvoiceItemDTO invoiceItemDTO = createSampleInvoiceItemDTO();
         InvoiceItem expectedInvoiceItem = new InvoiceItem();
         expectedInvoiceItem.setId(1L);
-
         when(invoiceItemService.createInvoiceItem(invoiceItemDTO)).thenReturn(expectedInvoiceItem);
         
         Response response = invoiceItemController.createInvoiceItem(invoiceItemDTO);
@@ -48,7 +47,6 @@ class InvoiceItemControllerTest {
     @Test
     void testCreateInvoiceItem_InvalidData() {
         InvoiceItemDTO invoiceItemDTO = createSampleInvoiceItemDTO();
-
         when(invoiceItemService.createInvoiceItem(invoiceItemDTO))
                 .thenThrow(new InvalidDataException("Item inválido"));
         
@@ -63,7 +61,6 @@ class InvoiceItemControllerTest {
         Long itemId = 1L;
         InvoiceItem invoiceItem = new InvoiceItem();
         invoiceItem.setId(itemId);
-
         when(invoiceItemService.findInvoiceItemById(itemId)).thenReturn(Optional.of(invoiceItem));
         
         Response response = invoiceItemController.getInvoiceItemById(itemId);
@@ -76,7 +73,6 @@ class InvoiceItemControllerTest {
     @Test
     void testGetInvoiceItemById_NotFound() {
         Long itemId = 1L;
-
         when(invoiceItemService.findInvoiceItemById(itemId)).thenReturn(Optional.empty());
         
         Response response = invoiceItemController.getInvoiceItemById(itemId);
@@ -90,7 +86,6 @@ class InvoiceItemControllerTest {
                 new InvoiceItem(),
                 new InvoiceItem()
         );
-
         when(invoiceItemService.findAllInvoiceItems()).thenReturn(invoiceItems);
         
         Response response = invoiceItemController.getAllInvoiceItems();
@@ -107,7 +102,6 @@ class InvoiceItemControllerTest {
                 new InvoiceItem(),
                 new InvoiceItem()
         );
-
         when(invoiceItemService.findInvoiceItemByInvoiceId(invoiceId)).thenReturn(invoiceItems);
         
         Response response = invoiceItemController.getInvoiceItemByInvoiceId(invoiceId);
@@ -124,7 +118,6 @@ class InvoiceItemControllerTest {
                 new InvoiceItem(),
                 new InvoiceItem()
         );
-
         when(invoiceItemService.findInvoiceItemByProductId(productId)).thenReturn(invoiceItems);
         
         Response response = invoiceItemController.findInvoiceItemByProductId(productId);
@@ -140,7 +133,6 @@ class InvoiceItemControllerTest {
         InvoiceItemDTO invoiceItemDTO = createSampleInvoiceItemDTO();
         InvoiceItem updatedInvoiceItem = new InvoiceItem();
         updatedInvoiceItem.setId(itemId);
-
         when(invoiceItemService.updateInvoiceItem(itemId, invoiceItemDTO)).thenReturn(updatedInvoiceItem);
         
         Response response = invoiceItemController.updateInvoiceItem(itemId, invoiceItemDTO);
@@ -154,7 +146,6 @@ class InvoiceItemControllerTest {
     void testUpdateInvoiceItem_InvalidData() {
         Long itemId = 1L;
         InvoiceItemDTO invoiceItemDTO = createSampleInvoiceItemDTO();
-
         when(invoiceItemService.updateInvoiceItem(itemId, invoiceItemDTO))
                 .thenThrow(new InvalidDataException("Item inválido"));
         
@@ -192,7 +183,7 @@ class InvoiceItemControllerTest {
         
         invoiceItemDTO.setInvoiceId(1L);
         invoiceItemDTO.setProductId(1L);
-        invoiceItemDTO.setUnitValue(10.0);
+        invoiceItemDTO.setUnitValue(10.00);
         invoiceItemDTO.setQuantity(2);
         
         return invoiceItemDTO;

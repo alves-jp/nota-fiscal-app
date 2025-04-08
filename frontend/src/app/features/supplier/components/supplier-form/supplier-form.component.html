@@ -40,7 +40,7 @@
 
         <!-- Status -->
         <div class="p-field p-col-12">
-          <label for="companyStatus">Status *</label>
+          <label for="companyStatus">Situação *</label>
           <div class="status-buttons">
             <button type="button" class="status-button"
               [class.active]="supplierForm.get('companyStatus')?.value === 'ACTIVE'"
@@ -60,13 +60,13 @@
           </div>
           <small *ngIf="supplierForm.get('companyStatus')?.invalid && supplierForm.get('companyStatus')?.touched"
             class="p-error">
-            Status é obrigatório
+            Situação da empresa é obrigatória
           </small>
         </div>
 
-        <!-- Data de Desativação (mostrar apenas quando status for INACTIVE) -->
+        <!-- Data de Desativação (mostrar apenas quando status for BAIXADO) -->
         <div class="p-field p-col-12 p-md-6" *ngIf="supplierForm.get('companyStatus')?.value === 'INACTIVE'">
-          <label for="companyDeactivationDate">Data de Desativação *</label>
+          <label for="companyDeactivationDate">Data de Desativação</label>
           <input
             id="companyDeactivationDate"
             type="date"
@@ -76,7 +76,7 @@
             [ngClass]="{'ng-invalid ng-dirty': supplierForm.get('companyDeactivationDate')?.invalid && supplierForm.get('companyDeactivationDate')?.touched}">
           <small *ngIf="supplierForm.get('companyDeactivationDate')?.invalid && supplierForm.get('companyDeactivationDate')?.touched"
             class="p-error">
-            Data de desativação é obrigatória quando o status é INACTIVE
+            Data da desativação é obrigatória quando a situação da empresa estiver como Baixada
           </small>
         </div>
 

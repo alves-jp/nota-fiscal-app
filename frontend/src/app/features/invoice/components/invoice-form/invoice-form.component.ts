@@ -104,6 +104,7 @@ export class InvoiceFormComponent implements OnInit {
     this.invoiceForm.patchValue({
       supplierId: supplier.id
     });
+    
     this.searchQuery = supplier.companyName;
     this.showSuggestions = false;
   }
@@ -160,6 +161,7 @@ export class InvoiceFormComponent implements OnInit {
         summary: 'Erro',
         detail: 'Por favor, preencha todos os campos obrigatórios corretamente'
       });
+
       this.markAllAsTouched();
       return;
     }
@@ -173,7 +175,6 @@ export class InvoiceFormComponent implements OnInit {
       address: formValue.address
     };
 
-    console.log('Dados da nota fiscal antes do envio:', invoiceData);
     this.formSubmit.emit(invoiceData);
   }
 

@@ -22,7 +22,7 @@ describe('InvoiceItemListComponent', () => {
       product: { id: 1, productCode: 'PROD-001', description: 'Produto 1', productStatus: 'ACTIVE' },
       unitValue: 10.99,
       quantity: 2,
-      totalPrice: 21.98
+      totalValue: 21.98
     },
     {
       id: 2,
@@ -30,7 +30,7 @@ describe('InvoiceItemListComponent', () => {
       product: { id: 2, productCode: 'PROD-002', description: 'Produto 2', productStatus: 'ACTIVE' },
       unitValue: 15.50,
       quantity: 3,
-      totalPrice: 46.50
+      totalValue: 46.50
     }
   ];
 

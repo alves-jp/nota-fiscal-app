@@ -39,10 +39,11 @@ public class SupplierServiceImpl implements SupplierService {
         supplier.setcompanyDeactivationDate(supplierDTO.getCompanyDeactivationDate());
 
         if (supplierRepository.findByCnpj(supplier.getCnpj()) != null) {
-            throw new BusinessException("Erro: Já existe um fornecedor com o CNPJ informado.");
+            throw new BusinessException("Já existe um fornecedor com o CNPJ informado.");
         }
 
         supplierRepository.persist(supplier);
+
         return mapToDTO(supplier);
     }
 
@@ -65,8 +66,8 @@ public class SupplierServiceImpl implements SupplierService {
     public List<SupplierDTO> findSuppliersByName(String companyName) {
         if (companyName == null || companyName.isBlank()) {
             throw new BusinessException("A razão social do fornecedor é obrigatória para a busca.");
-
         }
+
         return supplierRepository.findByCompanyName(companyName).stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
@@ -83,7 +84,7 @@ public class SupplierServiceImpl implements SupplierService {
         Supplier supplierWithSameCnpj = supplierRepository.findByCnpj(supplierDTO.getCnpj());
 
         if (supplierWithSameCnpj != null && !supplierWithSameCnpj.getId().equals(id)) {
-            throw new BusinessException("Erro: Já existe um fornecedor com este CNPJ.");
+            throw new BusinessException("Já existe um fornecedor com este CNPJ.");
         }
 
         existingSupplier.setId(supplierDTO.getId());
@@ -107,7 +108,7 @@ public class SupplierServiceImpl implements SupplierService {
         boolean hasMovements = invoiceRepository.count("supplier.id", id) > 0;
 
         if (hasMovements) {
-            throw new BusinessException("Erro: Não é possível excluir um fornecedor com movimentação.");
+            throw new BusinessException("Não é possível excluir um fornecedor com movimentação.");
         }
 
         supplierRepository.delete(supplier);
@@ -121,14 +122,14 @@ public class SupplierServiceImpl implements SupplierService {
             throw new BusinessException("O CNPJ é obrigatório.");
 
         } if (supplierDTO.getCompanyStatus() == null) {
-            throw new BusinessException("O status da empresa é obrigatório.");
+            throw new BusinessException("A situação da empresa é obrigatória.");
 
         } if (supplierDTO.getSupplierCode() == null) {
             throw new BusinessException("O código do fornecedor é obrigatório.");
 
         } if (supplierDTO.getCompanyStatus() == CompanyStatus.INACTIVE &&
                 supplierDTO.getCompanyDeactivationDate() == null) {
-            throw new BusinessException("A data de desativação é obrigatória quando o status é INACTIVE.");
+            throw new BusinessException("A data da desativação é obrigatória quando a situação da empresa estiver como Baixada.");
         }
     }
 

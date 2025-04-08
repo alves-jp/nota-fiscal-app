@@ -79,28 +79,23 @@ export class InvoiceService {
   }
 
   private handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Ocorreu um erro desconhecido';
-    
     if (error.error instanceof ErrorEvent) {
-      errorMessage = `Erro: ${error.error.message}`;
-    } else {
-      if (error.status === 0) {
-        errorMessage = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
+      return throwError(() => new Error(`Erro: ${error.error.message}`));
 
-      } else if (error.status === 400) {
-        errorMessage = error.error?.message || 'Dados inválidos enviados ao servidor';
-
-      } else if (error.status === 404) {
-        errorMessage = error.error?.message || 'Recurso não encontrado';
-
-      } else if (error.status === 500) {
-        errorMessage = error.error?.message || 'Erro interno no servidor';
-
-      } else {
-        errorMessage = `Erro ${error.status}: ${error.message}`;
+    } if (error.error && typeof error.error === 'object') {
+      const backendMessage = error.error.message || error.error.detail || error.error.error;
+      
+      if (backendMessage) {
+        return throwError(() => new Error(backendMessage));
       }
-    }
+
+    } else if (typeof error.error === 'string') {
+      return throwError(() => new Error(error.error));
+
+    } if (error.status === 0) {
+      return throwError(() => new Error('Não foi possível conectar ao servidor. Verifique sua conexão.'));
+    } 
     
-    return throwError(() => new Error(errorMessage));
+    return throwError(() => new Error(`Erro ${error.status}: ${error.statusText || 'Erro desconhecido'}`));
   }
 }

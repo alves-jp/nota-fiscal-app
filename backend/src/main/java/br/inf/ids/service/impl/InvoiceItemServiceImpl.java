@@ -14,7 +14,6 @@ import br.inf.ids.service.InvoiceService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +48,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
             throw new InvalidDataException("Produto com ID " + invoiceItemDTO.getProductId() + " não encontrado.");
 
         } if (invoiceItemDTO.getUnitValue() == null || invoiceItemDTO.getUnitValue() <= 0) {
-            throw new InvalidDataException("O valor unitário deve ser maior que 0,00.");
+            throw new InvalidDataException("O valor unitário deve ser maior que 0.00.");
 
         } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
             throw new InvalidDataException("A quantidade de produtos deve ser maior que zero.");
@@ -60,7 +59,6 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         invoiceItem.setProduct(product);
         invoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
         invoiceItem.setQuantity(invoiceItemDTO.getQuantity());
-
         invoiceItemRepository.persist(invoiceItem);
 
         if (invoice.getItems() == null) {
@@ -68,8 +66,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         }
 
         invoice.getItems().add(invoiceItem);
-
         invoiceService.updateTotalValue(invoice);
+
         return invoiceItem;
     }
 
@@ -97,7 +95,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     @Transactional
     public InvoiceItem updateInvoiceItem(Long id, InvoiceItemDTO invoiceItemDTO) throws InvalidDataException, EntityNotFoundException {
         if (invoiceItemDTO.getUnitValue() == null || invoiceItemDTO.getUnitValue() <= 0) {
-            throw new InvalidDataException("O valor unitário deve ser maior que 0,00.");
+            throw new InvalidDataException("O valor unitário deve ser maior que 0.00.");
 
         } if (invoiceItemDTO.getQuantity() == null || invoiceItemDTO.getQuantity() <= 0) {
             throw new InvalidDataException("A quantidade de produtos deve ser maior que zero.");
@@ -113,8 +111,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         existingInvoiceItem.setUnitValue(invoiceItemDTO.getUnitValue());
         existingInvoiceItem.setQuantity(invoiceItemDTO.getQuantity());
         Invoice invoice = existingInvoiceItem.getInvoice();
-
         invoiceService.updateTotalValue(invoice);
+
         return existingInvoiceItem;
     }
 

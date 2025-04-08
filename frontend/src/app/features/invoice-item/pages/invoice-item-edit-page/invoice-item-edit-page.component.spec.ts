@@ -21,7 +21,7 @@ describe('InvoiceItemEditPageComponent', () => {
     product: { id: 1, productCode: 'P001', description: 'Produto 1', productStatus: 'ACTIVE' } as Product,
     unitValue: 10.99,
     quantity: 2,
-    totalPrice: 21.98
+    totalValue: 21.98
   };
 
   beforeEach(async () => {

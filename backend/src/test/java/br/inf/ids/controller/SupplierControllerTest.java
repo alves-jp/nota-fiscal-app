@@ -30,7 +30,6 @@ class SupplierControllerTest {
     void testCreateSupplier_Success() {
         SupplierDTO supplierDTO = new SupplierDTO();
         supplierDTO.setCompanyName("Fornecedora Teste");
-
         when(supplierService.createSupplier(supplierDTO)).thenReturn(supplierDTO);
         
         Response response = supplierController.createSupplier(supplierDTO);
@@ -44,7 +43,6 @@ class SupplierControllerTest {
     void testCreateSupplier_Failure() {
         SupplierDTO supplierDTO = new SupplierDTO();
         supplierDTO.setCompanyName("Fornecedora Teste");
-
         when(supplierService.createSupplier(supplierDTO)).thenThrow(new RuntimeException("Erro ao criar novo fornecedor"));
 
         Response response = supplierController.createSupplier(supplierDTO);
@@ -124,8 +122,7 @@ class SupplierControllerTest {
     void testUpdateSupplier_Success() {
         Long supplierId = 1L;
         SupplierDTO supplierDTO = new SupplierDTO();
-        supplierDTO.setCompanyName("Fornecedora Nova");
-
+        supplierDTO.setCompanyName("Fornecedora Teste");
         SupplierDTO updatedSupplier = new SupplierDTO();
         updatedSupplier.setCompanyName("Fornecedora Nova");
         when(supplierService.updateSupplier(supplierId, supplierDTO)).thenReturn(updatedSupplier);
@@ -142,7 +139,6 @@ class SupplierControllerTest {
         Long supplierId = 1L;
         SupplierDTO supplierDTO = new SupplierDTO();
         supplierDTO.setCompanyName("Fornecedora Nova");
-
         when(supplierService.updateSupplier(supplierId, supplierDTO)).thenThrow(new RuntimeException("Erro ao atualizar"));
 
         Response response = supplierController.updateSupplier(supplierId, supplierDTO);

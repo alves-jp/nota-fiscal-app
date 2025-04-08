@@ -2,6 +2,7 @@ package br.inf.ids.service.impl;
 
 import br.inf.ids.dto.InvoiceDTO;
 import br.inf.ids.dto.InvoiceResponseDTO;
+import br.inf.ids.exception.BusinessException;
 import br.inf.ids.exception.InvalidDataException;
 import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Invoice;
@@ -12,8 +13,9 @@ import br.inf.ids.service.InvoiceService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
 import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,12 +32,29 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Transactional
     public Invoice createInvoice(InvoiceDTO invoiceDTO) throws InvalidDataException {
         validateInvoiceDTO(invoiceDTO);
+
+        List<Invoice> existingInvoices = invoiceRepository.findByInvoiceNumber(invoiceDTO.getInvoiceNumber());
+
+        if (existingInvoices != null && !existingInvoices.isEmpty()) {
+            throw new InvalidDataException("Já existe uma nota fiscal cadastrada com o número informado.");
+        }
+
         Supplier supplier = supplierRepository.findById(invoiceDTO.getSupplierId());
 
         if (invoiceDTO.getIssueDate() == null) {
             invoiceDTO.setIssueDate(LocalDateTime.now());
 
-        } if (supplier == null) {
+        } else {
+            LocalDateTime issueDate = invoiceDTO.getIssueDate();
+
+            if (issueDate.getHour() == 0 && issueDate.getMinute() == 0 && issueDate.getSecond() == 0) {
+                LocalDate date = issueDate.toLocalDate();
+                LocalTime currentTime = LocalTime.now();
+                invoiceDTO.setIssueDate(LocalDateTime.of(date, currentTime));
+            }
+        }
+
+        if (supplier == null) {
             throw new InvalidDataException("Fornecedor com ID " + invoiceDTO.getSupplierId() + " não encontrado.");
         }
 
@@ -50,10 +69,11 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoice.setTotalValue(totalValue);
 
         } else {
-            invoice.setTotalValue(0.0);
+            invoice.setTotalValue(0.00);
         }
 
         invoiceRepository.persist(invoice);
+
         return invoice;
     }
 
@@ -107,7 +127,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Double calculateTotalValue(Invoice invoice) {
         if (invoice.getItems() == null || invoice.getItems().isEmpty()) {
-            return 0.0;
+            return 0.00;
         }
 
         return invoice.getItems().stream()
@@ -118,8 +138,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     private void validateInvoiceDTO(InvoiceDTO invoiceDTO) throws InvalidDataException {
         if (invoiceDTO.getInvoiceNumber() == null || invoiceDTO.getInvoiceNumber().isBlank()) {
             throw new InvalidDataException("O número da nota fiscal é obrigatório.");
+        }
 
-        } if (invoiceDTO.getSupplierId() == null) {
+        if (invoiceDTO.getSupplierId() == null) {
             throw new InvalidDataException("O fornecedor é obrigatório.");
         }
     }
@@ -135,8 +156,8 @@ public class InvoiceServiceImpl implements InvoiceService {
         Double totalValue = calculateTotalValue(invoice);
         responseDTO.setTotalValue(totalValue);
         invoice.setTotalValue(totalValue);
-
         invoiceRepository.persist(invoice);
+
         return responseDTO;
     }
 
@@ -144,8 +165,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Transactional
     public void updateTotalValue(Invoice invoice) {
         if (invoice.getItems() == null || invoice.getItems().isEmpty()) {
-            invoice.setTotalValue(0.0);
-
+            invoice.setTotalValue(0.00);
         } else {
             Double totalValue = invoice.getItems().stream()
                     .mapToDouble(item -> item.getUnitValue() * item.getQuantity())

@@ -32,7 +32,6 @@ class ProductControllerTest {
         ProductDTO createdProduct = new ProductDTO();
         createdProduct.setId(1L);
         createdProduct.setDescription(productDTO.getDescription());
-
         when(productService.createProduct(productDTO)).thenReturn(createdProduct);
 
         Response response = productController.createProduct(productDTO);
@@ -59,7 +58,6 @@ class ProductControllerTest {
         Long productId = 1L;
         ProductDTO productDTO = createSampleProductDTO();
         productDTO.setId(productId);
-
         when(productService.findProductById(productId)).thenReturn(productDTO);
 
         Response response = productController.getProductById(productId);
@@ -103,7 +101,6 @@ class ProductControllerTest {
                 createSampleProductDTO(),
                 createSampleProductDTO()
         );
-
         when(productService.findProductByCode(productCode)).thenReturn(products);
 
         Response response = productController.getProductByCode(productCode);
@@ -116,7 +113,6 @@ class ProductControllerTest {
     @Test
     void testGetProductByCode_Failure() {
         String productCode = "PROD-001";
-
         when(productService.findProductByCode(productCode))
                 .thenThrow(new RuntimeException("Código do produto inválido"));
 
@@ -133,7 +129,6 @@ class ProductControllerTest {
         ProductDTO updatedProduct = new ProductDTO();
         updatedProduct.setId(productId);
         updatedProduct.setDescription(productDTO.getDescription());
-
         when(productService.updateProduct(productId, productDTO)).thenReturn(updatedProduct);
 
         Response response = productController.updateProduct(productId, productDTO);
@@ -147,7 +142,6 @@ class ProductControllerTest {
     void testUpdateProduct_Failure() {
         Long productId = 1L;
         ProductDTO productDTO = createSampleProductDTO();
-
         when(productService.updateProduct(productId, productDTO))
                 .thenThrow(new RuntimeException("Descrição do produto inválida"));
 
@@ -171,7 +165,6 @@ class ProductControllerTest {
     @Test
     void testDeleteProduct_Failure() {
         Long productId = 1L;
-
         doThrow(new RuntimeException("Erro ao deletar o produto"))
                 .when(productService).deleteProduct(productId);
 
@@ -184,8 +177,7 @@ class ProductControllerTest {
 
     private ProductDTO createSampleProductDTO() {
         ProductDTO productDTO = new ProductDTO();
-
-        productDTO.setDescription("Test Product");
+        productDTO.setDescription("Produto Teste");
         productDTO.setProductCode("PROD-001");
 
         return productDTO;

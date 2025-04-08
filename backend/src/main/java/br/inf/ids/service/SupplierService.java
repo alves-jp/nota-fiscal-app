@@ -1,7 +1,6 @@
 package br.inf.ids.service;
 
 import br.inf.ids.dto.SupplierDTO;
-import br.inf.ids.model.Supplier;
 import jakarta.transaction.Transactional;
 import java.util.List;
 
