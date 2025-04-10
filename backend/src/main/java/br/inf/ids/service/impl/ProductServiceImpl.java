@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class ProductServiceImpl implements ProductService {
 
+
     @Inject
     ProductRepository productRepository;
 
@@ -27,6 +28,12 @@ public class ProductServiceImpl implements ProductService {
         product.setProductCode(productDTO.getProductCode());
         product.setDescription(productDTO.getDescription());
         product.setProductStatus(productDTO.getProductStatus());
+
+        List<Product> existingProducts = productRepository.findByCode(product.getProductCode());
+        if (existingProducts != null && !existingProducts.isEmpty()) {
+            throw new BusinessException("Já existe um produto cadastrado com o código informado.");
+        }
+
         productRepository.persist(product);
 
         return convertToDTO(product);
@@ -102,6 +109,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductDTO convertToDTO(Product product) {
-        return new ProductDTO(product.getId(), product.getProductCode(), product.getDescription(), product.getProductStatus());
+        return new ProductDTO(product.getId(),
+                product.getProductCode(),
+                product.getDescription(),
+                product.getProductStatus());
     }
 }

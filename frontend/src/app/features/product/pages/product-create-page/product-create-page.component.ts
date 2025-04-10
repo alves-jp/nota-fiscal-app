@@ -36,7 +36,7 @@ export class ProductCreatePageComponent {
   handleFormSubmit(product: Product): void {
     this.submitted = true;
     this.loading = true;
-
+  
     this.productService.createProduct(product).subscribe({
       next: () => {
         this.messageService.add({
@@ -49,7 +49,7 @@ export class ProductCreatePageComponent {
       },
       error: (error) => {
         this.loading = false;
-        const errorMessage = error.error?.message || 'Erro ao criar produto';
+        const errorMessage = error.message || 'Erro ao criar produto';
         this.messageService.add({
           severity: 'error',
           summary: 'Erro',

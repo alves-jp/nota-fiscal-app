@@ -9,7 +9,7 @@ import java.util.List;
 public class ProductRepository implements PanacheRepository<Product> {
 
     public List<Product> findByCode(String productCode) {
-        return list("LOWER(productCode) LIKE LOWER(?1)", "%" + productCode + "%");
+        return list("productCode = ?1", productCode.trim());
     }
 
     public boolean hasInvoiceItems(Long productId) {

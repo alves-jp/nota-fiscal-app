@@ -56,16 +56,18 @@ export class ProductService {
     
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Erro: ${error.error.message}`;
-
     } else {
-      if (error.error && error.error.message) {
+      if (typeof error.error === 'object' && error.error !== null && 'message' in error.error) {
         errorMessage = error.error.message;
-
-      } else if (error.status === 400 || error.status === 404) {
+      } else if (typeof error.error === 'string') {
+        errorMessage = error.error;
+        
         try {
           const errorBody = JSON.parse(error.error);
-          errorMessage = errorBody.message || errorMessage;
           
+          if (errorBody && errorBody.message) {
+            errorMessage = errorBody.message;
+          }
         } catch (e) {
         }
       }

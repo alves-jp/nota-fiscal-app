@@ -3,6 +3,7 @@ package br.inf.ids.service.impl;
 import br.inf.ids.dto.SupplierDTO;
 import br.inf.ids.exception.BusinessException;
 import br.inf.ids.exception.EntityNotFoundException;
+import br.inf.ids.model.Product;
 import br.inf.ids.model.Supplier;
 import br.inf.ids.model.enums.CompanyStatus;
 import br.inf.ids.repository.InvoiceRepository;
@@ -40,6 +41,11 @@ public class SupplierServiceImpl implements SupplierService {
 
         if (supplierRepository.findByCnpj(supplier.getCnpj()) != null) {
             throw new BusinessException("Já existe um fornecedor com o CNPJ informado.");
+        }
+
+        List<Supplier> existingSupplier = supplierRepository.findByCode(supplier.getSupplierCode());
+        if (existingSupplier != null && !existingSupplier.isEmpty()) {
+            throw new BusinessException("Já existe um fornecedor cadastrado com o código informado.");
         }
 
         supplierRepository.persist(supplier);

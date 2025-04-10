@@ -1,6 +1,8 @@
 package br.inf.ids.controller;
 
 import br.inf.ids.dto.ProductDTO;
+import br.inf.ids.exception.BusinessException;
+import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.service.ProductService;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -165,13 +169,13 @@ class ProductControllerTest {
     @Test
     void testDeleteProduct_Failure() {
         Long productId = 1L;
-        doThrow(new RuntimeException("Erro ao deletar o produto"))
+        doThrow(new EntityNotFoundException("Produto não encontrado"))
                 .when(productService).deleteProduct(productId);
 
         Response response = productController.deleteProduct(productId);
 
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-        assertEquals("Erro ao deletar o produto", response.getEntity());
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals("Produto não encontrado", response.getEntity());
     }
 
 

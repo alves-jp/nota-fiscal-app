@@ -119,23 +119,14 @@ public class ProductController {
             productService.deleteProduct(id);
             return Response.noContent().build();
 
-        } catch (BusinessException e) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(Map.of("message", e.getMessage()))
-                    .type(MediaType.APPLICATION_JSON)
-                    .build();
-
         } catch (EntityNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity(Map.of("message", e.getMessage()))
-                    .type(MediaType.APPLICATION_JSON)
-                    .build();
+            return Response.status(Response.Status.NOT_FOUND).entity(e.getMessage()).build();
+
+        } catch (BusinessException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
 
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(Map.of("message", "Erro interno ao excluir o produto"))
-                    .type(MediaType.APPLICATION_JSON)
-                    .build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro interno ao excluir o produto").build();
         }
     }
 }
