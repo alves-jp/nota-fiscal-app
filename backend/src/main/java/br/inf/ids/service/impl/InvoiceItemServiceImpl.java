@@ -105,6 +105,10 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
         if (existingInvoiceItem == null) {
             throw new EntityNotFoundException("Item não encontrado.");
+
+        } if (invoiceItemDTO.getProductId() != null &&
+                !existingInvoiceItem.getProduct().getId().equals(invoiceItemDTO.getProductId())) {
+            throw new InvalidDataException("Não é permitido alterar o produto de um item já associado a uma nota fiscal.");
         }
 
         existingInvoiceItem.setId(invoiceItemDTO.getId());

@@ -21,9 +21,9 @@
         <tr>
           <td>{{ item.product.productCode }}</td>
           <td>{{ item.product.description }}</td>
-          <td>{{ item.unitValue | currency:'BRL' }}</td>
+          <td>{{ formatCurrency(item.unitValue) }}</td>
           <td>{{ item.quantity }}</td>
-          <td>{{ item.unitValue * item.quantity | currency:'BRL' }}</td>
+          <td>{{ formatCurrency(item.unitValue * item.quantity) }}</td>
           <td>
             <div class="action-buttons">
               <button 

@@ -113,4 +113,8 @@ export class InvoiceItemListComponent implements OnInit {
       life: 5000
     });
   }
+
+  formatCurrency(value: number): string {
+    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
 }

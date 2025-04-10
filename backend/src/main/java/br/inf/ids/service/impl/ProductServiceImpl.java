@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
 
         productRepository.persist(product);
 
-        return convertToDTO(product);
+        return mapToDTO(product);
     }
 
     @Override
@@ -44,14 +44,14 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findByIdOptional(id)
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado."));
 
-        return convertToDTO(product);
+        return mapToDTO(product);
     }
 
     @Override
     public List<ProductDTO> findAllProducts() {
         List<Product> products = productRepository.listAll();
         return products.stream()
-                .map(this::convertToDTO)
+                .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -63,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
         }
         List<Product> products = productRepository.findByCode(productCode);
         return products.stream()
-                .map(this::convertToDTO)
+                .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -80,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
         existingProduct.setProductStatus(productDTO.getProductStatus());
         productRepository.persist(existingProduct);
 
-        return convertToDTO(existingProduct);
+        return mapToDTO(existingProduct);
     }
 
     @Override
@@ -108,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private ProductDTO convertToDTO(Product product) {
+    private ProductDTO mapToDTO(Product product) {
         return new ProductDTO(product.getId(),
                 product.getProductCode(),
                 product.getDescription(),

@@ -140,16 +140,16 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     private SupplierDTO mapToDTO(Supplier supplier) {
-        SupplierDTO supplierDTO = new SupplierDTO();
-        supplierDTO.setId(supplier.getId());
-        supplierDTO.setSupplierCode(supplier.getSupplierCode());
-        supplierDTO.setCompanyName(supplier.getCompanyName());
-        supplierDTO.setsupplierEmail(supplier.getsupplierEmail());
-        supplierDTO.setsupplierPhone(supplier.getsupplierPhone());
-        supplierDTO.setCnpj(supplier.getCnpj());
-        supplierDTO.setCompanyStatus(supplier.getCompanyStatus());
-        supplierDTO.setCompanyDeactivationDate(supplier.getcompanyDeactivationDate());
-
-        return supplierDTO;
+        return new SupplierDTO(
+                supplier.getId(),
+                supplier.getSupplierCode(),
+                supplier.getCompanyName(),
+                supplier.getsupplierEmail(),
+                supplier.getsupplierPhone(),
+                supplier.getCnpj(),
+                supplier.getCompanyStatus(),
+                supplier.getcompanyDeactivationDate()
+        );
     }
+
 }

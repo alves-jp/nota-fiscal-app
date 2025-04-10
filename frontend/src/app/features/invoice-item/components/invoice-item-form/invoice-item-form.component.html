@@ -20,6 +20,11 @@
               placeholder="Digite código ou descrição do produto"
               [ngClass]="{'ng-invalid ng-dirty': itemForm.get('productId')?.invalid && itemForm.get('productId')?.touched}">
 
+              <small *ngIf="item?.id" class="p-text-warning">
+                <i class="pi pi-info-circle"></i>
+                O produto não pode ser alterado após a criação do item
+              </small>
+
             <div class="product-suggestions" *ngIf="showSuggestions && filteredProducts.length > 0">
               <div *ngFor="let product of filteredProducts" 
                   class="suggestion-item"
@@ -45,7 +50,7 @@
             [ngClass]="{'ng-invalid ng-dirty': itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched}">
           </p-inputNumber>
           <small *ngIf="itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched" class="p-error">
-            Quantidade inválida (mínimo 1)
+            A quantidade de produtos deve ser maior que zero
           </small>
         </div>
 
@@ -61,7 +66,7 @@
             [ngClass]="{'ng-invalid ng-dirty': itemForm.get('unitPrice')?.invalid && itemForm.get('unitPrice')?.touched}">
           </p-inputNumber>
           <small *ngIf="itemForm.get('unitPrice')?.invalid && itemForm.get('unitPrice')?.touched" class="p-error">
-            Preço inválido (mínimo 0.01)
+            O valor unitário deve ser maior que 0.00
           </small>
         </div>
 
@@ -69,7 +74,7 @@
         <div class="p-field p-col-12">
           <label>Total</label>
           <div class="p-d-flex p-ai-center">
-            <span class="total-value">{{ calculateTotal() | currency:'BRL' }}</span>
+            <span class="total-value">{{ formatCurrency(calculateTotal()) }}</span>
           </div>
         </div>
 

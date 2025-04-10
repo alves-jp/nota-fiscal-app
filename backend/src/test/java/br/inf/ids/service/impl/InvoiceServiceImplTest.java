@@ -107,16 +107,20 @@ public class InvoiceServiceImplTest {
 
     @Test
     public void testUpdateInvoice_Success() throws InvalidDataException, EntityNotFoundException {
+        invoice.setSupplier(supplier);
         when(invoiceRepository.findByIdOptional(1L)).thenReturn(Optional.of(invoice));
         invoiceDTO.setInvoiceNumber("NF-456.7");
         invoiceDTO.setIssueDate(LocalDateTime.parse("2025-03-26T00:00:00", DateTimeFormatter.ISO_DATE_TIME));
         invoiceDTO.setAddress("Av. Teste");
+        invoiceDTO.setSupplierId(1L);
 
         Invoice updatedInvoice = invoiceService.updateInvoice(1L, invoiceDTO);
 
         assertNotNull(updatedInvoice);
         assertEquals("NF-456.7", updatedInvoice.getInvoiceNumber());
         assertEquals("Av. Teste", updatedInvoice.getAddress());
+        assertEquals(supplier, updatedInvoice.getSupplier());
+        verify(invoiceRepository, never()).persist(updatedInvoice);
     }
 
     @Test

@@ -61,6 +61,14 @@ export class InvoiceItemFormComponent implements OnInit {
     
     if (this.item) {
       this.patchFormWithItemData();
+      
+      if (this.item.id) {
+        const productSearchInput = document.getElementById('productSearch') as HTMLInputElement;
+        
+        if (productSearchInput) {
+          productSearchInput.disabled = true;
+        }
+      }
     }
   }
 
@@ -165,5 +173,9 @@ export class InvoiceItemFormComponent implements OnInit {
       return quantity * unitPrice;
     }
     return 0;
+  }
+
+  formatCurrency(value: number): string {
+    return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 }

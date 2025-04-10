@@ -21,7 +21,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 @Path("/itens")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Invoice Items", description = "Gerenciamento de itens inseridos em notas fiscais")
+@Tag(name = "Itens da Nota Fiscal", description = "Gerenciamento de itens inseridos em notas fiscais")
 public class InvoiceItemController {
 
     @Inject

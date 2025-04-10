@@ -64,7 +64,18 @@ export class InvoiceItemEditPageComponent implements OnInit {
 
   onItemUpdated(itemDTO: InvoiceItemDTO): void {
     if (!this.invoiceItem?.id) return;
+  
+    if (this.invoiceItem.product.id !== itemDTO.productId) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Não é permitido alterar o produto de um item já associado a uma nota fiscal.',
+        life: 5000
+      });
 
+      return;
+    }
+  
     this.isLoading = true;
     
     this.invoiceItemService.updateInvoiceItem(this.invoiceItem.id, {
@@ -78,6 +89,7 @@ export class InvoiceItemEditPageComponent implements OnInit {
           detail: 'Item atualizado com sucesso',
           life: 3000
         });
+        
         this.navigateBackToList();
       },
       error: (error) => {

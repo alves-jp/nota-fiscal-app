@@ -161,12 +161,12 @@ export class InvoiceFormComponent implements OnInit {
         summary: 'Erro',
         detail: 'Por favor, preencha todos os campos obrigatórios corretamente'
       });
-
+  
       this.markAllAsTouched();
       return;
     }
-
-    const formValue = this.invoiceForm.value;
+  
+    const formValue = this.invoiceForm.getRawValue();
     const invoiceData: InvoiceDTO = {
       id: formValue.id,
       invoiceNumber: formValue.invoiceNumber,
@@ -174,7 +174,7 @@ export class InvoiceFormComponent implements OnInit {
       supplierId: formValue.supplierId,
       address: formValue.address
     };
-
+  
     this.formSubmit.emit(invoiceData);
   }
 

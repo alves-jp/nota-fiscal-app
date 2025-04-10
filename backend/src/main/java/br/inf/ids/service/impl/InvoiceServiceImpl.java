@@ -2,7 +2,6 @@ package br.inf.ids.service.impl;
 
 import br.inf.ids.dto.InvoiceDTO;
 import br.inf.ids.dto.InvoiceResponseDTO;
-import br.inf.ids.exception.BusinessException;
 import br.inf.ids.exception.InvalidDataException;
 import br.inf.ids.exception.EntityNotFoundException;
 import br.inf.ids.model.Invoice;
@@ -14,7 +13,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,45 +31,18 @@ public class InvoiceServiceImpl implements InvoiceService {
     public Invoice createInvoice(InvoiceDTO invoiceDTO) throws InvalidDataException {
         validateInvoiceDTO(invoiceDTO);
 
-        List<Invoice> existingInvoices = invoiceRepository.findByInvoiceNumber(invoiceDTO.getInvoiceNumber());
+        ensureInvoiceNumberIsUnique(invoiceDTO.getInvoiceNumber());
 
-        if (existingInvoices != null && !existingInvoices.isEmpty()) {
-            throw new InvalidDataException("Já existe uma nota fiscal cadastrada com o número informado.");
-        }
-
-        Supplier supplier = supplierRepository.findById(invoiceDTO.getSupplierId());
-
-        if (invoiceDTO.getIssueDate() == null) {
-            invoiceDTO.setIssueDate(LocalDateTime.now());
-
-        } else {
-            LocalDateTime issueDate = invoiceDTO.getIssueDate();
-
-            if (issueDate.getHour() == 0 && issueDate.getMinute() == 0 && issueDate.getSecond() == 0) {
-                LocalDate date = issueDate.toLocalDate();
-                LocalTime currentTime = LocalTime.now();
-                invoiceDTO.setIssueDate(LocalDateTime.of(date, currentTime));
-            }
-        }
-
-        if (supplier == null) {
-            throw new InvalidDataException("Fornecedor com ID " + invoiceDTO.getSupplierId() + " não encontrado.");
-        }
+        Supplier supplier = findSupplierById(invoiceDTO.getSupplierId());
+        LocalDateTime issueDate = normalizeIssueDate(invoiceDTO.getIssueDate());
+        invoiceDTO.setIssueDate(issueDate);
 
         Invoice invoice = new Invoice();
         invoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
-        invoice.setIssueDate(invoiceDTO.getIssueDate());
+        invoice.setIssueDate(issueDate);
         invoice.setAddress(invoiceDTO.getAddress());
         invoice.setSupplier(supplier);
-
-        if (invoice.getItems() != null && !invoice.getItems().isEmpty()) {
-            Double totalValue = calculateTotalValue(invoice);
-            invoice.setTotalValue(totalValue);
-
-        } else {
-            invoice.setTotalValue(0.00);
-        }
-
+        invoice.setTotalValue(0.00);
         invoiceRepository.persist(invoice);
 
         return invoice;
@@ -79,16 +50,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceResponseDTO getInvoiceById(Long id) throws EntityNotFoundException {
-        Invoice invoice = invoiceRepository.findByIdOptional(id)
-                .orElseThrow(() -> new EntityNotFoundException("Nota fiscal não encontrada."));
-
-        return createInvoiceResponseDTO(invoice);
+        Invoice invoice = findInvoiceById(id);
+        return mapToDTO(invoice);
     }
 
     @Override
     public List<InvoiceResponseDTO> findAllInvoices() {
         return invoiceRepository.listAll().stream()
-                .map(this::createInvoiceResponseDTO)
+                .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
 
@@ -97,6 +66,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (invoiceNumber == null || invoiceNumber.isBlank()) {
             throw new InvalidDataException("O número da nota fiscal é obrigatório para a busca.");
         }
+
         return invoiceRepository.findByInvoiceNumber(invoiceNumber);
     }
 
@@ -105,8 +75,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     public Invoice updateInvoice(Long id, InvoiceDTO invoiceDTO) throws InvalidDataException, EntityNotFoundException {
         validateInvoiceDTO(invoiceDTO);
 
-        Invoice existingInvoice = invoiceRepository.findByIdOptional(id)
-                .orElseThrow(() -> new EntityNotFoundException("Nota fiscal não encontrada."));
+        Invoice existingInvoice = findInvoiceById(id);
+
+        if (!existingInvoice.getSupplier().getId().equals(invoiceDTO.getSupplierId())) {
+            throw new InvalidDataException("Não é permitido alterar o fornecedor de uma nota fiscal existente.");
+        }
 
         existingInvoice.setInvoiceNumber(invoiceDTO.getInvoiceNumber());
         existingInvoice.setIssueDate(invoiceDTO.getIssueDate());
@@ -118,9 +91,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     @Transactional
     public void deleteInvoice(Long id) throws EntityNotFoundException {
-        Invoice invoice = invoiceRepository.findByIdOptional(id)
-                .orElseThrow(() -> new EntityNotFoundException("Nota fiscal não encontrada."));
-
+        Invoice invoice = findInvoiceById(id);
         invoiceRepository.delete(invoice);
     }
 
@@ -135,44 +106,66 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .sum();
     }
 
-    private void validateInvoiceDTO(InvoiceDTO invoiceDTO) throws InvalidDataException {
-        if (invoiceDTO.getInvoiceNumber() == null || invoiceDTO.getInvoiceNumber().isBlank()) {
-            throw new InvalidDataException("O número da nota fiscal é obrigatório.");
-        }
-
-        if (invoiceDTO.getSupplierId() == null) {
-            throw new InvalidDataException("O fornecedor é obrigatório.");
-        }
-    }
-
-    private InvoiceResponseDTO createInvoiceResponseDTO(Invoice invoice) {
-        InvoiceResponseDTO responseDTO = new InvoiceResponseDTO();
-        responseDTO.setId(invoice.getId());
-        responseDTO.setInvoiceNumber(invoice.getInvoiceNumber());
-        responseDTO.setIssueDate(invoice.getIssueDate());
-        responseDTO.setSupplier(invoice.getSupplier());
-        responseDTO.setAddress(invoice.getAddress());
-        responseDTO.setItems(invoice.getItems());
-        Double totalValue = calculateTotalValue(invoice);
-        responseDTO.setTotalValue(totalValue);
-        invoice.setTotalValue(totalValue);
-        invoiceRepository.persist(invoice);
-
-        return responseDTO;
-    }
-
     @Override
     @Transactional
     public void updateTotalValue(Invoice invoice) {
-        if (invoice.getItems() == null || invoice.getItems().isEmpty()) {
-            invoice.setTotalValue(0.00);
-        } else {
-            Double totalValue = invoice.getItems().stream()
-                    .mapToDouble(item -> item.getUnitValue() * item.getQuantity())
-                    .sum();
-            invoice.setTotalValue(totalValue);
+        double total = calculateTotalValue(invoice);
+        invoice.setTotalValue(total);
+        invoiceRepository.persist(invoice);
+    }
+
+    private Invoice findInvoiceById(Long id) throws EntityNotFoundException {
+        return invoiceRepository.findByIdOptional(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nota fiscal não encontrada."));
+    }
+
+    private Supplier findSupplierById(Long id) throws InvalidDataException {
+        Supplier supplier = supplierRepository.findById(id);
+
+        if (supplier == null) {
+            throw new InvalidDataException("Fornecedor com ID " + id + " não encontrado.");
         }
 
-        invoiceRepository.persist(invoice);
+        return supplier;
+    }
+
+    private void ensureInvoiceNumberIsUnique(String invoiceNumber) throws InvalidDataException {
+        List<Invoice> existing = invoiceRepository.findByInvoiceNumber(invoiceNumber);
+
+        if (existing != null && !existing.isEmpty()) {
+            throw new InvalidDataException("Já existe uma nota fiscal cadastrada com o número informado.");
+        }
+    }
+
+    private LocalDateTime normalizeIssueDate(LocalDateTime input) {
+        if (input == null) return LocalDateTime.now();
+
+        if (input.toLocalTime().equals(LocalTime.MIDNIGHT)) {
+            return LocalDateTime.of(input.toLocalDate(), LocalTime.now());
+        }
+
+        return input;
+    }
+
+    private void validateInvoiceDTO(InvoiceDTO dto) throws InvalidDataException {
+        if (dto.getInvoiceNumber() == null || dto.getInvoiceNumber().isBlank()) {
+            throw new InvalidDataException("O número da nota fiscal é obrigatório.");
+        }
+
+        if (dto.getSupplierId() == null) {
+            throw new InvalidDataException("É obrigatório selecionar um fornecedor.");
+        }
+    }
+
+    private InvoiceResponseDTO mapToDTO(Invoice invoice) {
+        return new InvoiceResponseDTO(
+                invoice.getId(),
+                invoice.getInvoiceNumber(),
+                invoice.getIssueDate(),
+                invoice.getSupplier(),
+                invoice.getAddress(),
+                invoice.getItems(),
+                invoice.getTotalValue()
+        );
     }
 }

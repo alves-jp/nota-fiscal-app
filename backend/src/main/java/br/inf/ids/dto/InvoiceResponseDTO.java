@@ -15,6 +15,20 @@ public class InvoiceResponseDTO {
     private List<InvoiceItem> items;
     private Double totalValue;
 
+
+    public InvoiceResponseDTO(Long id, String invoiceNumber, LocalDateTime issueDate, Supplier supplier, String address, List<InvoiceItem> items, Double totalValue) {
+        this.id = id;
+        this.invoiceNumber = invoiceNumber;
+        this.issueDate = issueDate;
+        this.supplier = supplier;
+        this.address = address;
+        this.items = items;
+        this.totalValue = totalValue;
+    }
+
+    public InvoiceResponseDTO() {
+    }
+
     public Long getId() {
         return id;
     }

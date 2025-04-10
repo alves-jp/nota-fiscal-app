@@ -5,13 +5,17 @@ import { InvoiceService } from '../../../../core/services/api/invoice.service';
 import { InvoiceResponseDTO, InvoiceDTO } from '../../../../core/models/invoice.model';
 import { MessageService } from 'primeng/api';
 import { InvoiceFormComponent } from '../../components/invoice-form/invoice-form.component';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-invoice-edit-page',
   templateUrl: './invoice-edit-page.component.html',
   styleUrls: ['./invoice-edit-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, InvoiceFormComponent]
+  imports: [CommonModule,
+    ToastModule,
+    InvoiceFormComponent],
+  providers: [MessageService]
 })
 export class InvoiceEditPageComponent implements OnInit {
   invoice?: InvoiceResponseDTO;
@@ -53,7 +57,17 @@ export class InvoiceEditPageComponent implements OnInit {
 
   onInvoiceUpdated(updatedInvoice: InvoiceDTO): void {
     if (!this.invoice?.id) return;
-
+  
+    if (this.invoice.supplier?.id !== updatedInvoice.supplierId) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Não é permitido alterar o fornecedor de uma nota fiscal existente.',
+        life: 5000
+      });
+      return;
+    }
+  
     this.isLoading = true;
     this.invoiceService.updateInvoice(this.invoice.id, updatedInvoice).subscribe({
       next: () => {

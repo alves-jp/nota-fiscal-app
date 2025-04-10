@@ -64,6 +64,9 @@
           <small *ngIf="invoiceForm.get('supplierId')?.invalid && invoiceForm.get('supplierId')?.touched" class="p-error">
             Fornecedor é obrigatório
           </small>
+          <small *ngIf="invoice?.id" class="text-warning">
+            Não é permitido alterar o fornecedor de uma nota fiscal existente.
+          </small>
         </div>
 
         <!-- Endereço -->
